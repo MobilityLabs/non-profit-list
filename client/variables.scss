@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i,800');
+
+$enable-flex: true;
+
+// Colors
+// - Listed from darkest to lightest
+
+// -- Greyscale
+$alto: #D9D9D9;
+$aluminum: #999999;
+$alabaster: #FAFAFA;
+$concrete: #F2F2F2;
+$armadillo: #4A4A4A;
+
+// -- Site Colors
+$cerulean: #00A0F1;
+$malibu: #5CBAE9;
+$brand-primary: $cerulean;
+
+$body-bg: #F5F5F5;
+
+// -- Category Colors
+$foundations-color: #F57F21;
+$nature-of-knowledge-color: #CC2168;
+$practices-color: #8B2C75;
+$learning-together-color: #308FB6;
+$learning-environments-color: #139C62;
+$moving-learning-color: #7AB94A;
+
+
+// Fonts
+$font-size-root: 14px;
+$headings-margin-bottom: 1rem;
+
+$font-family-sans-serif: 'Open Sans', sans-serif;
+
+$font-family-base: $font-family-sans-serif;
+$headings-font-family: $font-family-sans-serif;
+$headings-font-weight: bold;
+
+// button
+$btn-secondary-color: white;
+$btn-secondary-bg: darken($malibu, 30%);
+$btn-secondary-border: $btn-secondary-bg;
+
+// Opacity
+$translighter: .5;
+$translight: .75;

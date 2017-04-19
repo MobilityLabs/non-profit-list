@@ -1,0 +1,55 @@
+@import './variables';
+
+// Core variables and mixins
+@import "../node_modules/bootstrap/scss/custom";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/variables";
+
+// Reset and dependencies
+@import "../node_modules/bootstrap/scss/normalize";
+@import "../node_modules/bootstrap/scss/print";
+
+// Core CSS
+@import "../node_modules/bootstrap/scss/alert";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/card";
+@import "../node_modules/bootstrap/scss/close";
+@import "../node_modules/bootstrap/scss/code";
+@import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/input-group";
+@import "../node_modules/bootstrap/scss/modal";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/progress";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/tables";
+@import "../node_modules/bootstrap/scss/type";
+
+// Utility Classes from Bootdtrap
+@import "../node_modules/bootstrap/scss/utilities/align";
+@import "../node_modules/bootstrap/scss/utilities/float";
+@import "../node_modules/bootstrap/scss/utilities/text";
+@import "../node_modules/bootstrap/scss/utilities/visibility";
+
+body{
+  padding-bottom: 50px;
+}
+h1{
+  font-size: 1.70rem;
+}
+h2{
+  font-size: 1.25rem;
+}
+h3{
+  font-size: 1rem;
+}
+ul{
+  padding: 0 0 0 1rem;
+  list-style-position: outside;
+}
+
+.search-input > input{
+  line-height: 1.38;
+}

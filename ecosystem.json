@@ -1,0 +1,28 @@
+{
+  "apps" : [{
+    "name"      : "ExportTool",
+    "script"    : "bin/www",
+    "env": {
+      "COMMON_VARIABLE": "true"
+    },
+    "env_production" : {
+      "NODE_ENV": "production"
+    }
+  }],
+  "deploy" : {
+    "production" : {
+      "user" : "export",
+      "host" : ["exporttool.com"],
+      "ref"  : "origin/master",
+      "repo" : "git@github.com:MobilityLabs/export-tool.git",
+      "path" : "/home/export/www",
+      "ssh_options": "StrictHostKeyChecking=no",
+      "post-setup": "touch ../shared/.env && ln -s ../shared/.env ./",
+      "pre-deploy-local": "echo 'This is a local executed command'",
+      "post-deploy" : "yarn && yarn build && pm2 startOrRestart ecosystem.json --env production",
+      "env"  : {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}
