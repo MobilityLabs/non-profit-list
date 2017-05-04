@@ -3,6 +3,7 @@
 $enable-flex: true;
 
 // Colors
+
 // - Listed from darkest to lightest
 
 // -- Greyscale
@@ -14,24 +15,15 @@ $grey-5: lighten($grey-1, 56%);
 $grey-6: lighten($grey-1, 76%);
 
 // -- Site Colors
-$cerulean: #00A0F1;
+$cerulean: #4990E2;
 $malibu: #5CBAE9;
 $brand-primary: $cerulean;
 
 $body-bg: #F4F4F4;
-
-// -- Category Colors
-$foundations-color: #F57F21;
-$nature-of-knowledge-color: #CC2168;
-$practices-color: #8B2C75;
-$learning-together-color: #308FB6;
-$learning-environments-color: #139C62;
-$moving-learning-color: #7AB94A;
-
+$body-color: $grey-1;
 
 // Fonts
-$font-size-root: 14px;
-$headings-margin-bottom: 1rem;
+$font-size-root: 16px;
 
 $font-family-sans-serif: 'Open Sans', sans-serif;
 
