@@ -1,6 +1,7 @@
-/* 
+/*
   Command to run this in shell
-  $ psql -Upostgres -f sql/01_create_database.sql */
+  $ psql -Upostgres -f sql/01_create_database.sql
+*/
 
 DROP DATABASE IF EXISTS "nonprofits";
 CREATE DATABASE "nonprofits";
@@ -39,11 +40,11 @@ CREATE TABLE organizations (
   sort_name text
 );
 
-CREATE OR REPLACE FUNCTION update_updated_at_column() 
+CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_at = now();
-    RETURN NEW; 
+    RETURN NEW;
 END;
 $$ language 'plpgsql';
 

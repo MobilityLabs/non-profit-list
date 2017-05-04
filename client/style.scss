@@ -27,11 +27,8 @@
 @import "../node_modules/bootstrap/scss/tables";
 @import "../node_modules/bootstrap/scss/type";
 
-// Utility Classes from Bootdtrap
-@import "../node_modules/bootstrap/scss/utilities/align";
-@import "../node_modules/bootstrap/scss/utilities/float";
-@import "../node_modules/bootstrap/scss/utilities/text";
-@import "../node_modules/bootstrap/scss/utilities/visibility";
+// Utility Classes from Bootstrap
+@import "../node_modules/bootstrap/scss/utilities";
 
 body{
   padding-bottom: 50px;
@@ -52,4 +49,38 @@ ul{
 
 .search-input > input{
   line-height: 1.38;
+}
+
+.card-group-vertical{
+  display: flex;
+  flex-flow: column wrap;
+  .card{
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid $grey-6;
+    &:first-child{
+      border-radius: $border-radius $border-radius 0 0;
+    }
+    &:last-child{
+      border-radius: 0 0 $border-radius $border-radius;
+      border-bottom: none;
+    }
+  }
+}
+// Changes checkbox to look like a star
+input{
+  &.star {
+    visibility:hidden;
+    font-size:initial;
+    cursor:pointer;
+  }
+  &.star:before {
+     content: "\2606";
+     position: absolute;
+     visibility:visible;
+  }
+  &.star:checked:before {
+     content: "\2605";
+     position: absolute;
+  }
 }

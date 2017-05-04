@@ -3,7 +3,7 @@ import db from './config/database'
 const query = {};
 
 query.getOrganizations = (req, res, next) => {
-  db.any('SELECT * FROM organizations LIMIT 10000')
+  db.any('SELECT * FROM organizations LIMIT 20')
   .then((data) => {
     return res.status(200)
       .json({

@@ -9,7 +9,19 @@ import OrganizationTable from '../components/OrganizationTable';
 export default class DashboardPage extends Component {
 
   state = {
-    organizations: []
+    organizationsData: [],
+    summaryData: {},
+    filtersData: {
+      revenueAmount: {
+        label: 'Revenue Amount ($)',
+        filters: [
+          {
+            value: 1,
+            label: '1 to 99999'
+          },
+        ]
+      }
+    }
   }
 
   componentDidMount() {
@@ -25,7 +37,7 @@ export default class DashboardPage extends Component {
         }
       })
     ).json();
-    this.setState({organizations: result.data});
+    this.setState({organizationsData: result.data});
   }
 
   render() {
@@ -36,14 +48,14 @@ export default class DashboardPage extends Component {
         ograph: true
       }
     };
-    const {organizations} = this.state;
+    const {organizationsData} = this.state;
     return (
       <DocumentMeta {...meta}>
-        <div className="container">
+        <div className="container-fluid py-4">
           <div className="row">
-            <div className="col-md">
+            <div className="col-md-8 push-md-2">
               <h1>Dashboard</h1>
-              <OrganizationTable organizations={organizations}/>
+              <OrganizationTable organizations={organizationsData}/>
             </div>
           </div>
         </div>

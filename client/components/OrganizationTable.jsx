@@ -1,20 +1,47 @@
 import React from 'react';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
+import _ from 'lodash';
 
 const OrganizationTable = ({organizations}) => {
-  
-  const keys = ['ein', 'name', 'ico', 'street', 'city', 'state', 'zip', 'group_number', 'subsection', 'affiliation',
-  'classification', 'ruling', 'deductibility', 'foundation', 'activity', 'organization', 'status', 'tax_period', 
-  'asset_cd', 'income_cd', 'filing_req_cd', 'pf_filing_req_cd', 'acct_pd', 'asset_amt', 'income_amt', 'revenue_amt',
-  'ntee_cd', 'sort_name'];
-  
-  const columns = keys.map((k) => {return {header: k, accessor: k}});
+
+  const table = organizations.map((o) => (
+    <div key={o.ein} className="card">
+      <div className="card-block">
+        <div className="form-check">
+          <label className="form-check-label">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id={"checkbox-" + o.ein}
+              value={"checked-" + o.ein}
+              aria-label="..."
+            />
+          </label>
+          <label className="form-check-label">
+            <input
+              className="form-check-input star"
+              type="checkbox"
+              id={"star-" + o.ein}
+              value={"starred-" + o.ein}
+              aria-label="..."
+            />
+          </label>
+        </div>
+        <h4 className="card-title">{o.name}</h4>
+        <dl>
+          <dt>NTEE Code</dt>
+          <dd className="card-text">{o.ntee_cd + " - "}</dd>
+        </dl>
+        <dl>
+          <dt>Location</dt>
+          <dd className="card-text">{_.startCase(_.toLower(o.city)) + ", " + o.state}</dd>
+        </dl>
+      </div>
+    </div>
+  ));
   return (
-    <ReactTable
-      data={organizations}
-      columns={columns}
-    />
+    <div className="card-group-vertical">
+      {table}
+    </div>
   );
 }
 
