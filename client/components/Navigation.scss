@@ -1,5 +1,9 @@
 @import '../variables.scss';
-
+.main-nav{
+  h1{
+    font-weight: bold;
+  }
+}
 .btn-in-form{
   input{
     border-right: none;

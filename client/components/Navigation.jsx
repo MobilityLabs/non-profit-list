@@ -9,7 +9,7 @@ export default class Navigation extends Component {
     return (
       <div className="main-nav row bg-light pt-3">
         <div className="col-md-4">
-          <h1 className="my-0">Philanthrogator</h1>
+          <h1 className="h2 my-0">Philanthrogator</h1>
         </div>
         <div className="col-md-8">
           <div className="row mb-2">

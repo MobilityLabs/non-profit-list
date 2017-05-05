@@ -35,8 +35,49 @@ export default class DashboardPage extends Component {
             value: 2,
             label: '10,000 to 24,999'
           },
+          {
+            value: 3,
+            label: '10,000 to 24,999'
+          },
+          {
+            value: 4,
+            label: '10,000 to 24,999'
+          },
+          {
+            value: 5,
+            label: '10,000 to 24,999'
+          },
+          {
+            value: 6,
+            label: '10,000 to 24,999'
+          },
+          {
+            value: 7,
+            label: '10,000 to 24,999'
+          },
+          {
+            value: 8,
+            label: '10,000 to 24,999'
+          },
+          {
+            value: 9,
+            label: '10,000 to 24,999'
+          },
         ]
-      }
+      },
+      PEA: {
+        label: 'Primary Exempt Activity',
+        filters: [
+          {
+            value: 1,
+            label: 'Arts, Culture and Humanities'
+          },
+          {
+            value: 2,
+            label: 'Educational Institutions and Related Activities'
+          },
+        ]
+      },
     },
     filters: {
       state: ['OH','MI'],
@@ -87,6 +128,7 @@ export default class DashboardPage extends Component {
           <div className="row">
             <div className="col-md-4">
               <Filters filter={filtersData.revenueAmount}/>
+              <Filters filter={filtersData.PEA}/>
             </div>
             <div className="col-md-8">
               <OrganizationTable organizations={organizationsData}/>
