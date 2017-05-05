@@ -1,40 +1,26 @@
-import React from 'react';
+// @flow
+import React, {Component} from 'react';
 import Select from 'react-select';
 
 import './StateFilter.scss';
 
-const STATES = [
-  { label: 'Alaska', value: 'AK' },
-  { label: 'Alabama', value: 'AL' },
-];
+export default class StateFilter extends Component {
 
-
-var MultiSelectField = React.createClass({
-  displayName: 'MultiSelectField',
-  getInitialState () {
-    return {
-      disabled: false,
-      crazy: false,
-      options: STATES,
-      value: [],
-    };
-  },
-  handleSelectChange (value) {
-    console.log('You\'ve selected:', value);
-    this.setState({ value });
-  },
-  toggleDisabled (e) {
-    this.setState({ disabled: e.target.checked });
-  },
-  render () {
+  render() {
+    const {filter, handleSelectState, selectedStates} = this.props;
     return (
       <dl className="filter-container mb-4">
-        <dt className="font_small mb-2">State</dt>
+        <dt className="font_small mb-2">{filter.label}</dt>
         <dd className="mb-0 filter-group">
-          <Select multi simpleValue disabled={this.state.disabled} value={this.state.value} placeholder="Select States to Filter" options={this.state.options} onChange={this.handleSelectChange} />
+          <Select
+            multi
+            simpleValue
+            placeholder="Select States to Filter"
+            value={selectedStates}
+            options={filter.filters}
+            onChange={handleSelectState} />
         </dd>
       </dl>
     );
   }
-});
-module.exports = MultiSelectField;
+}

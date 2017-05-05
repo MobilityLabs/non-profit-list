@@ -3,7 +3,6 @@ import _ from 'lodash';
 import DocumentMeta from 'react-document-meta';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Link, browserHistory} from 'react-router';
 
 import Filters from '../components/Filters';
 import Navigation from '../components/Navigation';
@@ -17,6 +16,7 @@ type State = {
   organizationsData: Organizations,
   summaryData: SummaryData,
   filtersData: FilterData,
+  filters: {}
 };
 
 export default class DashboardPage extends Component {
@@ -94,8 +94,8 @@ export default class DashboardPage extends Component {
       },
     },
     filters: {
-      state: ['OH','MI'],
-      name: 'Learning'
+      limit: 10,
+      page: 3,
     }
   }
 
@@ -110,7 +110,7 @@ export default class DashboardPage extends Component {
       const value = _.isArray(v) ? v.join(',') : v;
       queryString.push(k + '=' + value);
     });
-    queryString = encodeURIComponent(queryString.join('&'))
+    queryString = queryString.join('&');
     const result = await(
       await fetch('/api/organizations?' + queryString, {
         method: 'GET',
@@ -122,6 +122,13 @@ export default class DashboardPage extends Component {
     this.setState({organizationsData: result.data});
   }
 
+  handleSelectState = (selectedState) => {
+    const {filters} = this.state;
+    filters.state = filters.state || [];
+    filters.state.push(selectedState);
+    this.setState({filters});
+  }
+
   render() {
     const meta = {
       title: 'Export Tool',
@@ -130,7 +137,7 @@ export default class DashboardPage extends Component {
         ograph: true
       }
     };
-    const {filtersData, organizationsData} = this.state;
+    const {filtersData, organizationsData, filters} = this.state;
     return (
       <DocumentMeta {...meta}>
         <div className="bg-light">
@@ -142,7 +149,11 @@ export default class DashboardPage extends Component {
           <div className="row">
             <div className="col-sm-12 col-md-4">
               <Filters filter={filtersData.revenueAmount}/>
-              <StateFilter filter={filtersData.revenueAmount}/>
+              <StateFilter
+                handleSelectState={this.handleSelectState}
+                filter={filtersData.state}
+                selectedStates={filters.state}
+              />
               <Filters filter={filtersData.PEA}/>
             </div>
             <div className="col-sm-12 col-md-8">
