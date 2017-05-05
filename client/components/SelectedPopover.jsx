@@ -25,11 +25,11 @@ export default class SelectedPopover extends Component {
   }
    render() {
     return (
-      <div className="fixed-bottom">
+      <div className="fixed-bottom disable-click-events">
         <div className="container">
           <div className="row">
             <div className="push-md-8 col-md-4">
-              <div className="selected-popover">
+              <div className="selected-popover enable-click-events">
                 <div className="header">
                   <h5 className="my-0 font_small">Selected Organizations <small class="text-muted">4</small></h5>
                 </div>

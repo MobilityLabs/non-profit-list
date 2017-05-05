@@ -30,6 +30,14 @@
 // Utility Classes from Bootstrap
 @import "../node_modules/bootstrap/scss/utilities";
 
+.disable-click-events{
+  pointer-events: none;
+}
+
+.enable-click-events{
+  pointer-events: all;
+}
+
 html, .font_normal {font-size: 1em;}
 
 body {
