@@ -9,6 +9,7 @@ import Filters from '../components/Filters';
 import Navigation from '../components/Navigation';
 import OrganizationTable from '../components/OrganizationTable';
 import SelectedPopover from '../components/SelectedPopover';
+import StateFilter from '../components/StateFilter';
 
 import type {Organizations, SummaryData, FilterData} from '../types';
 
@@ -78,6 +79,19 @@ export default class DashboardPage extends Component {
           },
         ]
       },
+      state: {
+        label: 'State',
+        filters: [
+          {
+            value: 'AK',
+            label: 'Alaska'
+          },
+          {
+            value: 'AL',
+            label: 'Alabama'
+          },
+        ]
+      },
     },
     filters: {
       state: ['OH','MI'],
@@ -128,6 +142,7 @@ export default class DashboardPage extends Component {
           <div className="row">
             <div className="col-md-4">
               <Filters filter={filtersData.revenueAmount}/>
+              <StateFilter filter={filtersData.revenueAmount}/>
               <Filters filter={filtersData.PEA}/>
             </div>
             <div className="col-md-8">
