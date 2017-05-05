@@ -1,4 +1,5 @@
 // @flow
+import _ from 'lodash';
 import DocumentMeta from 'react-document-meta';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
@@ -7,9 +8,17 @@ import {Link, browserHistory} from 'react-router';
 import Filters from '../components/Filters';
 import OrganizationTable from '../components/OrganizationTable';
 
+import type {Organizations, SummaryData, FilterData} from '../types';
+
+type State = {
+  organizationsData: Organizations,
+  summaryData: SummaryData,
+  filtersData: FilterData,
+};
+
 export default class DashboardPage extends Component {
 
-  state = {
+  state: State = {
     organizationsData: [],
     summaryData: {},
     filtersData: {
@@ -26,6 +35,10 @@ export default class DashboardPage extends Component {
           },
         ]
       }
+    },
+    filters: {
+      state: ['OH','MI'],
+      name: 'Learning'
     }
   }
 
@@ -34,12 +47,19 @@ export default class DashboardPage extends Component {
   }
 
   async getOrganizations() {
+    const {filters} = this.state;
+    let queryString = [];
+    _.each(filters, (v, k) => {
+      const value = _.isArray(v) ? v.join(',') : v;
+      queryString.push(k + '=' + value);
+    });
+    queryString = encodeURIComponent(queryString.join('&'))
     const result = await(
-      await fetch('/api/organizations', {
+      await fetch('/api/organizations?' + queryString, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
       })
     ).json();
     this.setState({organizationsData: result.data});
