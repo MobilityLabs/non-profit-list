@@ -1,0 +1,55 @@
+@import '../variables.scss';
+
+.btn-in-form{
+  input{
+    border-right: none;
+  }
+  .input-group-btn > .btn{
+    border: 1px solid $input-border-color;
+    border-left: none;
+    border-radius: 0 $border-radius $border-radius 0;
+    i{
+      border: none !important;
+      &:hover{
+        border: none !important;
+      }
+    }
+    &:hover{
+      border: 1px solid $input-border-color;
+      border-left: none;
+    }
+  }
+}
+
+.nav-search.btn-in-form{
+  input{
+    border-right: none;
+    background-color: white;
+  }
+  .input-group-btn > .btn{
+
+    background-color: white;
+    :hover{
+      background-color: white;
+    }
+  }
+}
+
+.main-nav .nav.nav-tabs{
+  border: none;
+  .nav-link{
+    color: $grey-3;
+    border: 1px solid transparent;
+    border-bottom: 2px solid transparent;
+    &:hover{
+      border: 1px solid transparent;
+      border-bottom: 2px solid $grey-4;
+    }
+    &.active{
+      background-color: transparent;
+      border: 1px solid transparent;
+      border-bottom: 2px solid $brand-primary;
+      color: $brand-primary;
+    }
+  }
+}

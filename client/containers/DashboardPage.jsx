@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import {Link, browserHistory} from 'react-router';
 
 import Filters from '../components/Filters';
+import Navigation from '../components/Navigation';
 import OrganizationTable from '../components/OrganizationTable';
+import SelectedPopover from '../components/SelectedPopover';
 
 import type {Organizations, SummaryData, FilterData} from '../types';
 
@@ -76,7 +78,12 @@ export default class DashboardPage extends Component {
     const {filtersData, organizationsData} = this.state;
     return (
       <DocumentMeta {...meta}>
-        <div className="container-fluid py-4">
+        <div className="bg-light">
+          <div className="container">
+            <Navigation />
+          </div>
+        </div>
+        <div className="container py-4">
           <div className="row">
             <div className="col-md-4">
               <Filters filter={filtersData.revenueAmount}/>
@@ -85,6 +92,7 @@ export default class DashboardPage extends Component {
               <OrganizationTable organizations={organizationsData}/>
             </div>
           </div>
+          <SelectedPopover />
         </div>
       </DocumentMeta>
     );
