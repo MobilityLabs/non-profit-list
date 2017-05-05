@@ -140,12 +140,12 @@ export default class DashboardPage extends Component {
         </div>
         <div className="container py-4">
           <div className="row">
-            <div className="col-md-4">
+            <div className="col-sm-12 col-md-4">
               <Filters filter={filtersData.revenueAmount}/>
               <StateFilter filter={filtersData.revenueAmount}/>
               <Filters filter={filtersData.PEA}/>
             </div>
-            <div className="col-md-8">
+            <div className="col-sm-12 col-md-8">
               <OrganizationTable organizations={organizationsData}/>
             </div>
           </div>
