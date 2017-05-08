@@ -11,7 +11,7 @@ export default class Navigation extends Component {
     return (
       <div className="main-nav row bg-light pt-md-3">
         <div className="col-sm-12 col-md-4">
-          <h1 className="h2 my-sm-1 my-md-0">Philanthrogator</h1>
+          <Link to="/" className="h2 d-block my-3 my-md-0">Philanthrogator</Link>
         </div>
         <div className="col-sm-12 col-md-8">
           <div className="row mb-2">

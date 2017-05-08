@@ -292,9 +292,10 @@ export default class DashboardPage extends Component {
             <Navigation name={filters.name} handleNameChange={this.handleNameChange}/>
           </div>
         </div>
-        <div className="container py-4">
+        <div className="container py-3">
           <div className="row">
             <div className="col-sm-12 col-md-4">
+              <h3 className="h6 text-muted">Filters</h3>
               {filtersData.income_cd && (
                 <CheckboxFilters
                   filter={filtersData.income_cd}

@@ -53,7 +53,7 @@ export default class OrganizationTable extends Component {
             </div>
             <div className="card-container-company">
               <div className="company-meta">
-                <h4 className="card-title font_normal mt-0">{o.name}</h4>
+                <h2 className="card-title font_normal mt-0 h4">{o.name}</h2>
                 <dl>
                   <dt className="font_micro">NTEE Code</dt>
                   <dd className="card-text font_mono">{o.ntee_cd + " - "}</dd>

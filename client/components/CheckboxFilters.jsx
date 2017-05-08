@@ -25,8 +25,9 @@ const CheckboxFilters = ({filter, handleSelect, filterValues, beforeContent}: {f
     </div>
   ));
   return(
+
     <dl className="filter-container mb-4">
-      <dt className="font_small mb-2">{filter.label}</dt>
+      <dt className="font_small mb-2 text-muted;">{filter.label}</dt>
       <dd className="mb-0 filter-group">
         {filterCheckboxes}
       </dd>
