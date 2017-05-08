@@ -40,5 +40,8 @@
   .company-financials{
     flex: 0 0 10em;
     text-align: right;
+     dd{
+      font-family: $font-family-mono;
+    }
   }
 }
