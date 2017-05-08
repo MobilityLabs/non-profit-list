@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import CheckboxFilters from '../components/CheckboxFilters';
 import Navigation from '../components/Navigation';
 import OrganizationTable from '../components/OrganizationTable';
+import SortBar from '../components/SortBar';
 import SelectedPopover from '../components/SelectedPopover';
 import StateFilter from '../components/StateFilter';
 
@@ -316,6 +317,7 @@ export default class DashboardPage extends Component {
               )}
             </div>
             <div className="col-sm-12 col-md-8">
+              <SortBar/>
               <OrganizationTable organizations={organizationsData}/>
             </div>
           </div>
