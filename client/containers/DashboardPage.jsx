@@ -229,16 +229,17 @@ export default class DashboardPage extends Component {
   }
 
   handleSelectState = (selectedState: string) => {
-    const {filters} = this.state;
-    filters.state = filters.state || [];
+    const filters = Object.assign({}, this.state.filters);
+    filters.state = filters.state.slice(); // Need to ensure it is a new array
     filters.state.push(selectedState);
     this.setState({filters});
   }
 
   handleSelectIncome = (e) => {
-    const {filters} = this.state;
+    const filters = Object.assign({}, this.state.filters);
     const target = e.target;
     const value = parseInt(target.value, 10);
+    filters.income_cd = filters.income_cd.slice(); // Need to ensure it is a new array
     if (target.checked) {
       filters.income_cd.push(value);
     } else {
@@ -248,12 +249,13 @@ export default class DashboardPage extends Component {
   }
 
   handleSelectNTEE = (e) => {
-    const {filters} = this.state;
+    const filters = Object.assign({}, this.state.filters);
     const target = e.target;
+    filters.ntee_cd = filters.ntee_cd.slice(); // Need to ensure it is a new array
     if (target.checked) {
       filters.ntee_cd.push(target.value);
     } else {
-      _.pull(filters.income_cd, target.value);
+      _.pull(filters.ntee_cd, target.value);
     }
     this.setState({filters});
   }
