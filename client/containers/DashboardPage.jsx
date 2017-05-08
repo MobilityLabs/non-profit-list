@@ -311,6 +311,7 @@ export default class DashboardPage extends Component {
                   filter={filtersData.ntee_cd}
                   handleSelect={this.handleSelectNTEE}
                   filterValues={filters.ntee_cd}
+                  beforeContent={true}
                 />
               )}
             </div>

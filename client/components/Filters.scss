@@ -4,4 +4,11 @@
   .filter-group label{
     width: 100%;
   }
+  .filter-group span.before-content:before{
+    content: attr(data-before);
+    font-family: $font-family-mono;
+    height: 100%;
+    color: $grey-4;
+    width: 1em;
+  }
 }
