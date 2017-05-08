@@ -1,13 +1,14 @@
+// @flow
 // PG Promise setup
 require('dotenv').config();
 
-var connection = {
+const connection = {
   host: 'localhost',
   database: process.env.DATABASE,
   user: process.env.DATABASE_USER,
 };
 
-var db = require('knex')({
+const db = require('knex')({
   connection: connection,
   client: 'pg'
 });

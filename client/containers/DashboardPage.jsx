@@ -4,19 +4,19 @@ import DocumentMeta from 'react-document-meta';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import Filters from '../components/Filters';
+import CheckboxFilters from '../components/CheckboxFilters';
 import Navigation from '../components/Navigation';
 import OrganizationTable from '../components/OrganizationTable';
 import SelectedPopover from '../components/SelectedPopover';
 import StateFilter from '../components/StateFilter';
 
-import type {Organizations, SummaryData, FilterData} from '../types';
+import type {Organizations, SummaryData, FilterData, Filters} from '../types';
 
 type State = {
   organizationsData: Organizations,
   summaryData: SummaryData,
   filtersData: FilterData,
-  filters: {}
+  filters: Filters,
 };
 
 export default class DashboardPage extends Component {
@@ -25,8 +25,8 @@ export default class DashboardPage extends Component {
     organizationsData: [],
     summaryData: {},
     filtersData: {
-      revenueAmount: {
-        label: 'Revenue Amount ($)',
+      income_cd: {
+        label: 'Income Amount ($)',
         filters: [
           {
             value: 1,
@@ -38,45 +38,141 @@ export default class DashboardPage extends Component {
           },
           {
             value: 3,
-            label: '10,000 to 24,999'
+            label: '25,000 to 99,999'
           },
           {
             value: 4,
-            label: '10,000 to 24,999'
+            label: '100,000 to 499,999'
           },
           {
             value: 5,
-            label: '10,000 to 24,999'
+            label: '500,000 to 999,999'
           },
           {
             value: 6,
-            label: '10,000 to 24,999'
+            label: '1,000,000 to 4,999,999'
           },
           {
             value: 7,
-            label: '10,000 to 24,999'
+            label: '5,000,000 to 9,999,999'
           },
           {
             value: 8,
-            label: '10,000 to 24,999'
+            label: '10,000,000 to 49,999,999'
           },
           {
             value: 9,
-            label: '10,000 to 24,999'
-          },
+            label: '50,000,000 to greater'
+          }
         ]
       },
-      PEA: {
+      ntee_cd: {
         label: 'Primary Exempt Activity',
         filters: [
           {
-            value: 1,
+            value: 'A',
             label: 'Arts, Culture and Humanities'
           },
           {
-            value: 2,
+            value: 'B',
             label: 'Educational Institutions and Related Activities'
           },
+          {
+            value: 'C',
+            label: 'Environmental Quality, Protection and Beautification'
+          },
+          {
+            value: 'D',
+            label: 'Animal-Related'
+          },
+          {
+            value: 'E',
+            label: 'Health – General and Rehabilitative'
+          },
+          {
+            value: 'F',
+            label: 'Mental Health, Crisis Intervention'
+          },
+          {
+            value: 'G',
+            label: 'Diseases, Disorders, Medical Disciplines'
+          },
+          {
+            value: 'H',
+            label: 'Medical Research'
+          },
+          {
+            value: 'I',
+            label: 'Crime, Legal-Related'
+          },
+          {
+            value: 'J',
+            label: 'Employment, Job-Related'
+          },
+          {
+            value: 'K',
+            label: 'Food, Agriculture and Nutrition'
+          },
+          {
+            value: 'L',
+            label: 'Housing, Shelter'
+          },
+          {
+            value: 'M',
+            label: 'Public Safety, Disaster Preparedness and Relief'
+          },
+          {
+            value: 'N',
+            label: 'Recreation, Sports, Leisure, Athletics'
+          },
+          {
+            value: 'O',
+            label: 'Youth Development'
+          },
+          {
+            value: 'P',
+            label: 'Human Services – Multipurpose and Other'
+          },
+          {
+            value: 'Q',
+            label: 'International, Foreign Affairs and National Security'
+          },
+          {
+            value: 'R',
+            label: 'Civil Rights, Social Action, Advocacy'
+          },
+          {
+            value: 'S',
+            label: 'Community Improvement, Capacity Building'
+          },
+          {
+            value: 'T',
+            label: 'Philanthropy, Voluntarism and Grantmaking Foundations'
+          },
+          {
+            value: 'U',
+            label: 'Science and Technology Research Institutes, Services'
+          },
+          {
+            value: 'V',
+            label: 'Social Science Research Institutes, Services'
+          },
+          {
+            value: 'W',
+            label: 'Public, Society Benefit – Multipurpose and Other'
+          },
+          {
+            value: 'X',
+            label: 'Religion-Related, Spiritual Development'
+          },
+          {
+            value: 'Y',
+            label: 'Mutual/Membership Benefit Organizations, Other'
+          },
+          {
+            value: 'Z',
+            label: 'Unknown'
+          }
         ]
       },
       state: {
@@ -94,13 +190,23 @@ export default class DashboardPage extends Component {
       },
     },
     filters: {
-      limit: 10,
       page: 3,
+      state: ['OH', 'MI'],
+      name: 'Learning',
+      income_cd: [0, 1, 2, 3],
+      limit: 50,
+      ntee_cd: [],
     }
   }
 
   componentDidMount() {
     this.getOrganizations();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!_.isEqual(prevState.filters, this.state.filters)) {
+      this.getOrganizations();
+    }
   }
 
   async getOrganizations() {
@@ -122,10 +228,33 @@ export default class DashboardPage extends Component {
     this.setState({organizationsData: result.data});
   }
 
-  handleSelectState = (selectedState) => {
+  handleSelectState = (selectedState: string) => {
     const {filters} = this.state;
     filters.state = filters.state || [];
     filters.state.push(selectedState);
+    this.setState({filters});
+  }
+
+  handleSelectIncome = (e) => {
+    const {filters} = this.state;
+    const target = e.target;
+    const value = parseInt(target.value, 10);
+    if (target.checked) {
+      filters.income_cd.push(value);
+    } else {
+      _.pull(filters.income_cd, value);
+    }
+    this.setState({filters});
+  }
+
+  handleSelectNTEE = (e) => {
+    const {filters} = this.state;
+    const target = e.target;
+    if (target.checked) {
+      filters.ntee_cd.push(target.value);
+    } else {
+      _.pull(filters.income_cd, target.value);
+    }
     this.setState({filters});
   }
 
@@ -148,13 +277,25 @@ export default class DashboardPage extends Component {
         <div className="container py-4">
           <div className="row">
             <div className="col-sm-12 col-md-4">
-              <Filters filter={filtersData.revenueAmount}/>
+              {filtersData.income_cd && (
+                <CheckboxFilters
+                  filter={filtersData.income_cd}
+                  handleSelect={this.handleSelectIncome}
+                  filterValues={filters.income_cd}
+                />
+              )}
               <StateFilter
                 handleSelectState={this.handleSelectState}
                 filter={filtersData.state}
                 selectedStates={filters.state}
               />
-              <Filters filter={filtersData.PEA}/>
+              {filtersData.ntee_cd && (
+                <CheckboxFilters
+                  filter={filtersData.ntee_cd}
+                  handleSelect={this.handleSelectNTEE}
+                  filterValues={filters.ntee_cd}
+                />
+              )}
             </div>
             <div className="col-sm-12 col-md-8">
               <OrganizationTable organizations={organizationsData}/>

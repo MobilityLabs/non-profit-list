@@ -42,4 +42,6 @@ export type SummaryData = {
 
 export type FilterData = {
 
-}
+};
+
+export type Filters = {};

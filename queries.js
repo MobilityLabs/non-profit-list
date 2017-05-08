@@ -6,7 +6,6 @@ const query = {};
 query.getOrganizations = (req, res, next) => {
   const select = db.select('*')
     .from('organizations');
-  console.log(createOrganizationWhereFilter(select, req.query).toString());
   createOrganizationWhereFilter(select, req.query)
   .then((data) => {
     return res.status(200)
@@ -25,6 +24,11 @@ export default query;
 function createOrganizationWhereFilter(select, filters) {
   if (filters.name) {
     select.where('name', 'ilike', '%'+ filters.name +'%');
+  }
+
+  if (filters.income_cd) {
+    const codes = filters.income_cd.split(',');
+    select.where('income_cd', 'in', codes);
   }
 
   if (filters.ntee_cd) {
