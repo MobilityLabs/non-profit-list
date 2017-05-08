@@ -71,6 +71,9 @@ small, .font_small {
 micro, .font_micro{
   font-size: 0.694em;
 }
+.font_mono{
+  font-family: $font-family-mono;
+}
 button:hover, .btn:hover{
   cursor: pointer;
 }
