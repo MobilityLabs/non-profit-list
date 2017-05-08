@@ -13,7 +13,13 @@
     justify-content: space-between;
     align-items: center;
     color: $grey-6;
-    padding: 0 1em;
+    padding: 0 0 0 1em;
+    .btn-link{
+      color: $grey-5;
+      &:hover{
+        color: $grey-3
+      }
+    }
   }
   .user-map{
     height: 100%;

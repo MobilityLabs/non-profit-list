@@ -1,3 +1,4 @@
+// @flow
 import moment from 'moment';
 import React, {Component} from 'react';
 import {Link} from 'react-router';
@@ -32,6 +33,14 @@ export default class SelectedPopover extends Component {
               <div className="selected-popover enable-click-events">
                 <div className="header">
                   <h5 className="my-0 font_small">Selected Organizations <small class="text-muted">4</small></h5>
+                  <div className="controls">
+                    <button className="btn btn-link btn-sm">
+                      <i className="fa fa-fw fa-window-minimize" aria-hidden="true"/>
+                    </button>
+                    <button className="btn btn-link btn-sm">
+                      <i className="fa fa-fw fa-expand" aria-hidden="true"/>
+                    </button>
+                  </div>
                 </div>
                 <div className="body">
                   <div className="fixed-ratio-container">
