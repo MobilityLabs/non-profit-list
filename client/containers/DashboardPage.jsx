@@ -284,7 +284,7 @@ export default class DashboardPage extends Component {
         ograph: true
       }
     };
-    const {filtersData, organizationsData, filters} = this.state;
+    const {filtersData, organizationsData, filters, loading} = this.state;
     return (
       <DocumentMeta {...meta}>
         <div className="bg-light">
@@ -316,7 +316,7 @@ export default class DashboardPage extends Component {
                 />
               )}
             </div>
-            <div className="col-sm-12 col-md-8">
+            <div className={"col-sm-12 col-md-8 " + (loading ? "loading" : "")}>
               <SortBar/>
               <OrganizationTable organizations={organizationsData}/>
             </div>

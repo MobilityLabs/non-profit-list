@@ -5,10 +5,15 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1em;
+  flex-wrap: wrap;
 }
 .pagination{
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
+  flex: 0 0 15em;
+  max-width: 15em;
+  margin: auto;
   span{
     font-weight: bold;
     font-family: $font-family-mono;
@@ -22,6 +27,9 @@
   }
 }
 .sort-options{
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin: auto;
   span{
     font-weight: bold;
     color: $grey-2;
