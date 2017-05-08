@@ -23,6 +23,7 @@ export default query;
 
 function createOrganizationWhereFilter(select, filters) {
   if (filters.name) {
+    console.log(filters.name)
     select.where('name', 'ilike', '%'+ filters.name +'%');
   }
 

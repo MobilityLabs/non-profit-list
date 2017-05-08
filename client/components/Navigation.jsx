@@ -1,11 +1,13 @@
-import moment from 'moment';
+// @flow
 import React, {Component} from 'react';
 import {Link} from 'react-router';
+
+import SearchField from './SearchField';
 
 import './Navigation.scss';
 
 export default class Navigation extends Component {
-   render() {
+  render() {
     return (
       <div className="main-nav row bg-light pt-md-3">
         <div className="col-sm-12 col-md-4">
@@ -14,14 +16,7 @@ export default class Navigation extends Component {
         <div className="col-sm-12 col-md-8">
           <div className="row mb-2">
             <div className="col-8 col-md-6">
-              <div className="input-group btn-in-form nav-search">
-                <input type="text" className="form-control" placeholder="Search for..."/>
-                <span className="input-group-btn">
-                  <button className="btn" type="button">
-                    <i className="fa fa-fw fa-search" aria-hidden="true"></i>
-                  </button>
-                </span>
-              </div>
+              <SearchField {...this.props}/>
             </div>
             <div className="col col-md-6">
               <ul className="nav justify-content-end">

@@ -13,10 +13,12 @@ import StateFilter from '../components/StateFilter';
 import type {Organizations, SummaryData, FilterData, Filters} from '../types';
 
 type State = {
+  error: string,
+  filters: Filters,
+  filtersData: FilterData,
+  loading: boolean,
   organizationsData: Organizations,
   summaryData: SummaryData,
-  filtersData: FilterData,
-  filters: Filters,
 };
 
 export default class DashboardPage extends Component {
@@ -190,13 +192,14 @@ export default class DashboardPage extends Component {
       },
     },
     filters: {
-      page: 3,
-      state: ['OH', 'MI'],
-      name: 'Learning',
-      income_cd: [0, 1, 2, 3],
+      page: 1,
+      state: [],
+      name: '',
+      income_cd: [],
       limit: 50,
       ntee_cd: [],
-    }
+    },
+    loading: false,
   }
 
   componentDidMount() {
@@ -210,22 +213,27 @@ export default class DashboardPage extends Component {
   }
 
   async getOrganizations() {
-    const {filters} = this.state;
+    const {filters, loading} = this.state;
+    this.setState({loading: true});
     let queryString = [];
     _.each(filters, (v, k) => {
       const value = _.isArray(v) ? v.join(',') : v;
       queryString.push(k + '=' + value);
     });
     queryString = queryString.join('&');
-    const result = await(
-      await fetch('/api/organizations?' + queryString, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-    ).json();
-    this.setState({organizationsData: result.data});
+    try {
+      const result = await(
+        await fetch('/api/organizations?' + queryString, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+      ).json();
+      this.setState({organizationsData: result.data, loading: false});
+    } catch (err) {
+      this.setState({loading: false, error: err});
+    }
   }
 
   handleSelectState = (selectedState: string) => {
@@ -260,6 +268,13 @@ export default class DashboardPage extends Component {
     this.setState({filters});
   }
 
+  handleNameChange = (e) => {
+    const filters = Object.assign({}, this.state.filters);
+    const target = e.target;
+    filters.name = target.value;
+    this.setState({filters});
+  }
+
   render() {
     const meta = {
       title: 'Export Tool',
@@ -273,7 +288,7 @@ export default class DashboardPage extends Component {
       <DocumentMeta {...meta}>
         <div className="bg-light">
           <div className="container">
-            <Navigation />
+            <Navigation name={filters.name} handleNameChange={this.handleNameChange}/>
           </div>
         </div>
         <div className="container py-4">
