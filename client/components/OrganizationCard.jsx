@@ -59,6 +59,9 @@ export default class OrganizationCard extends Component {
     return dateString;
   };
   render() {
+    const feelingLuckyURL = (name: string) => {
+      return "https://duckduckgo.com/?q=!ducky+" + encodeURIComponent(name);
+    };
     const {organization, handleCardClick, expanded} = this.props;
     const existValidator =(object: ?number|?string) => {return object ? object : "Not Listed";};
     const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0') : "Not Listed";};
@@ -105,7 +108,10 @@ export default class OrganizationCard extends Component {
             </label>
           </div>
           <div className="card-container-company">
-            <h2 className="card-title font_normal mt-0 h4">{organization.name}</h2>
+            <div className="mb-2">
+              <h2 className="card-title font_normal mt-0 mb-0 h4">{organization.name}</h2>
+              <a className="font_small" href={feelingLuckyURL(organization.name)}>'I'm Feeling Lucky' web search</a>
+            </div>
             <div className="company-container">
               <div className="company-meta">
                 <dl>
