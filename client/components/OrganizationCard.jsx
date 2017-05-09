@@ -111,7 +111,7 @@ export default class OrganizationCard extends Component {
             <div className="mb-2">
               <h2 className="card-title font_normal mt-0 mb-0 h4">{organization.name}</h2>
               <a className="font_small" target="_blank" href={feelingLuckyURL(organization.name)}>
-                I'm Feeling Lucky' web search
+                <em>I'm Feeling Lucky</em> web search
               </a>
             </div>
             <div className="company-container">
