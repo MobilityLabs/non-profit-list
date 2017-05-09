@@ -1,8 +1,9 @@
 // @flow
 import _ from 'lodash';
 import DocumentMeta from 'react-document-meta';
-import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+import update from 'immutability-helper';
 
 import CheckboxFilters from '../components/CheckboxFilters';
 import Navigation from '../components/Navigation';
@@ -21,6 +22,8 @@ type State = {
   organizationsData: Organizations,
   summaryData: SummaryData,
 };
+
+let timeout;
 
 export default class DashboardPage extends Component {
 
@@ -199,42 +202,58 @@ export default class DashboardPage extends Component {
       income_cd: [],
       limit: 50,
       ntee_cd: [],
+      order: {},
     },
     loading: false,
   }
 
   componentDidMount() {
-    this.getOrganizations();
+    this.getOrganizations(0);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (!_.isEqual(prevState.filters, this.state.filters)) {
-      this.getOrganizations();
+      this.getOrganizations(750);
     }
   }
 
-  async getOrganizations() {
-    const {filters, loading} = this.state;
+  async getOrganizations(timer: number) {
+    // Display loading indicator as soon as this is called
     this.setState({loading: true});
-    let queryString = [];
-    _.each(filters, (v, k) => {
-      const value = _.isArray(v) ? v.join(',') : v;
-      queryString.push(k + '=' + value);
-    });
-    queryString = queryString.join('&');
-    try {
-      const result = await(
-        await fetch('/api/organizations?' + queryString, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        })
-      ).json();
-      this.setState({organizationsData: result.data, loading: false});
-    } catch (err) {
-      this.setState({loading: false, error: err});
-    }
+    
+    // Clear existing timeouts to prevent call
+    clearTimeout(timeout);
+    
+    // New timeout to call organizations
+    timeout = setTimeout(async () => {
+      const {filters} = this.state;
+      // Build a query string with an array of key=value strings
+      let queryString = [];
+      _.each(filters, (v, k) => {
+        let value = _.isArray(v) ? v.join(',') : v;
+        // Order is an object so treat it a little different
+        if (k === 'order') {
+          if (Object.keys(v).length === 0) { return; }
+          const values = _.map(v, (order, key) => (key + '-' + order));
+          value = values.join(',');
+        }
+        queryString.push(k + '=' + value);
+      });
+      queryString = queryString.join('&');
+      try {
+        const result = await(
+          await fetch('/api/organizations?' + queryString, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+        ).json();
+        this.setState({organizationsData: result.data, loading: false});
+      } catch (err) {
+        this.setState({loading: false, error: err});
+      }
+    }, timer);
   }
 
   handleSelectState = (selectedState: string) => {
@@ -273,6 +292,14 @@ export default class DashboardPage extends Component {
     const filters = Object.assign({}, this.state.filters);
     const target = e.target;
     filters.name = target.value;
+    this.setState({filters});
+  }
+
+  // Sorts but doesn't change the order
+  // TODO: Make order an array and place new filter at beginning of array
+  handleSortChange = (order: {}) => {
+    let filters = Object.assign({}, this.state.filters);
+    filters = update(filters, {order: {$merge: order}});
     this.setState({filters});
   }
 
@@ -318,11 +345,11 @@ export default class DashboardPage extends Component {
               )}
             </div>
             <div className={"col-sm-12 col-md-8 " + (loading ? "loading" : "")}>
-              <SortBar/>
+              <SortBar filters={filters} handleSortChange={this.handleSortChange} />
               <OrganizationTable organizations={organizationsData}/>
             </div>
           </div>
-          <SelectedPopover />
+          {false && <SelectedPopover />}
         </div>
       </DocumentMeta>
     );

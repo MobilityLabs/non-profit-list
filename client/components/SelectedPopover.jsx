@@ -1,16 +1,14 @@
 // @flow
-import moment from 'moment';
 import React, {Component} from 'react';
-import {Link} from 'react-router';
 
 import './SelectedPopover.scss';
 
 export default class SelectedPopover extends Component {
 
   componentDidMount() {
-    if (google && google.maps){
+    if (google && google.maps) {
       // Coordinates to center the map
-      const myLatlng = new google.maps.LatLng(52.525595,13.393085);
+      const myLatlng = new google.maps.LatLng(52.525595, 13.393085);
       // Other options for the map, pretty much selfexplanatory
       const mapOptions = {
         zoom: 14,
@@ -21,10 +19,9 @@ export default class SelectedPopover extends Component {
       // Attach a map to the DOM Element, with the defined settings
       const map = this.refs.map;
       new google.maps.Map(map, mapOptions);
-
     }
   }
-   render() {
+  render() {
     return (
       <div className="fixed-bottom disable-click-events">
         <div className="container">
@@ -32,7 +29,7 @@ export default class SelectedPopover extends Component {
             <div className="push-md-8 col-md-4">
               <div className="selected-popover enable-click-events">
                 <div className="header">
-                  <h5 className="my-0 font_small">Selected Organizations <small class="text-muted">4</small></h5>
+                  <h5 className="my-0 font_small">Selected Organizations <small className="text-muted">4</small></h5>
                   <div className="controls">
                     <button className="btn btn-link btn-sm">
                       <i className="fa fa-fw fa-window-minimize" aria-hidden="true"/>
@@ -45,7 +42,7 @@ export default class SelectedPopover extends Component {
                 <div className="body">
                   <div className="fixed-ratio-container">
                     <div className="fixed-ratio">
-                      <div className="user-map" ref="map"></div>
+                      <div className="user-map" ref="map"/>
                     </div>
                   </div>
                   <div className="body-meta">
@@ -61,11 +58,11 @@ export default class SelectedPopover extends Component {
                           <td>Company Name</td>
                           <td>$120,093</td>
                         </tr>
-                         <tr>
+                        <tr>
                           <td>Company Name</td>
                           <td>$120,093</td>
                         </tr>
-                         <tr>
+                        <tr>
                           <td>Company Name</td>
                           <td>$120,093</td>
                         </tr>
@@ -83,11 +80,11 @@ export default class SelectedPopover extends Component {
                           <td>Company Name</td>
                           <td>$120,093</td>
                         </tr>
-                         <tr>
+                        <tr>
                           <td>Company Name</td>
                           <td>$120,093</td>
                         </tr>
-                         <tr>
+                        <tr>
                           <td>Company Name</td>
                           <td>$120,093</td>
                         </tr>

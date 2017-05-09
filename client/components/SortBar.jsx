@@ -6,7 +6,7 @@ import './SortBar.scss';
 export default class SortBar extends Component {
 
   render() {
-    // const {filter, handleSelectState, selectedStates} = this.props;
+    const {handleSortChange} = this.props;
     return (
       <div className="sort-bar">
         <div className="pagination">
@@ -27,7 +27,7 @@ export default class SortBar extends Component {
           >
             <div className="btn-group" role="group">
               <button
-                id="btnGroupDrop1"
+                id="btnGroupName"
                 type="button"
                 className="btn btn-sm dropdown-toggle"
                 data-toggle="dropdown"
@@ -36,14 +36,28 @@ export default class SortBar extends Component {
               >
                 Name
               </button>
-              <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a className="dropdown-item" href="#">Dropdown link</a>
-                <a className="dropdown-item" href="#">Dropdown link</a>
+              <div className="dropdown-menu" aria-labelledby="btnGroupName">
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="name_asc"
+                  onClick={handleSortChange.bind(null, {name: 'asc'})}
+                >
+                  Name ASC
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="name_desc"
+                  onClick={handleSortChange.bind(null, {name: 'desc'})}
+                >
+                  Name Desc
+                </a>
               </div>
             </div>
             <div className="btn-group" role="group">
               <button
-                id="btnGroupDrop1"
+                id="btnGroupDate"
                 type="button"
                 className="btn btn-sm dropdown-toggle"
                 data-toggle="dropdown"
@@ -52,14 +66,28 @@ export default class SortBar extends Component {
               >
                 Date
               </button>
-              <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a className="dropdown-item" href="#">Dropdown link</a>
-                <a className="dropdown-item" href="#">Dropdown link</a>
+              <div className="dropdown-menu" aria-labelledby="btnGroupDate">
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="tax_period_asc"
+                  onClick={handleSortChange.bind(null, {tax_period: 'asc'})}
+                >
+                  Date ASC
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="tax_period_desc"
+                  onClick={handleSortChange.bind(null, {tax_period: 'desc'})}
+                >
+                  Date DESC
+                </a>
               </div>
             </div>
             <div className="btn-group" role="group">
               <button
-                id="btnGroupDrop1"
+                id="btnGroupFinancial"
                 type="button"
                 className="btn btn-sm dropdown-toggle"
                 data-toggle="dropdown"
@@ -68,14 +96,28 @@ export default class SortBar extends Component {
               >
                 Financials
               </button>
-              <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a className="dropdown-item" href="#">Dropdown link</a>
-                <a className="dropdown-item" href="#">Dropdown link</a>
+              <div className="dropdown-menu" aria-labelledby="btnGroupFinancial">
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="income_amt_asc"
+                  onClick={handleSortChange.bind(null, {income_amt: 'asc'})}
+                >
+                  Income Amount ASC
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="income_amt_desc"
+                  onClick={handleSortChange.bind(null, {income_amt: 'desc'})}
+                >
+                  Income Amount DESC
+                </a>
               </div>
             </div>
             <div className="btn-group" role="group">
               <button
-                id="btnGroupDrop1"
+                id="btnGroupFiling"
                 type="button"
                 className="btn btn-sm dropdown-toggle"
                 data-toggle="dropdown"
@@ -84,9 +126,23 @@ export default class SortBar extends Component {
               >
                 Filing Date
               </button>
-              <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a className="dropdown-item" href="#">Dropdown link</a>
-                <a className="dropdown-item" href="#">Dropdown link</a>
+              <div className="dropdown-menu" aria-labelledby="btnGroupFiling">
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="ruling_asc"
+                  onClick={handleSortChange.bind(null, {ruling: 'asc'})}
+                >
+                  Filing ASC
+                </a>
+                <a
+                  className="dropdown-item"
+                  href="#"
+                  name="ruling_desc"
+                  onClick={handleSortChange.bind(null, {ruling: 'desc'})}
+                >
+                  Filing DESC
+                </a>
               </div>
             </div>
           </div>

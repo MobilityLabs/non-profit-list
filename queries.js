@@ -23,7 +23,6 @@ export default query;
 
 function createOrganizationWhereFilter(select, filters) {
   if (filters.name) {
-    console.log(filters.name)
     select.where('name', 'ilike', '%'+ filters.name +'%');
   }
 
@@ -51,6 +50,19 @@ function createOrganizationWhereFilter(select, filters) {
   if (filters.city) {
     const states = filters.city.split(',');
     select.where('city', 'in', states);
+  }
+
+
+  // Order by
+  if (filters.order) {
+    const orderByArr = filters.order.split(',');
+    orderByArr.forEach((v) => {
+      const order = v.split('-');
+      // Order has the [0] property and the [1] direction
+      select.orderBy(order[0], order[1]);
+    });
+  } else {
+    select.orderBy('name', 'asc');
   }
 
   // Default to 20 items per
