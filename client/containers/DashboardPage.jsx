@@ -106,10 +106,9 @@ export default class DashboardPage extends Component {
     }, timer);
   }
 
-  handleSelectState = (selectedState: string) => {
+  handleSelectState = (selectedStates: string) => {
     const filters = Object.assign({}, this.state.filters);
-    filters.state = filters.state ? filters.state.slice() : []; // Need to ensure it is a new array
-    filters.state.push(selectedState);
+    filters.state = selectedStates.split(','); // Need to ensure it is a new array
     filters.page = 1;
     this.setState({filters});
   }
