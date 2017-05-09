@@ -2,10 +2,8 @@
 import db from './config/database';
 import {filtersData, defaultFilters} from './filtersData';
 
-const query = {};
-
 // Shared by index and api routes
-query.getOrganizationsData = async (filters, next) => {
+export const getOrganizationsData = async (filters, next) => {
   try {
     let mainQuery = db.select('*')
       .from('organizations');
@@ -42,12 +40,10 @@ query.getOrganizationsData = async (filters, next) => {
 };
 
 // Used by the API
-query.getOrganizations = (req, res, next) => {
-  const data = query.getOrganizations(req.query, next);
+export const getOrganizations = async (req, res, next) => {
+  const data = await getOrganizationsData(req.query, next);
   return res.status(200).json(data);
 };
-
-export default query;
 
 function createOrganizationWhere(select, filters) {
   if (filters.name) {

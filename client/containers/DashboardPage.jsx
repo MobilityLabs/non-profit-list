@@ -42,6 +42,10 @@ export default class DashboardPage extends Component {
     };
 
   componentDidMount() {
+    if (this.props.location.query) {
+      const newFilters = generateFiltersFromURL(this.state.filters, this.props.location.query);
+      this.setState({filters: newFilters});
+    }
     if (this.state.organizationsData.length > 0) {
       return;
     }
@@ -215,4 +219,19 @@ export default class DashboardPage extends Component {
   static contextTypes = {
     data: PropTypes.object
   }
+}
+
+function generateFiltersFromURL(stateFilters, queryParams) {
+  _.each(queryParams, (v, k) => {
+    if (k === 'income_cd' || k === 'ntee_cd') {
+      const arr = v.split(',');
+      const final = arr.map((v) => {
+        return isFinite(v) ? parseInt(v, 10) : v;
+      });
+      stateFilters[k] = final;
+      return;
+    }
+    stateFilters[k] = isFinite(v) ? parseInt(v, 10) : v;
+  });
+  return stateFilters;
 }
