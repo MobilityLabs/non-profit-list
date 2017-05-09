@@ -8,9 +8,9 @@ import {browserHistory} from 'react-router';
 
 import CheckboxFilters from '../components/CheckboxFilters';
 import Navigation from '../components/Navigation';
-import OrganizationTable from '../components/OrganizationTable';
-import SortBar from '../components/SortBar';
+import OrganizationList from '../components/OrganizationList';
 import SelectedPopover from '../components/SelectedPopover';
+import SortBar from '../components/SortBar';
 import StateFilter from '../components/StateFilter';
 
 import type {Organizations, SummaryData, FiltersData, Filters} from '../types';
@@ -57,10 +57,10 @@ export default class DashboardPage extends Component {
   async getOrganizations(timer: number) {
     // Display loading indicator as soon as this is called
     this.setState({loading: true});
-    
+
     // Clear existing timeouts to prevent call
     clearTimeout(timeout);
-    
+
     // New timeout to call organizations
     timeout = setTimeout(async () => {
       const {filters} = this.state;
@@ -203,7 +203,7 @@ export default class DashboardPage extends Component {
                 handleSortChange={this.handleSortChange}
                 handlePageChange={this.handlePageChange}
               />
-              <OrganizationTable organizations={organizationsData}/>
+              <OrganizationList organizations={organizationsData}/>
             </div>
           </div>
           {false && <SelectedPopover />}

@@ -93,23 +93,6 @@ ul{
 .search-input > input{
   line-height: 1.38;
 }
-
-.card-group-vertical{
-  display: flex;
-  flex-flow: column wrap;
-  .card{
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid $grey-6;
-    &:first-child{
-      border-radius: $border-radius $border-radius 0 0;
-    }
-    &:last-child{
-      border-radius: 0 0 $border-radius $border-radius;
-      border-bottom: none;
-    }
-  }
-}
 // Changes checkbox to look like a star
 input{
   &.star {
