@@ -1,5 +1,6 @@
 // @flow
 import db from './config/database';
+import {filtersData} from './filtersData';
 
 const query = {};
 
@@ -11,7 +12,8 @@ query.getOrganizations = (req, res, next) => {
     return res.status(200)
       .json({
         status: 'success',
-        data: data
+        organizationsData: data,
+        filtersData: filtersData,
       });
   })
   .catch((err) => {

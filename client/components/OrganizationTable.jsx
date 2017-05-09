@@ -12,10 +12,11 @@ export default class OrganizationTable extends Component {
   props: {
     organizations: Organizations,
   }
-  formatDate = (date) => {
+  formatDate = (date: ?number) => {
     let dateString = "Not Listed";
     if (date) {
       const filingDate = date.toString().match(/.{1,4}/g);
+      // TODO: Convert this column to ISO format in database
       const month = moment(filingDate[1]).format("MMM");
       const year = filingDate[0];
       return(
