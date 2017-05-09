@@ -131,3 +131,16 @@ input{
     bottom: 0;
   }
 }
+
+// Styles all out going links
+a[href*="//"]:not([href*="localhost:3000"]){
+  &:after{
+    content: '\f08e';
+   font-family: FontAwesome;
+   font-weight: normal;
+   font-style: normal;
+    margin: 0 0 0 0.25em;
+    text-decoration: none;
+    color: currentColor;
+  }
+}
