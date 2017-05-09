@@ -2,7 +2,7 @@
 
 .organization-card:hover{
   cursor: pointer;
-  background-color: lighten($grey-6, 5%);
+  background-color: lighten($grey-6, 10%);
   box-shadow:inset 0 0 8px 1px $grey-6;
 }
 .card-group-vertical .card.expanded{

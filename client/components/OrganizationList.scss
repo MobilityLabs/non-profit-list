@@ -54,18 +54,40 @@
     }
   }
 }
-
+.company-first-row{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
 .card-container-company{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  .company-meta{
+    display: flex;
+    flex: 2 0 20em;
+    flex-direction: column;
+  }
   .company-financials{
-    flex-basis: 10em;
-    min-width: 10em;
+    flex: 1 0 15em;
+    min-width: 15em;
     text-align: right;
      dd{
       font-family: $font-family-mono;
     }
+  }
+}
+.company-map{
+  margin-top: .5em;
+  justify-content: space-between;
+  display: flex;
+  .user-map{
+    position: relative;
+    overflow: hidden;
+    min-height: 15em;
+    width: 6em;
+    display: inline-flex;
+    flex: 1 0;
   }
 }
