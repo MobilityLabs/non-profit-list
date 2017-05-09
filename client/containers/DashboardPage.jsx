@@ -4,6 +4,7 @@ import DocumentMeta from 'react-document-meta';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import update from 'immutability-helper';
+import {browserHistory} from 'react-router';
 
 import CheckboxFilters from '../components/CheckboxFilters';
 import Navigation from '../components/Navigation';
@@ -66,6 +67,7 @@ export default class DashboardPage extends Component {
       // Build a query string with an array of key=value strings
       const queryStringArr: [] = [];
       _.each(filters, (v, k) => {
+        if (_.isNil(v) || v.length === 0) {return;} // Do not include empty strings, arrays, null, or undefined
         let value = _.isArray(v) ? v.join(',') : v;
         // Order is an object so treat it a little different
         if (k === 'order') {
@@ -76,6 +78,9 @@ export default class DashboardPage extends Component {
         queryStringArr.push(k + '=' + value);
       });
       const queryString = queryStringArr.join('&');
+      browserHistory.push({
+        search: '?' + queryString
+      });
       try {
         const result = await(
           await fetch('/api/organizations?' + queryString, {
