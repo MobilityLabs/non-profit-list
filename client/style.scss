@@ -112,6 +112,11 @@ input{
     position: absolute;
   }
 }
+.label-heading{
+  font-weight: bold;
+  color: $grey-2;
+  line-height: auto;
+}
 
 // Fixed ratio
 .fixed-ratio-container{

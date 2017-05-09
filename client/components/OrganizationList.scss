@@ -54,23 +54,19 @@
     }
   }
 }
-.company-first-row{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
 .card-container-company{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  flex-wrap: wrap;
   .company-meta{
     display: flex;
-    flex: 2 0 20em;
+    flex: 2 auto;
     flex-direction: column;
   }
   .company-financials{
-    flex: 1 0 15em;
+    flex: 1 2 15em;
     min-width: 15em;
     text-align: right;
      dd{

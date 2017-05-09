@@ -10,7 +10,7 @@ export default class StateFilter extends Component {
     const {filter, handleSelectState, selectedStates} = this.props;
     return (
       <dl className="filter-container mb-4">
-        <dt className="font_small mb-2">{filter.label}</dt>
+        <dt className="font_small text-muted mb-2">{filter.label}</dt>
         <dd className="mb-0 filter-group">
           <Select
             multi
