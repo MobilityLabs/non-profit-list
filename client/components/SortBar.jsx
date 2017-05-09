@@ -43,7 +43,7 @@ export default class SortBar extends Component {
           </button>
         </div>
         <div className="sort-options">
-          <span>Sort by: </span>
+          <span className="label-heading">Sort by: </span>
           <div
             className="btn-group btn-group-container"
             role="group"

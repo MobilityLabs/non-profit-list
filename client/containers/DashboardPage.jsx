@@ -12,6 +12,7 @@ import OrganizationList from '../components/OrganizationList';
 import SelectedPopover from '../components/SelectedPopover';
 import SortBar from '../components/SortBar';
 import StateFilter from '../components/StateFilter';
+import {defaultFilters} from '../../filtersData';
 
 import type {Organizations, SummaryData, FiltersData, Filters} from '../types';
 
@@ -106,6 +107,16 @@ export default class DashboardPage extends Component {
     }, timer);
   }
 
+  handleClearFilter = (filter, emptyFilterValue) => {
+    const filters = Object.assign({}, this.state.filters);
+    filters[filter] = emptyFilterValue;
+    this.setState({filters});
+  }
+
+  handleClearFilters = () => {
+    this.setState({filters: defaultFilters});
+  }
+
   handleSelectState = (selectedStates: string) => {
     const filters = Object.assign({}, this.state.filters);
     filters.state = selectedStates.split(','); // Need to ensure it is a new array
@@ -181,7 +192,10 @@ export default class DashboardPage extends Component {
         <div className="container py-3">
           <div className="row">
             <div className="col-sm-12 col-md-4">
-              <h3 className="h6 text-muted">Filters</h3>
+              <h3 className="h6 label-heading d-flex justify-content-between align-items-baseline">
+                Filters
+                <button onClick={this.handleClearFilters} className="btn btn-link btn-sm">Clear Filters</button>
+              </h3>
               <CheckboxFilters
                 filter={filtersData.income_cd}
                 handleSelect={this.handleSelectIncome}
