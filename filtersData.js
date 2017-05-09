@@ -403,4 +403,5 @@ export const defaultFilters: Filters = {
   ruling: '',
   state: [],
   tax_period: '',
+  page: 1,
 };

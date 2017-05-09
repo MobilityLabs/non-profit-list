@@ -106,6 +106,7 @@ export default class DashboardPage extends Component {
     const filters = Object.assign({}, this.state.filters);
     filters.state = filters.state ? filters.state.slice() : []; // Need to ensure it is a new array
     filters.state.push(selectedState);
+    filters.page = 1;
     this.setState({filters});
   }
 
@@ -114,6 +115,7 @@ export default class DashboardPage extends Component {
     const target = e.target;
     const value = parseInt(target.value, 10);
     filters.income_cd = filters.income_cd ? filters.income_cd.slice() : []; // Need to ensure it is a new array
+    filters.page = 1;
     if (target.checked) {
       filters.income_cd.push(value);
     } else {
@@ -126,6 +128,7 @@ export default class DashboardPage extends Component {
     const filters = Object.assign({}, this.state.filters);
     const target = e.target;
     filters.ntee_cd = filters.ntee_cd ? filters.ntee_cd.slice() : []; // Need to ensure it is a new array
+    filters.page = 1;
     if (target.checked) {
       filters.ntee_cd.push(target.value);
     } else {
@@ -138,6 +141,7 @@ export default class DashboardPage extends Component {
     const filters = Object.assign({}, this.state.filters);
     const target = e.target;
     filters.name = target.value;
+    filters.page = 1;
     this.setState({filters});
   }
 
@@ -146,6 +150,12 @@ export default class DashboardPage extends Component {
   handleSortChange = (order: {}) => {
     let filters = Object.assign({}, this.state.filters);
     filters = update(filters, {order: {$merge: order}}); // Using immutability helper to help detect state
+    this.setState({filters});
+  }
+
+  handlePageChange = (newPage: number) => {
+    const filters = Object.assign({}, this.state.filters);
+    filters.page = newPage;
     this.setState({filters});
   }
 
@@ -187,7 +197,12 @@ export default class DashboardPage extends Component {
               />
             </div>
             <div className={"col-sm-12 col-md-8 " + (loading ? "loading" : "")}>
-              <SortBar filters={filters} summaryData={summaryData} handleSortChange={this.handleSortChange} />
+              <SortBar
+                filters={filters}
+                summaryData={summaryData}
+                handleSortChange={this.handleSortChange}
+                handlePageChange={this.handlePageChange}
+              />
               <OrganizationTable organizations={organizationsData}/>
             </div>
           </div>

@@ -11,19 +11,34 @@ export default class SortBar extends Component {
   props: {
     filters: Filters,
     handleSortChange: Function,
+    handlePageChange: Function,
     summaryData: SummaryData,
   }
 
   render() {
-    const {filters, handleSortChange, summaryData} = this.props;
+    const {filters, handleSortChange, handlePageChange, summaryData} = this.props;
+    const page = filters.page > 1 ? filters.page : 1;
+    const limit = filters.limit ? filters.limit : 50;
+    const upperItem = Math.min(page * limit, summaryData.count);
+    const lowerItem = upperItem - limit + 1;
     return (
       <div className="sort-bar">
         <div className="pagination">
-          <button type="button" className="btn btn-link btn-sm">
+          <button
+            type="button"
+            className="btn btn-link btn-sm"
+            onClick={handlePageChange.bind(null, page-1)}
+            disabled={page - 1 < 1}
+          >
             <i className="fa fa-angle-double-left" aria-hidden="true"/>
           </button>
-          <span>1-50<span> of </span>{numeral(summaryData.count).format('0,0')}</span>
-          <button type="button" className="btn btn-link btn-sm">
+          <span>{lowerItem}-{upperItem}<span> of </span>{numeral(summaryData.count).format('0,0')}</span>
+          <button
+            type="button"
+            className="btn btn-link btn-sm"
+            onClick={handlePageChange.bind(null, page+1)}
+            disabled={upperItem >= summaryData.count}
+          >
             <i className="fa fa-angle-double-right" aria-hidden="true"/>
           </button>
         </div>

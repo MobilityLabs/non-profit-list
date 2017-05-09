@@ -33,7 +33,7 @@ router.get('*', (req, res, next) => {
             filtersData: filtersData,
             filters: defaultFilters,
             summaryData: {
-              count: 1600000,
+              count: 1618000,
             }
           }
         );

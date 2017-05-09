@@ -58,5 +58,8 @@ export type Filters = {
   state: ?string[],
   name: ?string,
   income_cd: ?number[],
-  ntee_cd: ?string[]
+  ntee_cd: ?string[],
+  page: number,
+  limit: ?number,
+
 };

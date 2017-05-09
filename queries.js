@@ -12,7 +12,17 @@ query.getOrganizations = async (req, res, next) => {
     mainQuery = createOrganizationOrderBy(mainQuery, req.query);
     mainQuery = createOrganizationLimit(mainQuery, req.query);
 
-    let aggQuery = db.count('*').from('organizations');
+    let aggQuery = db('organizations')
+      .count('* as count')
+      .avg('income_amt as income_avg')
+      .avg('revenue_amt as revenue_avg')
+      .avg('asset_amt as asset_avg')
+      .min('income_amt as income_min')
+      .min('revenue_amt as revenue_min')
+      .min('asset_amt as asset_min')
+      .max('income_amt as income_max')
+      .max('revenue_amt as revenue_max')
+      .max('asset_amt as asset_max');
     aggQuery = createOrganizationWhere(aggQuery, req.query);
 
     const data = await mainQuery;
