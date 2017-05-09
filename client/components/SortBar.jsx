@@ -20,7 +20,7 @@ export default class SortBar extends Component {
     const page = filters.page > 1 ? filters.page : 1;
     const limit = filters.limit ? filters.limit : 50;
     const upperItem = Math.min(page * limit, summaryData.count);
-    const lowerItem = upperItem - limit + 1;
+    const lowerItem = upperItem > 0 ? Math.max(upperItem - limit + 1, 1) : 0;
     return (
       <div className="sort-bar">
         <div className="pagination">

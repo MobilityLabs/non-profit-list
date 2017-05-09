@@ -1,5 +1,22 @@
 @import "../variables.scss";
 
+.card-group-vertical{
+  display: flex;
+  flex-flow: column wrap;
+  .card{
+    border-radius: 0;
+    border: 1px solid transparent;
+    border-bottom: 1px solid $grey-6;
+    &:first-child{
+      border-radius: $border-radius $border-radius 0 0;
+    }
+    &:last-child{
+      border-radius: 0 0 $border-radius $border-radius;
+      border-bottom: 1px solid transparent;
+    }
+  }
+}
+
 .list-card-container{
   display: flex;
   justify-content: flex-start;
@@ -8,10 +25,16 @@
   }
   dl{
     margin-bottom: .5em;
+    &:last-child{
+      margin-bottom: 0;
+    }
   }
   dt{
     font-weight: normal;
     color: $grey-3;
+  }
+  dd{
+    white-space: pre-wrap
   }
 }
 
@@ -31,18 +54,40 @@
     }
   }
 }
-
+.company-first-row{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
 .card-container-company{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  .company-meta{
+    display: flex;
+    flex: 2 0 20em;
+    flex-direction: column;
+  }
   .company-financials{
-    flex-basis: 10em;
-    min-width: 10em;
+    flex: 1 0 15em;
+    min-width: 15em;
     text-align: right;
      dd{
       font-family: $font-family-mono;
     }
+  }
+}
+.company-map{
+  margin-top: .5em;
+  justify-content: space-between;
+  display: flex;
+  .user-map{
+    position: relative;
+    overflow: hidden;
+    min-height: 15em;
+    width: 6em;
+    display: inline-flex;
+    flex: 1 0;
   }
 }
