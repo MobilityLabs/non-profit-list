@@ -56,6 +56,12 @@
 }
 .card-container-company{
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+.company-container{
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;

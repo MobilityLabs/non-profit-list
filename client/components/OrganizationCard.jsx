@@ -60,7 +60,7 @@ export default class OrganizationCard extends Component {
   };
   render() {
     const {organization, handleCardClick, expanded} = this.props;
-    const existValidator =(object: ?number) => {return object ? object : "Not Listed";};
+    const existValidator =(object: ?number|?string) => {return object ? object : "Not Listed";};
     const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0') : "Not Listed";};
     const organizationCategory = (number: ?number) =>{
       if (number) {
@@ -105,67 +105,69 @@ export default class OrganizationCard extends Component {
             </label>
           </div>
           <div className="card-container-company">
-            <div className="company-meta">
-              <h2 className="card-title font_normal mt-0 h4">{organization.name}</h2>
-              <dl>
-                <dt className="font_micro">NTEE Code</dt>
-                <dd className="card-text font_mono">{organization.ntee_cd}</dd>
-              </dl>
-              <dl className={hideOnClick}>
-                <dt className="font_micro">Location</dt>
-                <dd className="card-text">
-                  <a target="_blank" href={'http://maps.google.com/?q='+this.formatAddress(organization)}>
-                    {_.startCase(_.toLower(organization.city)) + ", " + organization.state}
-                  </a>
-                </dd>
-              </dl>
-              <dl className={showOnClick}>
-                <dt className="font_micro">Address</dt>
-                <dd className="card-text">
-                  <a target="_blank" href={'http://maps.google.com/?q='+this.formatAddress(organization)}>
-                    {
-                      organization.street + ", " +
-                      _.startCase(_.toLower(organization.city)) + ", " + organization.state + " " +
-                      organization.zip
-                    }
-                  </a>
-                </dd>
-              </dl>
-              <div className={"company-map" + showOnClick}>
-                <div className="user-map" ref="map"/>
+            <h2 className="card-title font_normal mt-0 h4">{organization.name}</h2>
+            <div className="company-container">
+              <div className="company-meta">
+                <dl>
+                  <dt className="font_micro">NTEE Code</dt>
+                  <dd className="card-text font_mono">{existValidator(organization.ntee_cd)}</dd>
+                </dl>
+                <dl className={hideOnClick}>
+                  <dt className="font_micro">Location</dt>
+                  <dd className="card-text">
+                    <a target="_blank" href={'http://maps.google.com/?q='+this.formatAddress(organization)}>
+                      {_.startCase(_.toLower(organization.city)) + ", " + organization.state}
+                    </a>
+                  </dd>
+                </dl>
+                <dl className={showOnClick}>
+                  <dt className="font_micro">Address</dt>
+                  <dd className="card-text">
+                    <a target="_blank" href={'http://maps.google.com/?q='+this.formatAddress(organization)}>
+                      {
+                        organization.street + ", " +
+                        _.startCase(_.toLower(organization.city)) + ", " + organization.state + " " +
+                        organization.zip
+                      }
+                    </a>
+                  </dd>
+                </dl>
+                <div className={"company-map" + showOnClick}>
+                  <div className="user-map" ref="map"/>
+                </div>
               </div>
-            </div>
-            <div className="company-financials">
-              <dl>
-                <dt className="font_micro">Income</dt>
-                <dd className="card-text font_small">{amountValidator(organization.income_amt)}</dd>
-              </dl>
-              <dl className={showOnClick}>
-                <dt className="font_micro">Revenue</dt>
-                <dd className="card-text font_small">{amountValidator(organization.revenue_amt)}</dd>
-              </dl>
-              <dl>
-                <dt className="font_micro">Assets</dt>
-                <dd className="card-text font_small">{amountValidator(organization.asset_amt)}</dd>
-              </dl>
-              <dl>
-                <dt className="font_micro">Last Logged Tax Filing</dt>
-                <dd className="card-text font_small">{this.formatDate(organization.tax_period)}</dd>
-              </dl>
-              <dl className={showOnClick}>
-                <dt className="font_micro">'In Care Of' name</dt>
-                <dd className="card-text font_small">
-                  {icoFormatter(organization.ico)}
-                </dd>
-              </dl>
-              <dl className={showOnClick}>
-                <dt className="font_micro">Organization Type</dt>
-                <dd className="card-text font_small">{organizationCategory(organization.organization)}</dd>
-              </dl>
-              <dl className={showOnClick}>
-                <dt className="font_micro">EIN</dt>
-                <dd className="card-text font_small font_mono">{existValidator(organization.ein)}</dd>
-              </dl>
+              <div className="company-financials">
+                <dl>
+                  <dt className="font_micro">Income</dt>
+                  <dd className="card-text font_small">{amountValidator(organization.income_amt)}</dd>
+                </dl>
+                <dl className={showOnClick}>
+                  <dt className="font_micro">Revenue</dt>
+                  <dd className="card-text font_small">{amountValidator(organization.revenue_amt)}</dd>
+                </dl>
+                <dl>
+                  <dt className="font_micro">Assets</dt>
+                  <dd className="card-text font_small">{amountValidator(organization.asset_amt)}</dd>
+                </dl>
+                <dl>
+                  <dt className="font_micro">Last Logged Tax Filing</dt>
+                  <dd className="card-text font_small">{this.formatDate(organization.tax_period)}</dd>
+                </dl>
+                <dl className={showOnClick}>
+                  <dt className="font_micro">'In Care Of' name</dt>
+                  <dd className="card-text font_small">
+                    {icoFormatter(organization.ico)}
+                  </dd>
+                </dl>
+                <dl className={showOnClick}>
+                  <dt className="font_micro">Organization Type</dt>
+                  <dd className="card-text font_small">{organizationCategory(organization.organization)}</dd>
+                </dl>
+                <dl className={showOnClick}>
+                  <dt className="font_micro">EIN</dt>
+                  <dd className="card-text font_small font_mono">{existValidator(organization.ein)}</dd>
+                </dl>
+              </div>
             </div>
           </div>
         </div>
