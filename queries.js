@@ -1,16 +1,17 @@
 // @flow
 import db from './config/database';
-import {filtersData} from './filtersData';
+import {filtersData, defaultFilters} from './filtersData';
 
 const query = {};
 
-query.getOrganizations = async (req, res, next) => {
+// Shared by index and api routes
+query.getOrganizationsData = async (filters, next) => {
   try {
     let mainQuery = db.select('*')
       .from('organizations');
-    mainQuery = createOrganizationWhere(mainQuery, req.query);
-    mainQuery = createOrganizationOrderBy(mainQuery, req.query);
-    mainQuery = createOrganizationLimit(mainQuery, req.query);
+    mainQuery = createOrganizationWhere(mainQuery, filters);
+    mainQuery = createOrganizationOrderBy(mainQuery, filters);
+    mainQuery = createOrganizationLimit(mainQuery, filters);
 
     let aggQuery = db('organizations')
       .count('* as count')
@@ -23,20 +24,27 @@ query.getOrganizations = async (req, res, next) => {
       .max('income_amt as income_max')
       .max('revenue_amt as revenue_max')
       .max('asset_amt as asset_max');
-    aggQuery = createOrganizationWhere(aggQuery, req.query);
+    aggQuery = createOrganizationWhere(aggQuery, filters);
 
     const data = await mainQuery;
     const summaryData = await aggQuery;
 
-    return res.status(200).json({
-      status: 'success',
-      organizationsData: data,
+    return {
+      filters: defaultFilters,
       filtersData: filtersData,
+      organizationsData: data,
+      status: 'success',
       summaryData: summaryData[0], // An object with count
-    });
+    };
   } catch (err) {
     return next(err);
   }
+};
+
+// Used by the API
+query.getOrganizations = (req, res, next) => {
+  const data = query.getOrganizations(req.query, next);
+  return res.status(200).json(data);
 };
 
 export default query;

@@ -7,8 +7,7 @@ import {match, createRoutes} from 'react-router';
 
 import AppRouter from '../client/router.jsx';
 import DataProvider from '../components/DataProvider.jsx';
-import db from '../config/database';
-import {filtersData, defaultFilters} from '../filtersData';
+import {getOrganizationsData} from '../queries';
 
 const routes = createRoutes(AppRouter());
 const router = express.Router();
@@ -20,28 +19,9 @@ router.get('*', (req, res, next) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      try {
-        const selectOrganizations = await db.select('*')
-          .from('organizations')
-          .orderBy('name', 'asc')
-          .limit(50);
-        const theData = Object.assign(
-          {},
-          {
-            loading: false,
-            organizationsData: selectOrganizations,
-            filtersData: filtersData,
-            filters: defaultFilters,
-            summaryData: {
-              count: 1618000,
-            }
-          }
-        );
-        const content = renderToString(<DataProvider {...renderProps} data={theData} />);
-        res.render('index', {title: 'Welcome', data: theData, content});
-      } catch (err) {
-        return next(err);
-      }
+      const data = await getOrganizationsData(req.query, next);
+      const content = renderToString(<DataProvider {...renderProps} data={data} />);
+      res.render('index', {title: 'Welcome', data, content});
     } else {
       res.status(404).send('Not Found');
     }
