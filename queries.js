@@ -14,14 +14,17 @@ export const getOrganizationsData = async (filters, next) => {
     let aggQuery = db('organizations')
       .count('* as count')
       .avg('income_amt as income_avg')
-      .avg('revenue_amt as revenue_avg')
-      .avg('asset_amt as asset_avg')
       .min('income_amt as income_min')
-      .min('revenue_amt as revenue_min')
-      .min('asset_amt as asset_min')
       .max('income_amt as income_max')
+      .select(db.raw('median(income_amt) as income_med'))
+      .avg('revenue_amt as revenue_avg')
+      .min('revenue_amt as revenue_min')
       .max('revenue_amt as revenue_max')
-      .max('asset_amt as asset_max');
+      .select(db.raw('median(revenue_amt) as revenue_med'))
+      .avg('asset_amt as asset_avg')
+      .min('asset_amt as asset_min')
+      .max('asset_amt as asset_max')
+      .select(db.raw('median(asset_amt) as asset_med'));
     aggQuery = createOrganizationWhere(aggQuery, filters);
 
     const data = await mainQuery;

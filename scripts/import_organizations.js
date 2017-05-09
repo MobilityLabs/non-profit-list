@@ -1,10 +1,10 @@
+// @flow
 require('dotenv').config({silent: true});
 const _ = require('lodash');
 const csv = require('csv');
 const fs = require('fs');
 const StreamConcat = require('stream-concat');
 const db = require('../config/database.js');
-const pgp = require('pg-promise');
 const tmpDir = process.env.TMP_DIR;
 
 const FILES = fs.readdirSync(tmpDir);
@@ -19,7 +19,8 @@ let flush = false;
 // We kept this close to original CSV, it will need updated if the CSVs update
 const COLUMNS = ['ein', 'name', 'ico', 'street', 'city', 'state', 'zip', 'group_number', 'subsection', 'affiliation',
   'classification', 'ruling', 'deductibility', 'foundation', 'activity', 'organization', 'status', 'tax_period', 
-  'asset_cd', 'income_cd', 'filing_req_cd', 'pf_filing_req_cd', 'acct_pd', 'asset_amt', 'income_amt', 'revenue_amt', 'ntee_cd', 'sort_name'];
+  'asset_cd', 'income_cd', 'filing_req_cd', 'pf_filing_req_cd', 'acct_pd', 'asset_amt', 'income_amt', 'revenue_amt',
+  'ntee_cd', 'sort_name'];
 
 combinedStream
 .pipe(csv.parse({relax_column_count: true, columns: COLUMNS})) // will auto-discover headers in first line
@@ -48,10 +49,10 @@ combinedStream
   .then(
     (processData) => {
       if (flush) {
-        db.one('SELECT count(*) FROM organizations').then((result) => {
+        db('organizations').count('*').then((result) => {
           console.log('Finished with ' + result.count + ' records');
           process.exit();
-        })
+        });
       } else {
         console.log('Processed ' + ++processedCounter * BATCH_EVERY + ' records');
       }
@@ -62,28 +63,16 @@ combinedStream
     }
   );
 }))
-.on('error', console.error)
-
-// Create insert template to allow mass inserting
-function Inserts(template, data) {
-  if (!(this instanceof Inserts)) {
-    return new Inserts(template, data);
-  }
-  this._rawDBType = true;
-  this.formatDBType = function () {
-    return data.map(d=>'(' + pgp.as.format(template, d) + ')').join();
-  };
-}
+.on('error', console.error);
 
 // This is processing an array of 1000
-function processRows(dataArr){
+function processRows(dataArr) {
   // sanitize
   dataArr = _.map(dataArr, (o) => {
     return _.mapValues(o, (v) => {
       return v.length > 0 && v !== '' ? v : null;
     });
   });
-  var values = new Inserts(COLUMNS.map((v) => '${' + v + '}').join(', '), dataArr);
  
-  return db.none('INSERT INTO organizations(' + COLUMNS.join(', ') + ') VALUES $1', values);
+  return db('organizations').insert(dataArr).return({inserted: true});
 }
