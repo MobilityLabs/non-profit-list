@@ -12,15 +12,16 @@ import SortBar from '../components/SortBar';
 import SelectedPopover from '../components/SelectedPopover';
 import StateFilter from '../components/StateFilter';
 
-import type {Organizations, SummaryData, FilterData, Filters} from '../types';
+import type {Organizations, SummaryData, FiltersData, Filters} from '../types';
 
 type State = {
   error: string,
   filters: Filters,
-  filtersData: FilterData,
+  filtersData: FiltersData,
   loading: boolean,
   organizationsData: Organizations,
   summaryData: SummaryData,
+  error?: Error,
 };
 
 let timeout;
@@ -228,18 +229,18 @@ export default class DashboardPage extends Component {
     timeout = setTimeout(async () => {
       const {filters} = this.state;
       // Build a query string with an array of key=value strings
-      let queryString = [];
+      const queryStringArr: [] = [];
       _.each(filters, (v, k) => {
         let value = _.isArray(v) ? v.join(',') : v;
         // Order is an object so treat it a little different
         if (k === 'order') {
           if (Object.keys(v).length === 0) { return; }
-          const values = _.map(v, (order, key) => (key + '-' + order));
+          const values = _.map(v, (order: string, key: string) => (key + '-' + order));
           value = values.join(',');
         }
-        queryString.push(k + '=' + value);
+        queryStringArr.push(k + '=' + value);
       });
-      queryString = queryString.join('&');
+      const queryString = queryStringArr.join('&');
       try {
         const result = await(
           await fetch('/api/organizations?' + queryString, {
@@ -258,16 +259,16 @@ export default class DashboardPage extends Component {
 
   handleSelectState = (selectedState: string) => {
     const filters = Object.assign({}, this.state.filters);
-    filters.state = filters.state.slice(); // Need to ensure it is a new array
+    filters.state = filters.state ? filters.state.slice() : []; // Need to ensure it is a new array
     filters.state.push(selectedState);
     this.setState({filters});
   }
 
-  handleSelectIncome = (e) => {
+  handleSelectIncome = (e: DOMEvent) => {
     const filters = Object.assign({}, this.state.filters);
     const target = e.target;
     const value = parseInt(target.value, 10);
-    filters.income_cd = filters.income_cd.slice(); // Need to ensure it is a new array
+    filters.income_cd = filters.income_cd ? filters.income_cd.slice() : []; // Need to ensure it is a new array
     if (target.checked) {
       filters.income_cd.push(value);
     } else {
@@ -276,10 +277,10 @@ export default class DashboardPage extends Component {
     this.setState({filters});
   }
 
-  handleSelectNTEE = (e) => {
+  handleSelectNTEE = (e: DOMEvent) => {
     const filters = Object.assign({}, this.state.filters);
     const target = e.target;
-    filters.ntee_cd = filters.ntee_cd.slice(); // Need to ensure it is a new array
+    filters.ntee_cd = filters.ntee_cd ? filters.ntee_cd.slice() : []; // Need to ensure it is a new array
     if (target.checked) {
       filters.ntee_cd.push(target.value);
     } else {
@@ -288,7 +289,7 @@ export default class DashboardPage extends Component {
     this.setState({filters});
   }
 
-  handleNameChange = (e) => {
+  handleNameChange = (e: DOMEvent) => {
     const filters = Object.assign({}, this.state.filters);
     const target = e.target;
     filters.name = target.value;
@@ -299,7 +300,7 @@ export default class DashboardPage extends Component {
   // TODO: Make order an array and place new filter at beginning of array
   handleSortChange = (order: {}) => {
     let filters = Object.assign({}, this.state.filters);
-    filters = update(filters, {order: {$merge: order}});
+    filters = update(filters, {order: {$merge: order}}); // Using immutability helper to help detect state
     this.setState({filters});
   }
 

@@ -3,10 +3,17 @@ import React, {Component} from 'react';
 
 import './SortBar.scss';
 
+import type {Filters} from '../types';
+
 export default class SortBar extends Component {
 
+  props: {
+    filters: Filters,
+    handleSortChange: Function,
+  }
+
   render() {
-    const {handleSortChange} = this.props;
+    const {filters, handleSortChange} = this.props;
     return (
       <div className="sort-bar">
         <div className="pagination">
@@ -38,7 +45,7 @@ export default class SortBar extends Component {
               </button>
               <div className="dropdown-menu" aria-labelledby="btnGroupName">
                 <a
-                  className="dropdown-item"
+                  className={"dropdown-item " + (filters.order.name === 'asc' ? 'active' : '')}
                   href="#"
                   name="name_asc"
                   onClick={handleSortChange.bind(null, {name: 'asc'})}
@@ -46,6 +53,7 @@ export default class SortBar extends Component {
                   Name ASC
                 </a>
                 <a
+                  // TODO: Add active states to these other ones
                   className="dropdown-item"
                   href="#"
                   name="name_desc"

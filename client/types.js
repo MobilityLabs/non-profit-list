@@ -41,7 +41,22 @@ export type SummaryData = {
 };
 
 export type FilterData = {
+  label: string,
+  filters: [],
+}
 
+export type FiltersData = {
+  state: FilterData,
+  income_cd: FilterData,
+  ntee_cd: FilterData,
 };
 
-export type Filters = {};
+export type Filters = {
+  order: {
+    name?: 'asc'|'desc',
+  },
+  state: ?string[],
+  name: ?string,
+  income_cd: ?number[],
+  ntee_cd: ?string[]
+};
