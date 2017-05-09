@@ -35,7 +35,13 @@ function createOrganizationWhereFilter(select, filters) {
 
   if (filters.ntee_cd) {
     const codes = filters.ntee_cd.split(',');
-    select.where('ntee_cd', 'in', codes);
+    codes.forEach((v, k) => {
+      if (k === 0) {
+        select.where('ntee_cd', 'like', v + '%');
+        return;
+      }
+      select.orWhere('ntee_cd', 'like', v + '%');
+    });
   }
 
   if (filters.income_cd) {

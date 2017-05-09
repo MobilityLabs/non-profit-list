@@ -67,7 +67,7 @@ export default class OrganizationTable extends Component {
               <div className="company-financials">
                 <dl>
                   <dt className="font_micro">Income</dt>
-                  <dd className="card-text font_small">{amountValidator(o.revenue_amt)}</dd>
+                  <dd className="card-text font_small">{amountValidator(o.income_amt)}</dd>
                 </dl>
                 <dl>
                   <dt className="font_micro">Assets</dt>
