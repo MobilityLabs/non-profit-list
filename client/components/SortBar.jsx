@@ -1,26 +1,28 @@
 // @flow
 import React, {Component} from 'react';
+import numeral from 'numeral';
 
 import './SortBar.scss';
 
-import type {Filters} from '../types';
+import type {Filters, SummaryData} from '../types';
 
 export default class SortBar extends Component {
 
   props: {
     filters: Filters,
     handleSortChange: Function,
+    summaryData: SummaryData,
   }
 
   render() {
-    const {filters, handleSortChange} = this.props;
+    const {filters, handleSortChange, summaryData} = this.props;
     return (
       <div className="sort-bar">
         <div className="pagination">
           <button type="button" className="btn btn-link btn-sm">
             <i className="fa fa-angle-double-left" aria-hidden="true"/>
           </button>
-          <span>1-50<span> of </span>120,000</span>
+          <span>1-50<span> of </span>{numeral(summaryData.count).format('0,0')}</span>
           <button type="button" className="btn btn-link btn-sm">
             <i className="fa fa-angle-double-right" aria-hidden="true"/>
           </button>

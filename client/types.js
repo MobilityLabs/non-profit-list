@@ -37,7 +37,7 @@ export type Organization = {
 export type Organizations = Organization[];
 
 export type SummaryData = {
-
+  count: number,
 };
 
 export type FilterData = {

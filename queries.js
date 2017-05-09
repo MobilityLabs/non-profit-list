@@ -4,26 +4,34 @@ import {filtersData} from './filtersData';
 
 const query = {};
 
-query.getOrganizations = (req, res, next) => {
-  const select = db.select('*')
-    .from('organizations');
-  createOrganizationWhereFilter(select, req.query)
-  .then((data) => {
-    return res.status(200)
-      .json({
-        status: 'success',
-        organizationsData: data,
-        filtersData: filtersData,
-      });
-  })
-  .catch((err) => {
+query.getOrganizations = async (req, res, next) => {
+  try {
+    let mainQuery = db.select('*')
+      .from('organizations');
+    mainQuery = createOrganizationWhere(mainQuery, req.query);
+    mainQuery = createOrganizationOrderBy(mainQuery, req.query);
+    mainQuery = createOrganizationLimit(mainQuery, req.query);
+
+    let aggQuery = db.count('*').from('organizations');
+    aggQuery = createOrganizationWhere(aggQuery, req.query);
+
+    const data = await mainQuery;
+    const summaryData = await aggQuery;
+
+    return res.status(200).json({
+      status: 'success',
+      organizationsData: data,
+      filtersData: filtersData,
+      summaryData: summaryData[0], // An object with count
+    });
+  } catch (err) {
     return next(err);
-  });
+  }
 };
 
 export default query;
 
-function createOrganizationWhereFilter(select, filters) {
+function createOrganizationWhere(select, filters) {
   if (filters.name) {
     select.where('name', 'ilike', '%'+ filters.name +'%');
   }
@@ -60,7 +68,10 @@ function createOrganizationWhereFilter(select, filters) {
     select.where('city', 'in', states);
   }
 
+  return select;
+}
 
+function createOrganizationOrderBy(select, filters) {
   // Order by
   if (filters.order) {
     const orderByArr = filters.order.split(',');
@@ -73,6 +84,10 @@ function createOrganizationWhereFilter(select, filters) {
     select.orderBy('name', 'asc');
   }
 
+  return select;
+}
+
+function createOrganizationLimit(select, filters) {
   // Default to 20 items per
   const limit = filters.limit ? filters.limit : 20;
   select.limit(limit);

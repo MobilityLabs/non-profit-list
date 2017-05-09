@@ -89,6 +89,7 @@ export default class DashboardPage extends Component {
           filtersData: result.filtersData,
           loading: false,
           organizationsData: result.organizationsData,
+          summaryData: result.summaryData,
         });
       } catch (err) {
         this.setState({loading: false, error: err});
@@ -151,7 +152,7 @@ export default class DashboardPage extends Component {
         ograph: true
       }
     };
-    const {filtersData, organizationsData, filters, loading} = this.state;
+    const {filtersData, organizationsData, filters, loading, summaryData} = this.state;
     return (
       <DocumentMeta {...meta}>
         <div className="bg-light">
@@ -181,7 +182,7 @@ export default class DashboardPage extends Component {
               />
             </div>
             <div className={"col-sm-12 col-md-8 " + (loading ? "loading" : "")}>
-              <SortBar filters={filters} handleSortChange={this.handleSortChange} />
+              <SortBar filters={filters} summaryData={summaryData} handleSortChange={this.handleSortChange} />
               <OrganizationTable organizations={organizationsData}/>
             </div>
           </div>

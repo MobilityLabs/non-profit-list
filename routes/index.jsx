@@ -32,6 +32,9 @@ router.get('*', (req, res, next) => {
             organizationsData: selectOrganizations,
             filtersData: filtersData,
             filters: defaultFilters,
+            summaryData: {
+              count: 1600000,
+            }
           }
         );
         const content = renderToString(<DataProvider {...renderProps} data={theData} />);
