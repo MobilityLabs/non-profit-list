@@ -21,18 +21,28 @@ export default class OrganizationCard extends Component {
   }
 
   loadGoogleMap =() => {
-    // Coordinates to center the map
-    const myLatlng = new google.maps.LatLng(52.525595, 13.393085);
-    // Other options for the map, pretty much selfexplanatory
-    const mapOptions = {
+    const googleMap = new google.maps.Map(this.refs.map, {
       zoom: 14,
-      center: myLatlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
-    };
-    // Attach a map to the DOM Element, with the defined settings
-    const map = this.refs.map;
-    new google.maps.Map(map, mapOptions);
+    });
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+      address: this.formatAddress(this.props.organization)
+    }, (results, status) => {
+      if(status === google.maps.GeocoderStatus.OK) {
+        new google.maps.Marker({
+          position: results[0].geometry.location,
+          map: googleMap
+        });
+        googleMap.setCenter(results[0].geometry.location);
+      }
+    });
+  }
+
+  formatAddress = (organization: Organization) => {
+    return organization.street + ", " + organization.city + ", " + organization.state + " " + organization.zip;
   }
 
   formatDate = (date: ?number) => {
@@ -104,17 +114,21 @@ export default class OrganizationCard extends Component {
               <dl className={hideOnClick}>
                 <dt className="font_micro">Location</dt>
                 <dd className="card-text">
-                  {_.startCase(_.toLower(organization.city)) + ", " + organization.state}
+                  <a target="_blank" href={'http://maps.google.com/?q='+this.formatAddress(organization)}>
+                    {_.startCase(_.toLower(organization.city)) + ", " + organization.state}
+                  </a>
                 </dd>
               </dl>
               <dl className={showOnClick}>
                 <dt className="font_micro">Address</dt>
                 <dd className="card-text">
-                  {
-                    organization.street + ", " +
-                    _.startCase(_.toLower(organization.city)) + ", " + organization.state + " " +
-                    organization.zip
-                  }
+                  <a target="_blank" href={'http://maps.google.com/?q='+this.formatAddress(organization)}>
+                    {
+                      organization.street + ", " +
+                      _.startCase(_.toLower(organization.city)) + ", " + organization.state + " " +
+                      organization.zip
+                    }
+                  </a>
                 </dd>
               </dl>
               <div className={"company-map" + showOnClick}>
