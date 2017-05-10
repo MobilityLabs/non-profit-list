@@ -30,8 +30,8 @@ combinedStream
 })
 // Filter and batch
 .pipe(csv.transform((data) => {
-  if (++recordCounter % 1000 === 0) console.log('Read ' + recordCounter + ' records')
-  if (data.ein === 'EIN') return null; // abort this record
+  if (++recordCounter % 10000 === 0) console.log('Read ' + recordCounter + ' records'); // eslint-disable-line
+  if (data.ein === 'EIN') return null; // abort this header row
 
   // Push to batch array. If we've hit our batch size, return the data and reset.
   batch.push(data);
@@ -44,26 +44,25 @@ combinedStream
 }))
 // Process (data is an array of BATCH_EVERY length)
 .pipe(csv.transform((data, cb) => {
-  processRows(data)
+  processRows(data).then(
   // Promise to cb for csv.transform
-  .then(
-    (processData) => {
+    (processedData) => {
       if (flush) {
         db('organizations').count('*').then((result) => {
-          console.log('Finished with ' + result.count + ' records');
+          console.log('Finished with ' + result.count + ' records'); // eslint-disable-line
           process.exit();
         });
       } else {
-        console.log('Processed ' + ++processedCounter * BATCH_EVERY + ' records');
+        console.log('Processed ' + ++processedCounter * BATCH_EVERY + ' records'); // eslint-disable-line
       }
-      cb(processData);
+      cb(processedData);
     },
     (err) => {
       cb(err);
     }
   );
 }))
-.on('error', console.error);
+.on('error', console.error); // eslint-disable-line
 
 // This is processing an array of 1000
 function processRows(dataArr) {
@@ -73,6 +72,5 @@ function processRows(dataArr) {
       return v.length > 0 && v !== '' ? v : null;
     });
   });
- 
-  return db('organizations').insert(dataArr).return({inserted: true});
+  return db('organizations').insert(dataArr).return(); // returning nothing works, anything else breaks eventually
 }
