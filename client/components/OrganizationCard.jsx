@@ -1,12 +1,26 @@
 // @flow
 import _ from 'lodash';
-import moment from 'moment';
 import numeral from 'numeral';
 import React, {Component} from 'react';
 
 import './Collapse.scss';
 
 import type {Organization} from '../types';
+
+const MONTHS = {
+  '01': 'Jan',
+  '02': 'Feb',
+  '03': 'Mar',
+  '04': 'Apr',
+  '05': 'May',
+  '06': 'Jun',
+  '07': 'Jul',
+  '08': 'Aug',
+  '09': 'Sep',
+  '10': 'Oct',
+  '11': 'Nov',
+  '12': 'Dec'
+};
 
 export default class OrganizationCard extends Component {
   props: {
@@ -50,7 +64,7 @@ export default class OrganizationCard extends Component {
     if (date) {
       const filingDate = date.toString().match(/.{1,4}/g);
       // TODO: Convert this column to ISO format in database
-      const month = moment(filingDate[1]).format("MMM");
+      const month = MONTHS[filingDate[1]];
       const year = filingDate[0];
       return(
         dateString = month + " " + year

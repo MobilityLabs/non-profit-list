@@ -31,6 +31,7 @@ combinedStream
 // Filter and batch
 .pipe(csv.transform((data) => {
   if (++recordCounter % 10000 === 0) console.log('Read ' + recordCounter + ' records'); // eslint-disable-line
+  // TODO: Get rid of empty files with undefined columns
   if (data.ein === 'EIN') return null; // abort this header row
 
   // Push to batch array. If we've hit our batch size, return the data and reset.
