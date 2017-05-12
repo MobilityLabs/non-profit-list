@@ -7,14 +7,15 @@ import './Summary.scss';
 export default class Summary extends Component {
   props: {
     summaryData: SummaryData,
+    classes: String;
   }
 
   render() {
     const commas = (number: ?number) => {return number ? numeral(number).format('0,0') : "Not Available";};
     const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Available";};
-    const {summaryData} = this.props;
+    const {summaryData, classes} = this.props;
     return (
-      <div className="row">
+      <div className={"row " + classes}>
         <div className="col-sm-12">
           <div className="summary">
             <div className="summary-header">
