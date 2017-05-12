@@ -64,7 +64,7 @@ export default class OrganizationCard extends Component {
     };
     const {organization, handleCardClick, expanded} = this.props;
     const existValidator =(object: ?number|?string) => {return object ? object : "Not Listed";};
-    const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0') : "Not Listed";};
+    const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Listed";};
     const organizationCategory = (number: ?number) =>{
       if (number) {
         if (number === 1) {return("Corporation");}
@@ -140,11 +140,11 @@ export default class OrganizationCard extends Component {
                     </a>
                   </dd>
                 </dl>
-                <div className={"company-map" + showOnClick}>
+                <div className={"company-map mb-sm-2 mb-md-0" + showOnClick}>
                   <div className="user-map" ref="map"/>
                 </div>
               </div>
-              <div className="company-financials">
+              <div className="company-financials text-left text-md-right">
                 <dl>
                   <dt className="font_micro">Income</dt>
                   <dd className="card-text font_small">{amountValidator(organization.income_amt)}</dd>

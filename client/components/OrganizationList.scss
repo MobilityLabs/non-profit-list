@@ -34,7 +34,7 @@
     color: $grey-3;
   }
   dd{
-    white-space: pre-wrap
+    white-space: pre-wrap;
   }
 }
 
@@ -68,11 +68,14 @@
   flex-wrap: wrap;
   .company-meta{
     display: flex;
-    flex: 2 auto;
+    flex: 2 1 15em;
+    min-width: 15em;
     flex-direction: column;
   }
   .company-financials{
-    flex: 1 2 15em;
+    display: inline-flex;
+    flex-direction: column;
+    flex: 1 1 15em;
     min-width: 15em;
     text-align: right;
      dd{
@@ -81,15 +84,14 @@
   }
 }
 .company-map{
-  margin-top: .5em;
   justify-content: space-between;
   display: flex;
   .user-map{
     position: relative;
     overflow: hidden;
     min-height: 15em;
-    width: 6em;
-    display: inline-flex;
-    flex: 1 0;
+    width: 100%;
+    min-width: 6em;
+    display: block;
   }
 }

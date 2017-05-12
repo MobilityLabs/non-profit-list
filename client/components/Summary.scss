@@ -3,6 +3,7 @@
 .summary{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   border: 1px solid $grey-6;
   padding: 1.25rem;
 }
