@@ -1,0 +1,64 @@
+@import "../variables.scss";
+
+.summary{
+  display: flex;
+  flex-direction: row;
+  border: 1px solid $grey-6;
+  padding: 1.25rem;
+}
+.summary-header{
+  display: flex;
+  flex-direction: column;
+  flex: 3 1 auto;
+  margin: 0 auto;
+  dt{
+    margin-top: 0;
+    font-weight: bold;
+    color: $grey-3;
+  }
+  dd{
+    margin: 0 auto;
+    font-weight: bold;
+    small{
+      display: block;
+      color: $grey-5;
+      font-weight: normal;
+      margin-top: .125em;
+    }
+  }
+}
+.summary-meta{
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  > *:first-child{
+    margin-left: 0;
+  }
+}
+.summary-income, .summary-revenue, .summary-assets{
+  display: inline-flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  margin: 0 0 0 auto;
+  text-align: right;
+  > *:first-child{
+    margin-top: 0;
+  }
+  dl{
+    margin-bottom: .5em;
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+  dt{
+    margin-top: 0;
+    font-weight: normal;
+    color: $grey-3;
+  }
+  dd{
+    white-space: pre-wrap;
+    font-family: $font-family-mono;
+    margin-bottom: 0;
+  }
+}

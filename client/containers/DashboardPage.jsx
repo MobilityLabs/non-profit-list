@@ -12,6 +12,7 @@ import OrganizationList from '../components/OrganizationList';
 import SelectedPopover from '../components/SelectedPopover';
 import SortBar from '../components/SortBar';
 import StateFilter from '../components/StateFilter';
+import Summary from '../components/Summary';
 import {defaultFilters} from '../../filtersData';
 
 import type {Organizations, SummaryData, FiltersData, Filters} from '../types';
@@ -190,6 +191,11 @@ export default class DashboardPage extends Component {
           </div>
         </div>
         <div className="container py-3">
+          <div className="row">
+           <div className="col-sm-12">
+            <Summary summaryData={summaryData} />
+           </div>
+         </div>
           <div className="row">
             <div className="col-sm-12 col-md-4">
               <h3 className="h6 label-heading d-flex justify-content-between align-items-baseline">
