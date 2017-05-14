@@ -15,10 +15,10 @@
       "host" : ["list.mobility-labs.com"],
       "ref"  : "origin/master",
       "repo" : "git@github.com:MobilityLabs/non-profit-list.git",
-      "path" : "/home/nonprofits/www",
+      "path" : "/home/nonprofits",
       "ssh_options": "StrictHostKeyChecking=no",
       "key": "~/.ssh/digitalocean",
-      "post-setup": "touch ../shared/.env && ln -s ../shared/.env ./",
+      "post-setup": "ln -s ../shared/.env ./",
       "pre-deploy-local": "echo 'This is a local executed command'",
       "post-deploy" : "yarn && yarn build && pm2 startOrRestart ecosystem.json --env production",
       "env"  : {
