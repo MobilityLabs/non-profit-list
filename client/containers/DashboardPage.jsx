@@ -59,6 +59,7 @@ export default class DashboardPage extends Component {
     if (!_.isEqual(prevState.filters, this.state.filters)) {
       this.getOrganizations(500);
     }
+    window.scrollTo(0, 0);
   }
 
   async getOrganizations(timer: number) {
