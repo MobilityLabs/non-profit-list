@@ -97,11 +97,15 @@ export default class DashboardPage extends Component {
             },
           })
         ).json();
+        const summaryData = _.mapValues(result.summaryData, (v) => {
+          if (v === null) {return v;}
+          return Math.round(v * 100) / 100;
+        });
         this.setState({
           filtersData: result.filtersData,
           loading: false,
           organizationsData: result.organizationsData,
-          summaryData: result.summaryData,
+          summaryData: summaryData,
         });
       } catch (err) {
         this.setState({loading: false, error: err});
@@ -223,7 +227,7 @@ export default class DashboardPage extends Component {
                 handlePageChange={this.handlePageChange}
               />
               <Summary summaryData={summaryData} classes={"mb-3"} />
-              <OrganizationList organizations={organizationsData}/>
+              <OrganizationList organizations={organizationsData} summaryData={summaryData}/>
               <div className="row">
                 <div className="col-sm-12 mt-4 mb-4 text-center">
                   <Pagination

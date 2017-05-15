@@ -13,6 +13,7 @@ export default class OrganizationCard extends Component {
     organization: Organization,
     expanded: Boolean,
     handleCardClick: Function,
+    summaryData: SummaryData,
   }
   componentDidUpdate() {
     if (this.props.expanded && google && google.maps) {
@@ -62,7 +63,7 @@ export default class OrganizationCard extends Component {
     const feelingLuckyURL = (name: string) => {
       return "https://duckduckgo.com/?q=!ducky+" + encodeURIComponent(name);
     };
-    const {organization, handleCardClick, expanded} = this.props;
+    const {organization, handleCardClick, expanded, summaryData} = this.props;
     const existValidator =(object: ?number|?string) => {return object ? object : "Not Listed";};
     const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Listed";};
     const organizationCategory = (number: ?number) =>{
@@ -104,6 +105,22 @@ export default class OrganizationCard extends Component {
         deductibilityCategory = "Not listed";
       }
       return deductibilityCategory;
+    };
+    const percentageFormatter = (number: number, key: string) =>{
+      const intNumber = parseInt(number, 10);
+      const base = this.props.summaryData[key];
+      let percentage = ((intNumber - base) / base);
+      percentage = numeral(percentage).format('0%');
+      if (intNumber > base) {
+        return(
+          <small className="mr-1 text-success">{percentage}</small>
+        );
+      } else if (intNumber < base) {
+        return(
+          <small className="mr-1 text-danger">{percentage}</small>
+        );
+      }
+      return null;
     };
     const icoFormatter =(name: string) => {return name ? name.replace(/[!@#$%^&* ]( )/gm, "") : "Not Listed";};
     const hideOnClick = (expanded ? " d-none" : " expanded");
@@ -175,15 +192,24 @@ export default class OrganizationCard extends Component {
               <div className="company-financials text-left text-md-right">
                 <dl>
                   <dt className="font_micro">Income</dt>
-                  <dd className="card-text font_small">{amountValidator(organization.income_amt)}</dd>
+                  <dd className="card-text font_small">
+                    {percentageFormatter(organization.income_amt, 'income_avg')}
+                    {amountValidator(organization.income_amt)}
+                  </dd>
                 </dl>
                 <dl className={showOnClick}>
                   <dt className="font_micro">Revenue</dt>
-                  <dd className="card-text font_small">{amountValidator(organization.revenue_amt)}</dd>
+                  <dd className="card-text font_small">
+                    {percentageFormatter(organization.revenue_amt, 'revenue_avg')}
+                    {amountValidator(organization.revenue_amt)}
+                  </dd>
                 </dl>
                 <dl>
                   <dt className="font_micro">Assets</dt>
-                  <dd className="card-text font_small">{amountValidator(organization.asset_amt)}</dd>
+                  <dd className="card-text font_small">
+                    {percentageFormatter(organization.asset_amt, 'asset_avg')}
+                    {amountValidator(organization.asset_amt)}
+                  </dd>
                 </dl>
                 <dl>
                   <dt className="font_micro">Last Logged Tax Filing</dt>

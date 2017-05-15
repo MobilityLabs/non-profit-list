@@ -1,6 +1,7 @@
 // @flow
 import db from './config/database';
 import {filtersData, defaultFilters} from './filtersData';
+import _ from 'lodash';
 
 // Shared by index and api routes
 export const getOrganizationsData = async (filters, next) => {
@@ -16,26 +17,29 @@ export const getOrganizationsData = async (filters, next) => {
       .avg('income_amt as income_avg')
       .min('income_amt as income_min')
       .max('income_amt as income_max')
-      .select(db.raw('median(income_amt) as income_med'))
+      // .select(db.raw('median(income_amt) as income_med'))
       .avg('revenue_amt as revenue_avg')
       .min('revenue_amt as revenue_min')
       .max('revenue_amt as revenue_max')
-      .select(db.raw('median(revenue_amt) as revenue_med'))
+      // .select(db.raw('median(revenue_amt) as revenue_med'))
       .avg('asset_amt as asset_avg')
       .min('asset_amt as asset_min')
-      .max('asset_amt as asset_max')
-      .select(db.raw('median(asset_amt) as asset_med'));
+      .max('asset_amt as asset_max');
+      // .select(db.raw('median(asset_amt) as asset_med'));
     aggQuery = createOrganizationWhere(aggQuery, filters);
 
     const data = await mainQuery;
     const summaryData = await aggQuery;
-
+    const numberSummaryData = _.mapValues(summaryData[0], (v) => {
+      if (v === null) {return v;}
+      return Math.round(v * 100) / 100;
+    });
     return {
       filters: defaultFilters,
       filtersData: filtersData,
       organizationsData: data,
       status: 'success',
-      summaryData: summaryData[0], // An object with count
+      summaryData: numberSummaryData, // An object with count
     };
   } catch (err) {
     return next(err);
