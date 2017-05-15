@@ -4,14 +4,25 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   border: 1px solid $grey-6;
   padding: 1.25rem;
+  & .table-striped tbody tr:nth-of-type(odd){
+    background-color: $grey-6;
+  }
+  & table.table td, table.table th{
+    border: none;
+  }
+  & table.table th{
+    color: $grey-3;
+  }
 }
 .summary-header{
   display: flex;
   flex-direction: column;
   flex: 3 1 auto;
   margin: 0 auto;
+  text-align: center;
   dt{
     margin-top: 0;
     font-weight: bold;

@@ -7,7 +7,7 @@ import './Summary.scss';
 export default class Summary extends Component {
   props: {
     summaryData: SummaryData,
-    classes: String;
+    classes: string;
   }
 
   render() {
@@ -27,89 +27,40 @@ export default class Summary extends Component {
                 </dd>
               </dl>
             </div>
-            <div className="summary-meta">
-              <div className="summary-income">
-                <h4 className="label-heading h6">Income</h4>
-                <dl>
-                  <dt className="font_micro">Average</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.income_avg)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Largest</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.income_max)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Median</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.income_med)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Smallest</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.income_min)}
-                  </dd>
-                </dl>
-              </div>
-              <div className="summary-revenue">
-                <h4 className="label-heading h6">Revenue</h4>
-                <dl>
-                  <dt className="font_micro">Average</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.revenue_avg)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Largest</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.revenue_max)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Median</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.revenue_med)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Smallest</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.revenue_min)}
-                  </dd>
-                </dl>
-              </div>
-              <div className="summary-assets">
-                <h4 className="label-heading h6">Assets</h4>
-                <dl>
-                  <dt className="font_micro">Average</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.asset_avg)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Largest</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.asset_max)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Median</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.asset_med)}
-                  </dd>
-                </dl>
-                <dl>
-                  <dt className="font_micro">Smallest</dt>
-                  <dd className="font_micro">
-                    {amountValidator(summaryData.asset_min)}
-                  </dd>
-                </dl>
-              </div>
-            </div>
+            <table className="table table-sm table-striped mb-0">
+              <thead>
+                <tr>
+                  <th/>
+                  <th className="font_small text-right">Average</th>
+                  <th className="font_small text-right">Largest</th>
+                  <th className="font_small text-right">Median</th>
+                  <th className="font_small text-right">Smallest</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" className="label-heading h6">Income</th>
+                  <td className="font_micro text-right">{amountValidator(summaryData.income_avg)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.income_max)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.income_med)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.income_min)}</td>
+                </tr>
+                <tr>
+                  <th scope="row" className="label-heading h6">Revenue</th>
+                  <td className="font_micro text-right">{amountValidator(summaryData.revenue_avg)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.revenue_max)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.revenue_med)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.revenue_min)}</td>
+                </tr>
+                <tr>
+                  <th scope="row" className="label-heading h6">Assets</th>
+                  <td className="font_micro text-right">{amountValidator(summaryData.asset_avg)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.asset_max)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.asset_med)}</td>
+                  <td className="font_micro text-right">{amountValidator(summaryData.asset_min)}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
