@@ -66,18 +66,46 @@ export default class OrganizationCard extends Component {
     const existValidator =(object: ?number|?string) => {return object ? object : "Not Listed";};
     const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Listed";};
     const organizationCategory = (number: ?number) =>{
-      if (number) {
-        if (number === 1) {return("Corporation");}
-        if (number === 2) {return("Trust");}
-        if (number === 3) {return("Co-operative");}
-        if (number === 4) {return("Partnership");}
-        if (number === 5) {return("Association");}
+      let category = "";
+      switch (number) {
+      case 1:
+        category = "Corporation";
+        break;
+      case 2:
+        category = "Trust";
+        break;
+      case 3:
+        category = "Co-operative";
+        break;
+      case 4:
+        category = "Partnership";
+        break;
+      case 5:
+        category = "Association";
+        break;
+      default:
+        category = "Not listed";
       }
-      return(
-        "Not Listed"
-      );
+      return category;
     };
-    const icoFormatter =(name: String) => {return name ? name.replace(/[!@#$%^&* ]( )/gm, "") : "Not Listed";};
+    const deductibilityCategory = (number: ?number) =>{
+      let deductibilityCategory = "";
+      switch (number) {
+      case 1:
+        deductibilityCategory = "Contributions are deductible";
+        break;
+      case 2:
+        deductibilityCategory = "Contributions are not deductible";
+        break;
+      case 4:
+        deductibilityCategory = "Contributions are deductible by treaty (foreign organizations)";
+        break;
+      default:
+        deductibilityCategory = "Not listed";
+      }
+      return deductibilityCategory;
+    };
+    const icoFormatter =(name: string) => {return name ? name.replace(/[!@#$%^&* ]( )/gm, "") : "Not Listed";};
     const hideOnClick = (expanded ? " d-none" : " expanded");
     const showOnClick = (expanded ? " expanded" : " d-none");
     const addClassOnClick = (expanded ? " expanded" : "");
@@ -170,6 +198,10 @@ export default class OrganizationCard extends Component {
                 <dl className={showOnClick}>
                   <dt className="font_micro">Organization Type</dt>
                   <dd className="card-text font_small">{organizationCategory(organization.organization)}</dd>
+                </dl>
+                <dl className={showOnClick}>
+                  <dt className="font_micro">Deductibility</dt>
+                  <dd className="card-text font_small">{deductibilityCategory(organization.deductibility)}</dd>
                 </dl>
                 <dl className={showOnClick}>
                   <dt className="font_micro">EIN</dt>
