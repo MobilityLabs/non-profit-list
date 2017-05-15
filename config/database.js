@@ -6,6 +6,7 @@ const connection = {
   host: 'localhost',
   database: process.env.DATABASE,
   user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
 };
 
 const db = require('knex')({

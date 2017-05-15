@@ -8,6 +8,11 @@
 - `chmod 600 /swapfile`
 - `mkswap /swapfile`
 - `swapon /swapfile`
+- `echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab`
+- `sysctl vm.swappiness=10`
+- `nano /etc/sysctl.conf`
+- At the bottom of the file add `vm.swappiness=10`
+
 
 # Download and install node
 ```
@@ -25,7 +30,8 @@ apt-get install -y nodejs
 `useradd -m -s bash -G sudo <app name>`
 
 # Edit sshd_config to use authorized_keys
-nano /etc/ssh/sshd_config
+- `nano /etc/ssh/sshd_config`
+- Find line about authorized_keys and home
 
 # Add authorized_keys
 Add public key we will access server with
