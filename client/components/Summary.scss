@@ -7,22 +7,27 @@
   justify-content: center;
   border: 1px solid $grey-6;
   padding: 1.25rem;
-  & .table-striped tbody tr:nth-of-type(odd){
+  background-color: $body-bg;
+  position: relative;
+  .table-striped tbody tr:nth-of-type(odd){
     background-color: $grey-6;
   }
-  & table.table td, table.table th{
+  table.table td, table.table th{
     border: none;
   }
-  & table.table th{
+  table.table th{
     color: $grey-3;
+    &.table-name{
+      color: $grey-1;
+    }
   }
 }
 .summary-header{
-  display: flex;
-  flex-direction: column;
-  flex: 3 1 auto;
-  margin: 0 auto;
+  display: inline-flex;
   text-align: center;
+  dl{
+    margin-bottom: 0;
+  }
   dt{
     margin-top: 0;
     font-weight: bold;
@@ -32,7 +37,6 @@
     margin: 0 auto;
     font-weight: bold;
     small{
-      display: block;
       color: $grey-5;
       font-weight: normal;
       margin-top: .125em;
