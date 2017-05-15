@@ -16,7 +16,7 @@ apt-get install -y nodejs
 `yarn global add pm2`
 
 # Add app user
-`useradd -m <app name>`
+`useradd -m -s bash -G sudo <app name>`
 
 # Edit sshd_config to use authorized_keys
 nano /etc/ssh/sshd_config
