@@ -3,6 +3,12 @@
 # Log in as root
 `ssh root@<the new ip>`
 
+# Create swapfile
+- `fallocate -l 1G /swapfile`
+- `chmod 600 /swapfile`
+- `mkswap /swapfile`
+- `swapon /swapfile`
+
 # Download and install node
 ```
 curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
