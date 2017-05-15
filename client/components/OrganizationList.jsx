@@ -10,6 +10,7 @@ import type {Organizations} from '../types';
 export default class OrganizationList extends Component {
   props: {
     organizations: Organizations,
+    summaryData: SummaryData,
   }
 
   state = {
@@ -26,7 +27,7 @@ export default class OrganizationList extends Component {
   }
 
   render() {
-    const {organizations} = this.props;
+    const {organizations, summaryData} = this.props;
     const table = organizations.map((o) => {
       return (
         <OrganizationCard
@@ -34,6 +35,7 @@ export default class OrganizationList extends Component {
           key={o.ein}
           expanded={o.ein === this.state.expandedEIN}
           handleCardClick={this.handleCardClick}
+          summaryData={summaryData}
         />
       );
     });

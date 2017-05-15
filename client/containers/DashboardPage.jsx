@@ -9,9 +9,11 @@ import {browserHistory} from 'react-router';
 import CheckboxFilters from '../components/CheckboxFilters';
 import Navigation from '../components/Navigation';
 import OrganizationList from '../components/OrganizationList';
+import Pagination from '../components/Pagination';
 import SelectedPopover from '../components/SelectedPopover';
 import SortBar from '../components/SortBar';
 import StateFilter from '../components/StateFilter';
+import Summary from '../components/Summary';
 import {defaultFilters} from '../../filtersData';
 
 import type {Organizations, SummaryData, FiltersData, Filters} from '../types';
@@ -57,6 +59,7 @@ export default class DashboardPage extends Component {
     if (!_.isEqual(prevState.filters, this.state.filters)) {
       this.getOrganizations(500);
     }
+    window.scrollTo(0, 0);
   }
 
   async getOrganizations(timer: number) {
@@ -95,11 +98,15 @@ export default class DashboardPage extends Component {
             },
           })
         ).json();
+        const summaryData = _.mapValues(result.summaryData, (v) => {
+          if (v === null) {return v;}
+          return Math.round(v * 100) / 100;
+        });
         this.setState({
           filtersData: result.filtersData,
           loading: false,
           organizationsData: result.organizationsData,
-          summaryData: result.summaryData,
+          summaryData: summaryData,
         });
       } catch (err) {
         this.setState({loading: false, error: err});
@@ -220,7 +227,17 @@ export default class DashboardPage extends Component {
                 handleSortChange={this.handleSortChange}
                 handlePageChange={this.handlePageChange}
               />
-              <OrganizationList organizations={organizationsData}/>
+              <Summary summaryData={summaryData} classes={"mb-3"} />
+              <OrganizationList organizations={organizationsData} summaryData={summaryData}/>
+              <div className="row">
+                <div className="col-sm-12 mt-4 mb-4 text-center">
+                  <Pagination
+                    filters={filters}
+                    summaryData={summaryData}
+                    handlePageChange={this.handlePageChange}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           {false && <SelectedPopover />}

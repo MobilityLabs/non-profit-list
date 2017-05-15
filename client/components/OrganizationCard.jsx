@@ -27,6 +27,7 @@ export default class OrganizationCard extends Component {
     organization: Organization,
     expanded: Boolean,
     handleCardClick: Function,
+    summaryData: SummaryData,
   }
   componentDidUpdate() {
     if (this.props.expanded && google && google.maps) {
@@ -76,22 +77,66 @@ export default class OrganizationCard extends Component {
     const feelingLuckyURL = (name: string) => {
       return "https://duckduckgo.com/?q=!ducky+" + encodeURIComponent(name);
     };
-    const {organization, handleCardClick, expanded} = this.props;
+    const {organization, handleCardClick, expanded, summaryData} = this.props;
     const existValidator =(object: ?number|?string) => {return object ? object : "Not Listed";};
-    const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0') : "Not Listed";};
+    const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Listed";};
     const organizationCategory = (number: ?number) =>{
-      if (number) {
-        if (number === 1) {return("Corporation");}
-        if (number === 2) {return("Trust");}
-        if (number === 3) {return("Co-operative");}
-        if (number === 4) {return("Partnership");}
-        if (number === 5) {return("Association");}
+      let category = "";
+      switch (number) {
+      case 1:
+        category = "Corporation";
+        break;
+      case 2:
+        category = "Trust";
+        break;
+      case 3:
+        category = "Co-operative";
+        break;
+      case 4:
+        category = "Partnership";
+        break;
+      case 5:
+        category = "Association";
+        break;
+      default:
+        category = "Not listed";
       }
-      return(
-        "Not Listed"
-      );
+      return category;
     };
-    const icoFormatter =(name: String) => {return name ? name.replace(/[!@#$%^&* ]( )/gm, "") : "Not Listed";};
+    const deductibilityCategory = (number: ?number) =>{
+      let deductibilityCategory = "";
+      switch (number) {
+      case 1:
+        deductibilityCategory = "Contributions are deductible";
+        break;
+      case 2:
+        deductibilityCategory = "Contributions are not deductible";
+        break;
+      case 4:
+        deductibilityCategory = "Contributions are deductible by treaty (foreign organizations)";
+        break;
+      default:
+        deductibilityCategory = "Not listed";
+      }
+      return deductibilityCategory;
+    };
+    const percentageFormatter = (number: number, key: string) =>{
+      const intNumber = parseInt(number, 10);
+      const base = this.props.summaryData[key];
+      let percentage = ((intNumber - base) / base);
+      percentage = numeral(percentage).format('0%');
+      if (intNumber > base) {
+        return(
+          <small className="mr-1 text-success">{percentage}</small>
+        );
+      } else if (intNumber < base) {
+        return(
+          <small className="mr-1 text-danger">{percentage}</small>
+        );
+      }
+      return null;
+    };
+    const icoFormatter =(name: string) => {return name ? name.replace(/[!@#$%^&* ]( )/gm, "") : "Not Listed";};
     const hideOnClick = (expanded ? " d-none" : " expanded");
     const showOnClick = (expanded ? " expanded" : " d-none");
     const addClassOnClick = (expanded ? " expanded" : "");
@@ -154,22 +199,31 @@ export default class OrganizationCard extends Component {
                     </a>
                   </dd>
                 </dl>
-                <div className={"company-map" + showOnClick}>
+                <div className={"company-map mb-sm-2 mb-md-0" + showOnClick}>
                   <div className="user-map" ref="map"/>
                 </div>
               </div>
-              <div className="company-financials">
+              <div className="company-financials text-left text-md-right">
                 <dl>
                   <dt className="font_micro">Income</dt>
-                  <dd className="card-text font_small">{amountValidator(organization.income_amt)}</dd>
+                  <dd className="card-text font_small">
+                    {percentageFormatter(organization.income_amt, 'income_avg')}
+                    {amountValidator(organization.income_amt)}
+                  </dd>
                 </dl>
                 <dl className={showOnClick}>
                   <dt className="font_micro">Revenue</dt>
-                  <dd className="card-text font_small">{amountValidator(organization.revenue_amt)}</dd>
+                  <dd className="card-text font_small">
+                    {percentageFormatter(organization.revenue_amt, 'revenue_avg')}
+                    {amountValidator(organization.revenue_amt)}
+                  </dd>
                 </dl>
                 <dl>
                   <dt className="font_micro">Assets</dt>
-                  <dd className="card-text font_small">{amountValidator(organization.asset_amt)}</dd>
+                  <dd className="card-text font_small">
+                    {percentageFormatter(organization.asset_amt, 'asset_avg')}
+                    {amountValidator(organization.asset_amt)}
+                  </dd>
                 </dl>
                 <dl>
                   <dt className="font_micro">Last Logged Tax Filing</dt>
@@ -184,6 +238,10 @@ export default class OrganizationCard extends Component {
                 <dl className={showOnClick}>
                   <dt className="font_micro">Organization Type</dt>
                   <dd className="card-text font_small">{organizationCategory(organization.organization)}</dd>
+                </dl>
+                <dl className={showOnClick}>
+                  <dt className="font_micro">Deductibility</dt>
+                  <dd className="card-text font_small">{deductibilityCategory(organization.deductibility)}</dd>
                 </dl>
                 <dl className={showOnClick}>
                   <dt className="font_micro">EIN</dt>
