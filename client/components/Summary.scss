@@ -19,6 +19,9 @@
     color: $grey-3;
     &.table-name{
       color: $grey-1;
+      span{
+        font-family: $font-family-mono;
+      }
     }
   }
 }

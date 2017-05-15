@@ -20,7 +20,7 @@ export default class Summary extends Component {
           <thead>
             <tr>
               <th className="font_small text-center table-name">
-                Summary of {commas(summaryData.count)} Returned Records
+                Summary of <span>{commas(summaryData.count)}</span> Returned Records
               </th>
               <th className="font_small text-right">Average</th>
               <th className="font_small text-right">Largest</th>

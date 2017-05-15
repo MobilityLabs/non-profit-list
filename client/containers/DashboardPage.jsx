@@ -9,6 +9,7 @@ import {browserHistory} from 'react-router';
 import CheckboxFilters from '../components/CheckboxFilters';
 import Navigation from '../components/Navigation';
 import OrganizationList from '../components/OrganizationList';
+import Pagination from '../components/Pagination';
 import SelectedPopover from '../components/SelectedPopover';
 import SortBar from '../components/SortBar';
 import StateFilter from '../components/StateFilter';
@@ -223,6 +224,15 @@ export default class DashboardPage extends Component {
               />
               <Summary summaryData={summaryData} classes={"mb-3"} />
               <OrganizationList organizations={organizationsData}/>
+              <div className="row">
+                <div className="col-sm-12 mt-4 mb-4 text-center">
+                  <Pagination
+                    filters={filters}
+                    summaryData={summaryData}
+                    handlePageChange={this.handlePageChange}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           {false && <SelectedPopover />}
