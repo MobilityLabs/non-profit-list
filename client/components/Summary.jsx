@@ -20,7 +20,7 @@ export default class Summary extends Component {
     const {summaryData, classes, loading} = this.props;
     const className = classes + (loading ? ' loading' : '');
     return (
-      <div className={"summary sticky-top " + className}>
+      <div className={"summary " + className}>
         <table className="table table-sm table-striped mb-0">
           <thead>
             <tr>
