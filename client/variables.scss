@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:400,700');
 
 $enable-flex: true;
 
@@ -27,7 +27,7 @@ $font-size-root: 16px;
 $font-small: 0.833em;
 
 $font-family-sans-serif: 'Source Sans Pro', sans-serif;
-$font-family-mono: 'Source Code Pro', monospace;;
+$font-family-mono: 'Source Code Pro', monospace;
 
 $font-family-base: $font-family-sans-serif;
 $headings-font-family: $font-family-sans-serif;
