@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 
 import './Collapse.scss';
 
-import type {Organization} from '../types';
+import type {Organization, SummaryData} from '../types';
 
 const MONTHS = {
   '01': 'Jan',
@@ -29,6 +29,7 @@ export default class OrganizationCard extends Component {
     handleCardClick: Function,
     summaryData: SummaryData,
   }
+
   componentDidUpdate() {
     if (this.props.expanded && google && google.maps) {
       this.loadGoogleMap();
@@ -73,69 +74,26 @@ export default class OrganizationCard extends Component {
     }
     return dateString;
   };
+  
+  percentageFormatter = (number: number, key: string) =>{
+    const intNumber = parseInt(number, 10);
+    const base = this.props.summaryData[key];
+    let percentage = ((intNumber - base) / base);
+    percentage = numeral(percentage).format('0%');
+    if (intNumber > base) {
+      return(
+        <small className="mr-1 text-success">{percentage}</small>
+      );
+    } else if (intNumber < base) {
+      return(
+        <small className="mr-1 text-danger">{percentage}</small>
+      );
+    }
+    return null;
+  };
+
   render() {
-    const feelingLuckyURL = (name: string) => {
-      return "https://duckduckgo.com/?q=!ducky+" + encodeURIComponent(name);
-    };
-    const {organization, handleCardClick, expanded, summaryData} = this.props;
-    const existValidator =(object: ?number|?string) => {return object ? object : "Not Listed";};
-    const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Listed";};
-    const organizationCategory = (number: ?number) =>{
-      let category = "";
-      switch (number) {
-      case 1:
-        category = "Corporation";
-        break;
-      case 2:
-        category = "Trust";
-        break;
-      case 3:
-        category = "Co-operative";
-        break;
-      case 4:
-        category = "Partnership";
-        break;
-      case 5:
-        category = "Association";
-        break;
-      default:
-        category = "Not listed";
-      }
-      return category;
-    };
-    const deductibilityCategory = (number: ?number) =>{
-      let deductibilityCategory = "";
-      switch (number) {
-      case 1:
-        deductibilityCategory = "Contributions are deductible";
-        break;
-      case 2:
-        deductibilityCategory = "Contributions are not deductible";
-        break;
-      case 4:
-        deductibilityCategory = "Contributions are deductible by treaty (foreign organizations)";
-        break;
-      default:
-        deductibilityCategory = "Not listed";
-      }
-      return deductibilityCategory;
-    };
-    const percentageFormatter = (number: number, key: string) =>{
-      const intNumber = parseInt(number, 10);
-      const base = this.props.summaryData[key];
-      let percentage = ((intNumber - base) / base);
-      percentage = numeral(percentage).format('0%');
-      if (intNumber > base) {
-        return(
-          <small className="mr-1 text-success">{percentage}</small>
-        );
-      } else if (intNumber < base) {
-        return(
-          <small className="mr-1 text-danger">{percentage}</small>
-        );
-      }
-      return null;
-    };
+    const {organization, handleCardClick, expanded} = this.props;
     const icoFormatter =(name: string) => {return name ? name.replace(/[!@#$%^&* ]( )/gm, "") : "Not Listed";};
     const hideOnClick = (expanded ? " d-none" : " expanded");
     const showOnClick = (expanded ? " expanded" : " d-none");
@@ -207,21 +165,21 @@ export default class OrganizationCard extends Component {
                 <dl>
                   <dt className="font_micro">Income</dt>
                   <dd className="card-text font_small">
-                    {percentageFormatter(organization.income_amt, 'income_avg')}
+                    {this.percentageFormatter(organization.income_amt, 'income_med')}
                     {amountValidator(organization.income_amt)}
                   </dd>
                 </dl>
                 <dl className={showOnClick}>
                   <dt className="font_micro">Revenue</dt>
                   <dd className="card-text font_small">
-                    {percentageFormatter(organization.revenue_amt, 'revenue_avg')}
+                    {this.percentageFormatter(organization.revenue_amt, 'revenue_med')}
                     {amountValidator(organization.revenue_amt)}
                   </dd>
                 </dl>
                 <dl>
                   <dt className="font_micro">Assets</dt>
                   <dd className="card-text font_small">
-                    {percentageFormatter(organization.asset_amt, 'asset_avg')}
+                    {this.percentageFormatter(organization.asset_amt, 'asset_med')}
                     {amountValidator(organization.asset_amt)}
                   </dd>
                 </dl>
@@ -256,3 +214,48 @@ export default class OrganizationCard extends Component {
   }
 }
 
+function feelingLuckyURL(name: string) {
+  return "https://duckduckgo.com/?q=!ducky+" + encodeURIComponent(name);
+}
+function existValidator(object: ?number|?string) {return object ? object : "Not Listed";}
+function amountValidator(number: ?number) {return number ? numeral(number).format('$0,0.00') : "Not Listed";}
+function organizationCategory(number: ?string) {
+  let category = "";
+  switch (number) {
+  case 1:
+    category = "Corporation";
+    break;
+  case 2:
+    category = "Trust";
+    break;
+  case 3:
+    category = "Co-operative";
+    break;
+  case 4:
+    category = "Partnership";
+    break;
+  case 5:
+    category = "Association";
+    break;
+  default:
+    category = "Not listed";
+  }
+  return category;
+}
+function deductibilityCategory(number: ?string) {
+  let deductibilityCategory = "";
+  switch (number) {
+  case 1:
+    deductibilityCategory = "Contributions are deductible";
+    break;
+  case 2:
+    deductibilityCategory = "Contributions are not deductible";
+    break;
+  case 4:
+    deductibilityCategory = "Contributions are deductible by treaty (foreign organizations)";
+    break;
+  default:
+    deductibilityCategory = "Not listed";
+  }
+  return deductibilityCategory;
+}
