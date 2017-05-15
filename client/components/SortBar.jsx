@@ -11,15 +11,16 @@ export default class SortBar extends Component {
 
   props: {
     filters: Filters,
-    handleSortChange: Function,
     handlePageChange: Function,
+    handleSortChange: Function,
+    loading: boolean,
     summaryData: SummaryData,
   }
 
   render() {
-    const {filters, handleSortChange, handlePageChange, summaryData} = this.props;
+    const {filters, handleSortChange, handlePageChange, summaryData, loading} = this.props;
     return (
-      <div className="sort-bar">
+      <div className={"sort-bar " + (loading ? "loading" : "")}>
         <Pagination
           filters={filters}
           summaryData={summaryData}

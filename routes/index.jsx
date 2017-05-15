@@ -20,6 +20,7 @@ router.get('*', (req, res, next) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       const data = await getOrganizationsData(req.query, next);
+      data.summaryData = {};
       const content = renderToString(<DataProvider {...renderProps} data={data} />);
       res.render('index', {title: 'Welcome', data, content});
     } else {

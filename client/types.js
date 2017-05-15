@@ -38,6 +38,18 @@ export type Organizations = Organization[];
 
 export type SummaryData = {
   count: number,
+  asset_avg: ?number,
+  asset_max: ?number,
+  asset_med: ?number,
+  asset_min: ?number,
+  income_avg: ?number,
+  income_max: ?number,
+  income_med: ?number,
+  income_min: ?number,
+  revenue_avg: ?number,
+  revenue_max: ?number,
+  revenue_med: ?number,
+  revenue_min: ?number,
 };
 
 export type FilterData = {

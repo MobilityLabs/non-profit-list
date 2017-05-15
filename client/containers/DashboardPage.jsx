@@ -22,13 +22,14 @@ type State = {
   error: string,
   filters: Filters,
   filtersData: FiltersData,
-  loading: boolean,
+  loadingOrgs: boolean,
+  loadingSummary: boolean,
   organizationsData: Organizations,
   summaryData: SummaryData,
   error?: Error,
 };
 
-let timeout; // Used below because I can't put timeout on state in this case
+let timeout, summaryTimeout; // Used below because I can't put timeout on state in this case
 
 export default class DashboardPage extends Component {
 
@@ -38,7 +39,8 @@ export default class DashboardPage extends Component {
     {
       filters: {},
       filtersData: {},
-      loading: true,
+      loadingOrgs: true,
+      loadingSummary: true,
       organizationsData: [],
       summaryData: {},
       error: null,
@@ -49,6 +51,7 @@ export default class DashboardPage extends Component {
       const newFilters = generateFiltersFromURL(this.state.filters, this.props.location.query);
       this.setState({filters: newFilters});
     }
+    this.getSummary(0);
     if (this.state.organizationsData.length > 0) {
       return;
     }
@@ -58,13 +61,14 @@ export default class DashboardPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (!_.isEqual(prevState.filters, this.state.filters)) {
       this.getOrganizations(500);
+      this.getSummary(0);
     }
     window.scrollTo(0, 0);
   }
 
   async getOrganizations(timer: number) {
     // Display loading indicator as soon as this is called
-    this.setState({loading: true});
+    this.setState({loadingOrgs: true});
 
     // Clear existing timeouts to prevent call
     clearTimeout(timeout);
@@ -98,18 +102,63 @@ export default class DashboardPage extends Component {
             },
           })
         ).json();
+        this.setState({
+          filtersData: result.filtersData,
+          loadingOrgs: false,
+          organizationsData: result.organizationsData,
+        });
+      } catch (err) {
+        this.setState({loadingOrgs: false, error: err});
+      }
+    }, timer);
+  }
+
+  async getSummary(timer: number) {
+    // Display loading indicator as soon as this is called
+    this.setState({loadingSummary: true});
+
+    // Clear existing timeouts to prevent call
+    clearTimeout(summaryTimeout);
+
+    // New timeout to call organizations
+    summaryTimeout = setTimeout(async () => {
+      const {filters} = this.state;
+      // Build a query string with an array of key=value strings
+      const queryStringArr: [] = [];
+      _.each(filters, (v, k) => {
+        if (_.isNil(v) || v.length === 0) {return;} // Do not include empty strings, arrays, null, or undefined
+        let value = _.isArray(v) ? v.join(',') : v;
+        // Order is an object so treat it a little different
+        if (k === 'order') {
+          if (Object.keys(v).length === 0) { return; }
+          const values = _.map(v, (order: string, key: string) => (key + '-' + order));
+          value = values.join(',');
+        }
+        queryStringArr.push(k + '=' + value);
+      });
+      const queryString = queryStringArr.join('&');
+      browserHistory.push({
+        search: '?' + queryString
+      });
+      try {
+        const result = await(
+          await fetch('/api/summary?' + queryString, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          })
+        ).json();
         const summaryData = _.mapValues(result.summaryData, (v) => {
           if (v === null) {return v;}
           return Math.round(v * 100) / 100;
         });
         this.setState({
-          filtersData: result.filtersData,
-          loading: false,
-          organizationsData: result.organizationsData,
+          loadingSummary: false,
           summaryData: summaryData,
         });
       } catch (err) {
-        this.setState({loading: false, error: err});
+        this.setState({loadingSummary: false, error: err});
       }
     }, timer);
   }
@@ -188,7 +237,7 @@ export default class DashboardPage extends Component {
         ograph: true
       }
     };
-    const {filtersData, organizationsData, filters, loading, summaryData} = this.state;
+    const {filtersData, organizationsData, filters, loadingOrgs, loadingSummary, summaryData} = this.state;
     return (
       <DocumentMeta {...meta}>
         <div className="bg-light">
@@ -220,21 +269,23 @@ export default class DashboardPage extends Component {
                 beforeContent={true}
               />
             </div>
-            <div className={"col-sm-12 col-md-8 " + (loading ? "loading" : "")}>
+            <div className="col-sm-12 col-md-8">
               <SortBar
                 filters={filters}
                 summaryData={summaryData}
                 handleSortChange={this.handleSortChange}
                 handlePageChange={this.handlePageChange}
+                loading={loadingSummary}
               />
-              <Summary summaryData={summaryData} classes={"mb-3"} />
-              <OrganizationList organizations={organizationsData} summaryData={summaryData}/>
+              <Summary summaryData={summaryData} classes={"mb-3"} loading={loadingSummary}/>
+              <OrganizationList organizations={organizationsData} summaryData={summaryData} loading={loadingOrgs}/>
               <div className="row">
                 <div className="col-sm-12 mt-4 mb-4 text-center">
                   <Pagination
                     filters={filters}
                     summaryData={summaryData}
                     handlePageChange={this.handlePageChange}
+                    loading={loadingSummary}
                   />
                 </div>
               </div>

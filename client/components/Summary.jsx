@@ -4,18 +4,23 @@ import React, {Component} from 'react';
 
 import './Summary.scss';
 
+import type {SummaryData} from '../types';
+
+const commas = (number: ?number) => {return number ? numeral(number).format('0,0') : "Not Available";};
+const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Available";};
+
 export default class Summary extends Component {
   props: {
+    classes: string,
+    loading: boolean,
     summaryData: SummaryData,
-    classes: string;
   }
 
   render() {
-    const commas = (number: ?number) => {return number ? numeral(number).format('0,0') : "Not Available";};
-    const amountValidator = (number: ?number) => {return number ? numeral(number).format('$0,0.00') : "Not Available";};
-    const {summaryData, classes} = this.props;
+    const {summaryData, classes, loading} = this.props;
+    const className = classes + (loading ? ' loading' : '');
     return (
-      <div className={"summary sticky-top " + classes}>
+      <div className={"summary sticky-top " + className}>
         <table className="table table-sm table-striped mb-0">
           <thead>
             <tr>

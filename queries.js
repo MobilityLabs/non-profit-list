@@ -12,34 +12,13 @@ export const getOrganizationsData = async (filters, next) => {
     mainQuery = createOrganizationOrderBy(mainQuery, filters);
     mainQuery = createOrganizationLimit(mainQuery, filters);
 
-    let aggQuery = db('organizations')
-      .count('* as count')
-      .avg('income_amt as income_avg')
-      .min('income_amt as income_min')
-      .max('income_amt as income_max')
-      // .select(db.raw('median(income_amt) as income_med'))
-      .avg('revenue_amt as revenue_avg')
-      .min('revenue_amt as revenue_min')
-      .max('revenue_amt as revenue_max')
-      // .select(db.raw('median(revenue_amt) as revenue_med'))
-      .avg('asset_amt as asset_avg')
-      .min('asset_amt as asset_min')
-      .max('asset_amt as asset_max');
-      // .select(db.raw('median(asset_amt) as asset_med'));
-    aggQuery = createOrganizationWhere(aggQuery, filters);
-
     const data = await mainQuery;
-    const summaryData = await aggQuery;
-    const numberSummaryData = _.mapValues(summaryData[0], (v) => {
-      if (v === null) {return v;}
-      return Math.round(v * 100) / 100;
-    });
+    
     return {
       filters: defaultFilters,
       filtersData: filtersData,
       organizationsData: data,
       status: 'success',
-      summaryData: numberSummaryData, // An object with count
     };
   } catch (err) {
     return next(err);
@@ -49,6 +28,44 @@ export const getOrganizationsData = async (filters, next) => {
 // Used by the API
 export const getOrganizations = async (req, res, next) => {
   const data = await getOrganizationsData(req.query, next);
+  return res.status(200).json(data);
+};
+
+export const getSummaryData = async (filters, next) => {
+  try {
+    let aggQuery = db('organizations')
+      .count('* as count')
+      .avg('income_amt as income_avg')
+      .min('income_amt as income_min')
+      .max('income_amt as income_max')
+      .select(db.raw('median(income_amt) as income_med'))
+      .avg('revenue_amt as revenue_avg')
+      .min('revenue_amt as revenue_min')
+      .max('revenue_amt as revenue_max')
+      .select(db.raw('median(revenue_amt) as revenue_med'))
+      .avg('asset_amt as asset_avg')
+      .min('asset_amt as asset_min')
+      .max('asset_amt as asset_max')
+      .select(db.raw('median(asset_amt) as asset_med'));
+    aggQuery = createOrganizationWhere(aggQuery, filters);
+
+    const summaryData = await aggQuery;
+    const numberSummaryData = _.mapValues(summaryData[0], (v) => {
+      if (v === null) {return v;}
+      return Math.round(v * 100) / 100;
+    });
+
+    return {
+      summaryData: numberSummaryData, // An object with count
+    };
+  } catch (err) {
+    return next(err);
+  }
+};
+
+// Used by the API
+export const getSummary = async (req, res, next) => {
+  const data = await getSummaryData(req.query, next);
   return res.status(200).json(data);
 };
 

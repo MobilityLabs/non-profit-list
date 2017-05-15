@@ -5,15 +5,19 @@ import OrganizationCard from './OrganizationCard';
 
 import './OrganizationList.scss';
 
-import type {Organizations} from '../types';
+import type {Organizations, SummaryData} from '../types';
+type State = {
+  expandedEIN: number,
+};
 
 export default class OrganizationList extends Component {
   props: {
+    loading: boolean,
     organizations: Organizations,
     summaryData: SummaryData,
   }
 
-  state = {
+  state: State = {
     expandedEIN: 0,
   }
 
@@ -27,7 +31,7 @@ export default class OrganizationList extends Component {
   }
 
   render() {
-    const {organizations, summaryData} = this.props;
+    const {organizations, summaryData, loading} = this.props;
     const table = organizations.map((o) => {
       return (
         <OrganizationCard
@@ -40,7 +44,7 @@ export default class OrganizationList extends Component {
       );
     });
     return (
-      <div className="card-group-vertical">
+      <div className={"card-group-vertical " + (loading ? "loading" : "")}>
         {table}
       </div>
     );
