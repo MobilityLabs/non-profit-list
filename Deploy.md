@@ -64,3 +64,7 @@ You should see a message from github with the repo and then get disconnected
 
 # Install caddy server
 [Gist with easy setup](https://gist.github.com/Jamesits/2a1e2677ddba31fae62d022ef8aa54dc)
+
+# Set pm2 to automatically start back up
+`pm2 startup systemd -u <app name> --hp <app home directory>`
+`pm2 save` once the process is running to save it for restart
