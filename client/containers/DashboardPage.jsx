@@ -29,9 +29,11 @@ type State = {
   error?: Error,
 };
 
-let timeout, summaryTimeout; // Used below because I can't put timeout on state in this case
-
 export default class DashboardPage extends Component {
+
+  props: {
+    location: {query: {}}
+  }
 
   state: State = this.context.data || // Coming from the server
     window.__INITIAL_STATE__ ||
@@ -51,119 +53,93 @@ export default class DashboardPage extends Component {
       const newFilters = generateFiltersFromURL(this.state.filters, this.props.location.query);
       this.setState({filters: newFilters});
     }
-    this.getSummary(0);
+    this.getSummary();
     if (this.state.organizationsData.length > 0) {
       return;
     }
-    this.getOrganizations(0);
+    this.getOrganizations();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState: State) {
     if (!_.isEqual(prevState.filters, this.state.filters)) {
-      this.getOrganizations(500);
-      this.getSummary(0);
+      this.getOrganizations();
+      this.getSummary();
     }
     window.scrollTo(0, 0);
   }
 
-  async getOrganizations(timer: number) {
+  debouncedOrgs = _.debounce(async () => {
+    const {filters} = this.state;
+    // Build a query string with an array of key=value strings
+    const queryString = buildQueryString(filters);
+    // Keep browser history in sync
+    browserHistory.push({
+      search: '?' + queryString
+    });
+    try {
+      const result = await(
+        await fetch('/api/organizations?' + queryString, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+      ).json();
+      this.setState({
+        filtersData: result.filtersData,
+        loadingOrgs: false,
+        organizationsData: result.organizationsData,
+      });
+    } catch (err) {
+      this.setState({loadingOrgs: false, error: err});
+    }
+  }, 500)
+
+  async getOrganizations() {
     // Display loading indicator as soon as this is called
     this.setState({loadingOrgs: true});
 
-    // Clear existing timeouts to prevent call
-    clearTimeout(timeout);
-
-    // New timeout to call organizations
-    timeout = setTimeout(async () => {
-      const {filters} = this.state;
-      // Build a query string with an array of key=value strings
-      const queryStringArr: [] = [];
-      _.each(filters, (v, k) => {
-        if (_.isNil(v) || v.length === 0) {return;} // Do not include empty strings, arrays, null, or undefined
-        let value = _.isArray(v) ? v.join(',') : v;
-        // Order is an object so treat it a little different
-        if (k === 'order') {
-          if (Object.keys(v).length === 0) { return; }
-          const values = _.map(v, (order: string, key: string) => (key + '-' + order));
-          value = values.join(',');
-        }
-        queryStringArr.push(k + '=' + value);
-      });
-      const queryString = queryStringArr.join('&');
-      browserHistory.push({
-        search: '?' + queryString
-      });
-      try {
-        const result = await(
-          await fetch('/api/organizations?' + queryString, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          })
-        ).json();
-        this.setState({
-          filtersData: result.filtersData,
-          loadingOrgs: false,
-          organizationsData: result.organizationsData,
-        });
-      } catch (err) {
-        this.setState({loadingOrgs: false, error: err});
-      }
-    }, timer);
+    this.debouncedOrgs();
   }
+  // Only call once every 500 miliseconds
+  debouncedSummary = _.debounce(async () => {
+    const {filters} = this.state;
+    // Build a query string with an array of key=value strings
+    const queryString = buildQueryString(filters);
+    browserHistory.push({
+      search: '?' + queryString
+    });
+    try {
+      const result = await(
+        await fetch('/api/summary?' + queryString, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+      ).json();
+      // Convert summary data to numbers
+      const summaryData = _.mapValues(result.summaryData, (v) => {
+        if (v === null) {return v;}
+        return Math.round(v * 100) / 100;
+      });
+      this.setState({
+        loadingSummary: false,
+        summaryData: summaryData,
+      });
+    } catch (err) {
+      this.setState({loadingSummary: false, error: err});
+    }
+  }, 500)
 
-  async getSummary(timer: number) {
+  async getSummary() {
     // Display loading indicator as soon as this is called
     this.setState({loadingSummary: true});
 
-    // Clear existing timeouts to prevent call
-    clearTimeout(summaryTimeout);
-
-    // New timeout to call organizations
-    summaryTimeout = setTimeout(async () => {
-      const {filters} = this.state;
-      // Build a query string with an array of key=value strings
-      const queryStringArr: [] = [];
-      _.each(filters, (v, k) => {
-        if (_.isNil(v) || v.length === 0) {return;} // Do not include empty strings, arrays, null, or undefined
-        let value = _.isArray(v) ? v.join(',') : v;
-        // Order is an object so treat it a little different
-        if (k === 'order') {
-          if (Object.keys(v).length === 0) { return; }
-          const values = _.map(v, (order: string, key: string) => (key + '-' + order));
-          value = values.join(',');
-        }
-        queryStringArr.push(k + '=' + value);
-      });
-      const queryString = queryStringArr.join('&');
-      browserHistory.push({
-        search: '?' + queryString
-      });
-      try {
-        const result = await(
-          await fetch('/api/summary?' + queryString, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          })
-        ).json();
-        const summaryData = _.mapValues(result.summaryData, (v) => {
-          if (v === null) {return v;}
-          return Math.round(v * 100) / 100;
-        });
-        this.setState({
-          loadingSummary: false,
-          summaryData: summaryData,
-        });
-      } catch (err) {
-        this.setState({loadingSummary: false, error: err});
-      }
-    }, timer);
+    this.debouncedSummary();
   }
 
-  handleClearFilter = (filter, emptyFilterValue) => {
+  handleClearFilter = (filter: string, emptyFilterValue: {}|[]) => {
     const filters = Object.assign({}, this.state.filters);
     filters[filter] = emptyFilterValue;
     this.setState({filters});
@@ -315,4 +291,20 @@ function generateFiltersFromURL(stateFilters, queryParams) {
     stateFilters[k] = isFinite(v) ? parseInt(v, 10) : v;
   });
   return stateFilters;
+}
+
+function buildQueryString(filters: Filters) {
+  const queryStringArr: [] = [];
+  _.each(filters, (v, k) => {
+    if (_.isNil(v) || v.length === 0) {return;} // Do not include empty strings, arrays, null, or undefined
+    let value = _.isArray(v) ? v.join(',') : v;
+    // Order is an object so treat it a little different
+    if (k === 'order') {
+      if (Object.keys(v).length === 0) { return; }
+      const values = _.map(v, (order: string, key: string) => (key + '-' + order));
+      value = values.join(',');
+    }
+    queryStringArr.push(k + '=' + value);
+  });
+  return queryStringArr.join('&');
 }
