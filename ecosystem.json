@@ -12,7 +12,7 @@
   "deploy" : {
     "production" : {
       "user" : "nonprofits",
-      "host" : ["list.mobility-labs.com"],
+      "host" : ["104.236.211.178"],
       "ref"  : "origin/master",
       "repo" : "git@github.com:MobilityLabs/non-profit-list.git",
       "path" : "/home/nonprofits",
