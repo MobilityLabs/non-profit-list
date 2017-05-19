@@ -134,7 +134,7 @@ export default class OrganizationCard extends Component {
               </a>
             </div>
             <div className="company-container">
-              <div className="company-meta">
+              <div className="company-meta col-md-6 px-0">
                 <dl>
                   <dt className="font_micro">NTEE Code</dt>
                   <dd className="card-text font_mono">{existValidator(organization.ntee_cd)}</dd>
@@ -163,7 +163,7 @@ export default class OrganizationCard extends Component {
                   <div className="user-map" ref="map"/>
                 </div>
               </div>
-              <div className="company-financials text-left text-md-right">
+              <div className="company-financials col-md-6 px-0 text-left text-md-right">
                 <dl>
                   <dt className="font_micro">Income</dt>
                   <dd className="card-text font_small">
