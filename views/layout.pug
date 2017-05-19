@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= 'Non-Profit Tool'
+    title= 'Datasaurus'
     meta(name="viewport", content="width=device-width")
     script(async='true', type='text/javascript',src='https://maps.googleapis.com/maps/api/js')
     if process.env.NODE_ENV == 'production'
@@ -9,9 +9,21 @@ html
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
     script(src='https://code.jquery.com/jquery-3.1.1.slim.min.js', integrity='sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n', crossorigin='anonymous')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js', integrity='sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn', crossorigin='anonymous')
-    meta(name='description' content='Non profit list')
-    meta(property='og:title' content='Non profit List')
+    //- Meta
+    meta(name='description' content='Datasaurus')
+    meta(property='og:title' content='Datasaurus')
     meta(property='og:description' content='List of non profits')
+    //- Favicon
+    link(rel="apple-touch-icon", sizes="180x180", href="/apple-touch-icon.png?v=69kmvXgOgB")
+    link(rel="icon", type="image/png", sizes="32x32", href="/favicon-32x32.png?v=69kmvXgOgB")
+    link(rel="icon", type="image/png", sizes="16x16", href="/favicon-16x16.png?v=69kmvXgOgB")
+    link(rel="manifest", href="/manifest.json?v=69kmvXgOgB")
+    link(rel="mask-icon", href="/safari-pinned-tab.svg?v=69kmvXgOgB", color="#4990e2")
+    link(rel="shortcut icon", href="/favicon.ico?v=69kmvXgOgB")
+    meta(name="apple-mobile-web-app-title", content="Datasaurus")
+    meta(name="application-name", content="Datasaurus")
+    meta(name="theme-color", content="#4990e2")
+
   body
     block content
     script(type='text/javascript', src='/app.bundle.js')

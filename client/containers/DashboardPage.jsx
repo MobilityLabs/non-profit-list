@@ -207,7 +207,7 @@ export default class DashboardPage extends Component {
 
   render() {
     const meta = {
-      title: 'Export Tool',
+      title: 'Datasaurus',
       description: 'Description',
       auto: {
         ograph: true
