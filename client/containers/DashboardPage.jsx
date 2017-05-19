@@ -64,8 +64,8 @@ export default class DashboardPage extends Component {
     if (!_.isEqual(prevState.filters, this.state.filters)) {
       this.getOrganizations();
       this.getSummary();
+      window.scrollTo(0, 0);
     }
-    window.scrollTo(0, 0);
   }
 
   debouncedOrgs = _.debounce(async () => {
