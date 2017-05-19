@@ -56,9 +56,10 @@
 }
 .card-container-company{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  flex-wrap: wrap;
 }
 .company-container{
   display: flex;
@@ -67,15 +68,10 @@
   width: 100%;
   flex-wrap: wrap;
   .company-meta{
-    display: flex;
-    flex: 2 1 15em;
-    min-width: 15em;
-    flex-direction: column;
   }
   .company-financials{
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
-    min-width: 20em;
     text-align: right;
      dd{
       font-family: $font-family-mono;

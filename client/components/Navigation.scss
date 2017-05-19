@@ -1,4 +1,18 @@
 @import '../variables.scss';
+.main-nav svg{
+  path.logo-type{
+    fill: $grey-1;
+  }
+  path.logo-mark{
+    fill: $brand-primary;
+  }
+  &:hover{
+    cursor: pointer;
+    path.logo-type, path.logo-mark{
+      fill: darken($brand-primary, 20%);
+    }
+  }
+}
 .main-nav{
   h1{
     font-weight: bold;
