@@ -74,7 +74,7 @@ export default class OrganizationCard extends Component {
     }
     return dateString;
   };
-  
+
   percentageFormatter = (number: number, key: string) =>{
     const intNumber = parseInt(number, 10);
     const base = this.props.summaryData[key];
@@ -112,15 +112,17 @@ export default class OrganizationCard extends Component {
                 id={"checkbox-" + organization.ein}
                 value={"checked-" + organization.ein}
                 aria-label="..."
+                disabled
               />
             </label>
             <label className="form-check-label">
               <input
-                className="form-check-input star"
+                className="form-check-input star disabled"
                 type="checkbox"
                 id={"star-" + organization.ein}
                 value={"starred-" + organization.ein}
                 aria-label="..."
+                disabled
               />
             </label>
           </div>

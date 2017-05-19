@@ -111,6 +111,12 @@ input{
     color: $brand-primary;
     position: absolute;
   }
+  &.star.disabled:before {
+    content: "\2606";
+    color: $grey-5;
+    position: absolute;
+    visibility:visible;
+  }
 }
 .label-heading{
   font-weight: bold;

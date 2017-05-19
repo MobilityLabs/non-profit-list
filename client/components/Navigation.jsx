@@ -21,7 +21,7 @@ export default class Navigation extends Component {
             <div className="col col-md-6">
               <ul className="nav justify-content-end">
                 <li className="nav-item">
-                  <a className="nav-link btn btn-primary" href="#">Sign Up</a>
+                  <a className="nav-link btn btn-primary disabled" href="#">Sign Up</a>
                 </li>
               </ul>
             </div>
@@ -33,7 +33,7 @@ export default class Navigation extends Component {
                   <a className="nav-link active" href="#">All Records</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">My Favorites</a>
+                  <a className="nav-link disabled" href="#">My Favorites</a>
                 </li>
               </ul>
             </div>
