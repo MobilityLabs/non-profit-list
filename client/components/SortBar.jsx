@@ -7,6 +7,10 @@ import './SortBar.scss';
 
 import type {Filters, SummaryData} from '../types';
 
+type State = {
+  expanded: boolean,
+}
+
 export default class SortBar extends Component {
 
   props: {
@@ -17,8 +21,20 @@ export default class SortBar extends Component {
     summaryData: SummaryData,
   }
 
+  state: State = {
+    expanded: false,
+  }
+
+  handleClick = () => {
+    this.setState({
+      expanded: !this.state.expanded,
+    });
+  }
+
   render() {
     const {filters, handleSortChange, handlePageChange, summaryData, loading} = this.props;
+    const {expanded} = this.state;
+    const addOnClick = (expanded ? " expanded" : "");
     return (
       <div className={"sort-bar " + (loading ? "loading" : "")}>
         <Pagination
@@ -27,7 +43,7 @@ export default class SortBar extends Component {
           handlePageChange={handlePageChange}
         />
         <div className="sort-options">
-          <span className="label-heading">Sort by: </span>
+          <span className="label-heading mr-1">Sort by: </span>
           <div
             className="btn-group btn-group-container"
             role="group"
@@ -37,33 +53,38 @@ export default class SortBar extends Component {
               <button
                 id="btnGroupName"
                 type="button"
-                className="btn btn-sm dropdown-toggle"
-                data-toggle="dropdown"
+                className={"btn btn-sm menu-trigger" + addOnClick}
                 aria-haspopup="true"
                 aria-expanded="false"
+                onClick={this.handleClick}
               >
-                Name
+                <span>Name</span>
+                <i className="fa fa-fw fa-sort-down"/>
               </button>
-              <div className="dropdown-menu" aria-labelledby="btnGroupName">
+              <div className={"menu" + addOnClick} aria-labelledby="btnGroupName">
                 <a
-                  className={"dropdown-item " + (filters.order.name === 'asc' ? 'active' : '')}
+                  className={" " + (filters.order.name === 'asc' ? 'active' : '')}
                   href="#"
                   name="name_asc"
                   onClick={handleSortChange.bind(null, {name: 'asc'})}
                 >
-                  Name ASC
+                  <span>Name ASC</span>
+                  <i className="fa fa-fw fa-sort-alpha-asc"/>
                 </a>
                 <a
                   // TODO: Add active states to these other ones
-                  className="dropdown-item"
+                  className=""
                   href="#"
                   name="name_desc"
                   onClick={handleSortChange.bind(null, {name: 'desc'})}
                 >
-                  Name Desc
+                  <span>Name DESC</span>
+                  <i className="fa fa-fw fa-sort-alpha-desc"/>
                 </a>
               </div>
             </div>
+
+
             <div className="btn-group" role="group">
               <button
                 id="btnGroupDate"
