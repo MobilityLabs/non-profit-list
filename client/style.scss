@@ -32,12 +32,15 @@
 // Utility Classes from Bootstrap
 @import "../node_modules/bootstrap/scss/utilities";
 
-.loading{
-  opacity: .25;
-}
-
 .disable-click-events{
   pointer-events: none;
+}
+.loading{
+  opacity: .25;
+  @extend .disable-click-events;
+  *{
+    user-select: none;
+  }
 }
 
 .enable-click-events{
