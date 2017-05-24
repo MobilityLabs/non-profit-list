@@ -1,14 +1,15 @@
 // @flow
+import onClickOutside from 'react-onclickoutside'
 import React, {Component} from 'react';
-import Select from 'react-select';
 
 import type {Filters, SummaryData} from '../types';
 
 type State = {
   expanded: boolean,
-}
+};
 
-export default class SortDropdown extends Component {
+class SortDropdown extends Component {
+
   props: {
     filters: Filters,
     handleSortChange: Function,
@@ -26,10 +27,25 @@ export default class SortDropdown extends Component {
       expanded: !this.state.expanded,
     });
   }
+   handleClickOutside = evt => {
+    this.setState({
+      expanded: false,
+    });
+  }
   render() {
     const {expanded} = this.state;
     const {filters, handleSortChange, name, label, keyName} = this.props;
     const addOnClick = (expanded ? " expanded" : "");
+    let compiledName;
+    if (filters.order[keyName]){
+      compiledName =(
+        <div>
+          {name + " " + filters.order[keyName].toUpperCase()} <i className={"fa fa-fw fa-sort-alpha-" + filters.order[keyName]}/>
+        </div>
+      )
+    } else{
+      compiledName = name
+    }
     return (
       <div className="btn-group" role="group">
         <button
@@ -39,15 +55,14 @@ export default class SortDropdown extends Component {
           aria-haspopup="true"
           aria-expanded="false"
           onClick={this.handleClick}
-          style={{"min-width": "150px" }}
+          style={{"minWidth": "120px" }}
         >
-          <span>{name}</span>
+          <span>{compiledName}</span>
           <i className="fa fa-fw fa-sort-down"/>
         </button>
         <div className={"menu" + addOnClick} aria-labelledby="btnGroupName">
           <a
             className={" " + (filters.order.name === 'asc' ? 'active' : '')}
-            href="#"
             name={keyName + "_asc"}
             onClick={handleSortChange.bind(null, {[keyName]: 'asc'})}
           >
@@ -57,7 +72,6 @@ export default class SortDropdown extends Component {
           <a
             // TODO: Add active states to these other ones
             className=""
-            href="#"
             name={keyName + "_desc"}
             onClick={handleSortChange.bind(null, {[keyName]: 'desc'})}
           >
@@ -69,3 +83,5 @@ export default class SortDropdown extends Component {
     );
   }
 }
+
+export default onClickOutside(SortDropdown);
