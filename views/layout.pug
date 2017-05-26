@@ -3,7 +3,7 @@ html
   head
     title= 'Datasaurus'
     meta(name="viewport", content="width=device-width")
-    script(async='true', type='text/javascript',src='https://maps.googleapis.com/maps/api/js')
+    script(async='true', type='text/javascript',src=`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_KEY}`)
     if process.env.NODE_ENV == 'production'
       link(rel='stylesheet', href='/main.css')
       if process.env.HUB_SPOT_ID

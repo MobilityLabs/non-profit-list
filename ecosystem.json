@@ -1,6 +1,6 @@
 {
   "apps" : [{
-    "name"      : "nonprofit-list",
+    "name"      : "Datasaurus",
     "script"    : "bin/www",
     "env": {
       "COMMON_VARIABLE": "true"
@@ -14,7 +14,7 @@
       "user" : "nonprofits",
       "host" : ["104.236.211.178"],
       "ref"  : "origin/master",
-      "repo" : "git@github.com:MobilityLabs/non-profit-list.git",
+      "repo" : "git@github.com:MobilityLabs/datasaurus.git",
       "path" : "/home/nonprofits",
       "ssh_options": "StrictHostKeyChecking=no",
       "key": "~/.ssh/digitalocean",
