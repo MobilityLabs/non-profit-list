@@ -13,7 +13,6 @@ export const getOrganizationsData = async (filters, next) => {
     mainQuery = createOrganizationLimit(mainQuery, filters);
 
     const data = await mainQuery;
-    
     return {
       filters: defaultFilters,
       filtersData: filtersData,

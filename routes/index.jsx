@@ -11,6 +11,7 @@ import {getOrganizationsData} from '../queries';
 
 const routes = createRoutes(AppRouter());
 const router = express.Router();
+const baseUrl = process.env.BASE_URL || '//datasaurus.org';
 
 router.get('*', (req, res, next) => {
   match({routes, location: req.url}, async (error, redirectLocation, renderProps) => {
@@ -22,7 +23,7 @@ router.get('*', (req, res, next) => {
       const data = await getOrganizationsData(req.query, next);
       data.summaryData = {};
       const content = renderToString(<DataProvider {...renderProps} data={data} />);
-      res.render('index', {title: 'Welcome', data, content});
+      res.render('index', {title: 'Welcome', data, content, baseUrl});
     } else {
       res.status(404).send('Not Found');
     }
