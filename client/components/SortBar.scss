@@ -1,16 +1,17 @@
-@import "../variables.scss";
+ @import "../variables.scss";
 
 .sort-bar{
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  height: 4.5em;
+  min-height: 4.5em;
+  margin-bottom: 0.5em;
 }
 .pagination{
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   flex: 0 0 15em;
   max-width: 15em;
   margin: auto;
@@ -26,79 +27,94 @@
     }
   }
 }
-.sort-options{
-  display: inline-flex;
-  flex: 0 0 auto;
-  margin: auto;
-}
 
-.btn-group-container {
-  border-radius: 0;
-  .btn{
-    background-color: transparent;
-    color: $grey-2;
-    border: none;
-    border-right: 1px solid $grey-6;
+.sort-options{
+  display: flex;
+  flex: 1 1 auto;
+  margin: auto;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-around;
+  .btn-group-container {
     border-radius: 0;
-    font-family: $font-family-sans-serif;
-    &:hover{
-      background-color: white;
-    }
-    &:focus, &:active{
-      background-color: white;
-    }
-  }
-  .btn-group:last-child .btn:last-of-type{
-    border-right: none;
-  }
-  .menu-trigger{
-    text-align: left;
+    flex-wrap: wrap;
     display: flex;
-    justify-content: space-between;
+    flex: 1 0 75%;
+    justify-content: center;
     align-items: center;
-    border: 1px solid transparent;
-    border-right: 1px solid $grey-6;
-    &.expanded{
-      background-color: white;
-      box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
-      border: 1px solid $grey-6;
+    & > .btn-group{
+      float: none;
+      display: flex;
+      flex: 1 0 25%;
     }
-  }
-  .menu{
-    display: none;
-    font-size: $font-small;
-    background-color: white;
-    border: 1px solid $grey-6;
-    border-radius: 0;
-    color: $grey-2;
-    position: absolute;
-    max-width: 100%;
-    top:0;
-    transform: translateY(40%);
-    right: 0;
-    left: 0;
-    padding: 0.25rem 0.5rem;
-    z-index: 2;
-    box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
-    a{
-      padding: 0.25rem 0.5rem;
-      margin: 0 -0.5rem;
-      font-family: $font-family-sans-serif;
+    .btn{
+      background-color: transparent;
       color: $grey-2;
-      border: 1px solid transparent;
-      display: block;
+      border: none;
+      border-right: 1px solid $grey-6;
+      border-radius: 0;
+      font-family: $font-family-sans-serif;
+      &:hover{
+        background-color: white;
+      }
+      &:focus, &:active{
+        background-color: white;
+      }
+    }
+    .btn-group:last-child .btn:last-of-type{
+      border-right: 1px solid transparent;
+    }
+
+    .menu-trigger{
+      text-align: left;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: none !important;
-      &:hover{
-        background-color: $grey-6;
-        border: 1px solid white;
-        text-decoration: none;
+      border: 1px solid transparent;
+      border-right: 1px solid $grey-6;
+      flex: 1;
+      &.expanded{
+        background-color: white;
+        box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+        border: 1px solid $grey-6;
       }
     }
-    &.expanded{
-      display: block;
+    .menu{
+      display: none;
+      font-size: $font-small;
+      background-color: white;
+      border: 1px solid $grey-6;
+      border-radius: 0;
+      color: $grey-2;
+      position: absolute;
+      max-width: 100%;
+      top:0;
+      transform: translateY(40%);
+      right: 0;
+      left: 0;
+      padding: 0.25rem 0.5rem;
+      z-index: 2;
+      box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+      a{
+        padding: 0.25rem 0.5rem;
+        margin: 0 -0.5rem;
+        font-family: $font-family-sans-serif;
+        color: $grey-2;
+        border: 1px solid transparent;
+        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: none !important;
+        &:hover{
+          background-color: $grey-6;
+          border: 1px solid white;
+          text-decoration: none;
+        }
+      }
+      &.expanded{
+        display: block;
+      }
     }
   }
 }
