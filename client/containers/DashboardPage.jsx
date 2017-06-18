@@ -74,11 +74,12 @@ export default class DashboardPage extends Component {
   debouncedOrgs = _.debounce(async (timestamp: number) => {
     const {filters} = this.state;
     // Build a query string with an array of key=value strings
-    const queryString = buildQueryString(filters);
+    let queryString = buildQueryString(filters);
     // Keep browser history in sync
     browserHistory.push({
       search: '?' + queryString
     });
+    queryString += '&timestamp=' + timestamp;
     try {
       const result = await(
         await fetch('/api/organizations?' + queryString, {
@@ -113,10 +114,11 @@ export default class DashboardPage extends Component {
   debouncedSummary = _.debounce(async (timestamp) => {
     const {filters} = this.state;
     // Build a query string with an array of key=value strings
-    const queryString = buildQueryString(filters);
+    let queryString = buildQueryString(filters);
     browserHistory.push({
       search: '?' + queryString
     });
+    queryString += '&timestamp=' + timestamp;
     try {
       const result = await(
         await fetch('/api/summary?' + queryString, {
