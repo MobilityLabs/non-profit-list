@@ -25,7 +25,7 @@ type State = {
   loadingSummary: boolean,
   organizationsData: Organizations,
   summaryData: SummaryData,
-  timestamp: ?number,
+  timestamp: number,
   error?: Error,
 };
 
@@ -46,31 +46,33 @@ export default class DashboardPage extends Component {
       organizationsData: [],
       summaryData: {},
       error: null,
-      timestamp: null,
+      timestamp: Date.now(),
     };
 
   componentDidMount() {
+    const timestamp = Date.now();
     if (this.props.location.query) {
       const newFilters = generateFiltersFromURL(this.state.filters, this.props.location.query);
-      this.setState({filters: newFilters, timestamp: Date.now()});
+      this.setState({filters: newFilters, timestamp});
     }
-    this.getSummary();
+    this.getSummary(timestamp);
     if (this.state.organizationsData.length > 0) {
       return;
     }
-    this.getOrganizations();
+    this.getOrganizations(timestamp);
   }
 
   componentDidUpdate(prevProps, prevState: State) {
     if (!_.isEqual(prevState.filters, this.state.filters)) {
-      this.getOrganizations();
-      this.getSummary();
+      const timestamp = Date.now();
+      this.getOrganizations(timestamp);
+      this.getSummary(timestamp);
       window.scrollTo(0, 0);
     }
   }
 
-  debouncedOrgs = _.debounce(async () => {
-    const {filters, timestamp} = this.state;
+  debouncedOrgs = _.debounce(async (timestamp: number) => {
+    const {filters} = this.state;
     // Build a query string with an array of key=value strings
     const queryString = buildQueryString(filters);
     // Keep browser history in sync
@@ -99,15 +101,17 @@ export default class DashboardPage extends Component {
     }
   }, 500)
 
-  async getOrganizations() {
+  async getOrganizations(newTimestamp: number) {
+    const {timestamp} = this.state;
+    const updatedTimestamp = newTimestamp > timestamp ? newTimestamp : timestamp;
     // Display loading indicator as soon as this is called
-    this.setState({loadingOrgs: true});
+    this.setState({loadingOrgs: true, timestamp: updatedTimestamp});
 
-    this.debouncedOrgs();
+    this.debouncedOrgs(newTimestamp);
   }
   // Only call once every 500 miliseconds
-  debouncedSummary = _.debounce(async () => {
-    const {filters, timestamp} = this.state;
+  debouncedSummary = _.debounce(async (timestamp) => {
+    const {filters} = this.state;
     // Build a query string with an array of key=value strings
     const queryString = buildQueryString(filters);
     browserHistory.push({
@@ -139,11 +143,11 @@ export default class DashboardPage extends Component {
     }
   }, 500)
 
-  async getSummary() {
+  async getSummary(timestamp: number) {
     // Display loading indicator as soon as this is called
     this.setState({loadingSummary: true});
 
-    this.debouncedSummary();
+    this.debouncedSummary(timestamp);
   }
 
   handleClearFilter = (filter: string, emptyFilterValue: {}|[]) => {
