@@ -19,13 +19,13 @@ import {defaultFilters} from '../../filtersData';
 import type {Organizations, SummaryData, FiltersData, Filters} from '../types';
 
 type State = {
-  error: string,
   filters: Filters,
   filtersData: FiltersData,
   loadingOrgs: boolean,
   loadingSummary: boolean,
   organizationsData: Organizations,
   summaryData: SummaryData,
+  timestamp: ?number,
   error?: Error,
 };
 
@@ -46,12 +46,13 @@ export default class DashboardPage extends Component {
       organizationsData: [],
       summaryData: {},
       error: null,
+      timestamp: null,
     };
 
   componentDidMount() {
     if (this.props.location.query) {
       const newFilters = generateFiltersFromURL(this.state.filters, this.props.location.query);
-      this.setState({filters: newFilters});
+      this.setState({filters: newFilters, timestamp: Date.now()});
     }
     this.getSummary();
     if (this.state.organizationsData.length > 0) {
@@ -69,7 +70,7 @@ export default class DashboardPage extends Component {
   }
 
   debouncedOrgs = _.debounce(async () => {
-    const {filters} = this.state;
+    const {filters, timestamp} = this.state;
     // Build a query string with an array of key=value strings
     const queryString = buildQueryString(filters);
     // Keep browser history in sync
@@ -85,6 +86,9 @@ export default class DashboardPage extends Component {
           },
         })
       ).json();
+      if (result.timestamp < timestamp) {
+        return;
+      }
       this.setState({
         filtersData: result.filtersData,
         loadingOrgs: false,
@@ -103,7 +107,7 @@ export default class DashboardPage extends Component {
   }
   // Only call once every 500 miliseconds
   debouncedSummary = _.debounce(async () => {
-    const {filters} = this.state;
+    const {filters, timestamp} = this.state;
     // Build a query string with an array of key=value strings
     const queryString = buildQueryString(filters);
     browserHistory.push({
@@ -118,6 +122,9 @@ export default class DashboardPage extends Component {
           },
         })
       ).json();
+      if (result.timestamp < timestamp) {
+        return;
+      }
       // Convert summary data to numbers
       const summaryData = _.mapValues(result.summaryData, (v) => {
         if (v === null) {return v;}

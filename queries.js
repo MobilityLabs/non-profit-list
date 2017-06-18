@@ -27,6 +27,7 @@ export const getOrganizationsData = async (filters, next) => {
 // Used by the API
 export const getOrganizations = async (req, res, next) => {
   const data = await getOrganizationsData(req.query, next);
+  data.timestamp = req.timestamp || Date.now();
   return res.status(200).json(data);
 };
 
@@ -65,6 +66,7 @@ export const getSummaryData = async (filters, next) => {
 // Used by the API
 export const getSummary = async (req, res, next) => {
   const data = await getSummaryData(req.query, next);
+  data.timestamp = req.timestamp || Date.now();
   return res.status(200).json(data);
 };
 
