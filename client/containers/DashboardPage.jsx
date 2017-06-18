@@ -107,7 +107,7 @@ export default class DashboardPage extends Component {
     // Display loading indicator as soon as this is called
     this.setState({loadingOrgs: true, timestamp: updatedTimestamp});
 
-    this.debouncedOrgs(newTimestamp);
+    this.debouncedOrgs(updatedTimestamp);
   }
   // Only call once every 500 miliseconds
   debouncedSummary = _.debounce(async (timestamp) => {
