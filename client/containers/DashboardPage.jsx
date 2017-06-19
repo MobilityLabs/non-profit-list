@@ -28,7 +28,7 @@ type State = {
   error?: Error,
 };
 
-const timestamp = Date.now();
+let timestamp = Date.now();
 
 export default class DashboardPage extends Component {
 
@@ -77,6 +77,7 @@ export default class DashboardPage extends Component {
     browserHistory.push({
       search: '?' + queryString
     });
+    timestamp = Date.now();
     queryString += '&timestamp=' + timestamp;
     try {
       const result = await(
