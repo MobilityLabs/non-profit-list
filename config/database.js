@@ -10,7 +10,7 @@ const connection = {
 };
 
 const db = require('knex')({
-  connection: connection,
+  connection,
   client: 'pg'
 });
 

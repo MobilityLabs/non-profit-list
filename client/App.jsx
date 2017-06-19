@@ -1,9 +1,13 @@
+// @flow
 import _ from 'lodash';
 import DocumentMeta from 'react-document-meta';
 import React, {Component} from 'react';
-import {Link} from 'react-router';
+import PropTypes from 'prop-types';
 
 export default class App extends Component {
+  props: {
+    children: PropTypes.node,
+  }
   render() {
     const appName = 'Export Tool';
     const meta = {
@@ -17,7 +21,7 @@ export default class App extends Component {
         {React.cloneElement(
           this.props.children,
           {
-            appName: appName,
+            appName,
             ...this.props
           }
         )}

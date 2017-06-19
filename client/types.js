@@ -38,18 +38,18 @@ export type Organizations = Organization[];
 
 export type SummaryData = {
   count: number,
-  asset_avg: ?number,
-  asset_max: ?number,
-  asset_med: ?number,
-  asset_min: ?number,
-  income_avg: ?number,
-  income_max: ?number,
-  income_med: ?number,
-  income_min: ?number,
-  revenue_avg: ?number,
-  revenue_max: ?number,
-  revenue_med: ?number,
-  revenue_min: ?number,
+  asset_avg?: ?number,
+  asset_max?: ?number,
+  asset_med?: ?number,
+  asset_min?: ?number,
+  income_avg?: ?number,
+  income_max?: ?number,
+  income_med?: ?number,
+  income_min?: ?number,
+  revenue_avg?: ?number,
+  revenue_max?: ?number,
+  revenue_med?: ?number,
+  revenue_min?: ?number,
 };
 
 export type FilterData = {
@@ -58,9 +58,9 @@ export type FilterData = {
 }
 
 export type FiltersData = {
-  state: FilterData,
-  income_cd: FilterData,
-  ntee_cd: FilterData,
+  state?: FilterData,
+  income_cd?: FilterData,
+  ntee_cd?: FilterData,
 };
 
 export type Filters = {
@@ -72,6 +72,6 @@ export type Filters = {
   income_cd: ?number[],
   ntee_cd: ?string[],
   page: number,
-  limit: ?number,
+  limit?: ?number,
 
 };

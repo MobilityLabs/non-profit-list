@@ -19,7 +19,7 @@
     "max-len": [1, 120, 2],
     "no-alert": 2,
     "no-caller": 2,
-    "no-console": 2,
+    "no-console": 1,
     "no-debugger": 2,
     "no-div-regex": 2,
     "no-else-return": 1,
@@ -52,7 +52,6 @@
     }],
     "no-useless-call": 2,
     "no-useless-concat": 2,
-    "no-useless-escape": 1,
     "no-with": 2,
     "new-cap": 0,
     "radix": 2,
@@ -89,19 +88,16 @@
     "flowtype/type-id-match": [2, "^([A-Z][A-Za-z0-9]+)$"], // enforces capitalization
     "flowtype/use-flow-type": 1,
     "flowtype/valid-syntax": 1,
+    "flowtype/object-type-delimiter": [1, 'comma'],
 
     // Node rules
     "callback-return": 2,
     "handle-callback-err": 2,
     "no-path-concat": 1,
+    "no-await-in-loop": 1,
 
     // Babel rules
-    "babel/arrow-parens": [1, "always"],
-    "babel/flow-object-type": [1, "comma"],
-    "babel/generator-star-spacing": 1,
     "babel/object-curly-spacing": [1, "never"], // not broken on export like "object-curly-spacing"
-    "babel/no-await-in-loop": 1,
-    "babel/object-shorthand": [1, "always"],
 
     // Style rules
     "array-bracket-spacing": [1, "never"],
@@ -112,6 +108,7 @@
     "comma-style": [1, "last"],
     // "consistent-this": [1, "me"], // obnoxious
     "computed-property-spacing": [1, "never"],
+    "generator-star-spacing": 1,
     "func-call-spacing": [1, "never"],
     "func-style": [1, "declaration", {"allowArrowFunctions": true}],
     "indent": [1, 2],
@@ -121,6 +118,8 @@
     "no-mixed-spaces-and-tabs": 1,
     "no-unneeded-ternary": 1,
     "no-whitespace-before-property": 1,
+
+
     // "object-curly-newline": [1, {"multiline": true}], // useless
     // "object-curly-spacing": [1, "never"], // broken on 'export', see babel
     "operator-linebreak": [1, "after", {"overrides": {"?": "ignore", ":": "ignore"}}],
@@ -137,7 +136,7 @@
 
     // ES6 rules
     // "arrow-body-style": [1, "as-needed"], // obnoxious
-    // "arrow-parens": [1, "always"], // broken, see babel
+    "arrow-parens": [1, "always"],
     "constructor-super": 2,
     "no-confusing-arrow": 1,
     "no-class-assign": 2,
@@ -150,7 +149,7 @@
     "no-useless-constructor": 1,
     "no-useless-rename": 1,
     "no-var": 1,
-    // "object-shorthand": [1, "always"], // broken, see babel
+    "object-shorthand": [1, "always"],
     "prefer-const": 1,
     "prefer-spread": 1,
     "prefer-reflect": 0,

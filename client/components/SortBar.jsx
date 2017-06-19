@@ -8,10 +8,6 @@ import './SortBar.scss';
 
 import type {Filters, SummaryData} from '../types';
 
-type State = {
-  expanded: boolean,
-}
-
 export default class SortBar extends Component {
 
   props: {
@@ -46,7 +42,7 @@ export default class SortBar extends Component {
               label="Name"
               keyName="name"
             />
-           <SortDropdown
+            <SortDropdown
               filters={filters}
               handleSortChange={handleSortChange}
               name="Date"

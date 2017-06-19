@@ -4,8 +4,14 @@ import Select from 'react-select';
 
 import './StateFilter.scss';
 
-export default class StateFilter extends Component {
+import type {FilterData} from '../types';
 
+export default class StateFilter extends Component {
+  props: {
+    filter: FilterData,
+    handleSelectState: Function,
+    selectedStates: [],
+  }
   render() {
     const {filter, handleSelectState, selectedStates} = this.props;
     return (
@@ -13,8 +19,8 @@ export default class StateFilter extends Component {
         <dt className="font_small text-muted mb-2">{filter.label}</dt>
         <dd className="mb-0 filter-group">
           <Select
-            multi
-            simpleValue
+            multi={true}
+            simpleValue={true}
             placeholder="Select States to Filter"
             value={selectedStates}
             options={filter.filters}

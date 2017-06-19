@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import {Router, browserHistory, IndexRoute, Route} from 'react-router';
 import logPageView from './utilities/analytics';

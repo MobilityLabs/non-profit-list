@@ -31,24 +31,24 @@ export default class OrganizationCard extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.expanded && google && google.maps) {
+    if (this.props.expanded && window.google && window.google.maps) {
       this.loadGoogleMap();
     }
   }
 
   loadGoogleMap =() => {
-    const googleMap = new google.maps.Map(this.refs.map, {
+    const googleMap = new window.google.maps.Map(this.refs.map, {
       zoom: 14,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeId: window.google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
     });
 
-    const geocoder = new google.maps.Geocoder();
+    const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({
       address: this.formatAddress(this.props.organization)
     }, (results, status) => {
-      if(status === google.maps.GeocoderStatus.OK) {
-        new google.maps.Marker({
+      if(status === window.google.maps.GeocoderStatus.OK) {
+        new window.google.maps.Marker({
           position: results[0].geometry.location,
           map: googleMap
         });
@@ -112,7 +112,7 @@ export default class OrganizationCard extends Component {
                 id={"checkbox-" + organization.ein}
                 value={"checked-" + organization.ein}
                 aria-label="..."
-                disabled
+                disabled={true}
               />
             </label>
             <label className="form-check-label">
@@ -122,7 +122,7 @@ export default class OrganizationCard extends Component {
                 id={"star-" + organization.ein}
                 value={"starred-" + organization.ein}
                 aria-label="..."
-                disabled
+                disabled={true}
               />
             </label>
           </div>

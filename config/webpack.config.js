@@ -1,10 +1,11 @@
-var path = require('path');
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// @noflow
+'use strict';
+const os = require('os');
+const path = require('path');
+const webpack = require('webpack');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -14,24 +15,10 @@ module.exports = {
   ],
   output: {
     filename: 'app.bundle.js',
-    path: path.join('build/')
+    path: path.resolve(__dirname, '..', 'build')
   },
   devtool: 'source-map',
-  // We use PostCSS for autoprefixing only.
-  postcss: function() {
-    return [
-      autoprefixer({
-        browsers: [
-          '>1%',
-          'last 4 versions',
-          'Firefox ESR',
-          'not ie < 9', // React doesn't support IE8 anyway
-        ]
-      }),
-    ];
-  },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new CaseSensitivePathsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -45,60 +32,103 @@ module.exports = {
         screw_ie8: true, // React doesn't support IE8
         warnings: false
       },
+
       mangle: {
         screw_ie8: true
       },
+
       output: {
         comments: false,
         screw_ie8: true
       },
-      sourceMap: true
+
+      sourceMap: true,
     }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.min\.css$/,
-      cssProcessorOptions: { discardComments: { removeAll: true } }
+      cssProcessorOptions: {discardComments: {removeAll: true}}
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
     })
   ],
   resolve: {
-    extensions: ['', '.js', '.map', '.jsx', ]
+    extensions: ['.js', '.jsx']
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'eslint',
-        include: './client',
-      }
-    ],
-    loaders: [
-      {
-        exclude: [
-          /\.html$/,
-          /\.(js|jsx)$/,
-          /\.css$/,
-          /\.json$/,
-          /\.svg$/,
-          /(\.scss$|\.sass)$/
-        ],
-        loader: 'url',
-        query: {
+    rules: [{
+      use: [{
+        loader: 'url-loader',
+        options: {
           limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]'
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      }],
+      exclude: [
+        /\.html$/,
+        /\.(js|jsx)$/,
+        /\.css$/,
+        /\.json$/,
+        /\.svg$/,
+        /(\.scss$|\.sass)$/
+      ],
+    }, {
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      use: [{
+        loader: 'cache-loader',
+        options: {
+          cacheDirectory: path.resolve(os.tmpdir(), '.babelcache')
         }
-      },
-      {
-        test: /\.jsx?$/,
-        loader: 'babel',
-        presets: ["es2015", "react", "stage-0"]
-      },
-      {
-        test: /\.css$/,
-        loader: "style!css!postcss!sass"
-      },
-      {
-        test: /(\.scss|\.sass)$/,
-        loader: ExtractTextPlugin.extract('style', 'css!postcss!sass')
-      }
-    ]
+      }, {
+        loader: 'babel-loader',
+        options: {
+          presets: ["es2015", "react", "stage-0"]
+        }
+      }],
+    }, {
+      test: /\.css$/,
+      use: [{
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader'
+      }, {
+        // We use PostCSS for autoprefixing only. See ./postcss.config.js
+        loader: 'postcss-loader',
+        options: {
+          config: {
+            path: path.resolve(__dirname, 'postcss.config.js')
+          }
+        }
+      }, {
+        loader: 'sass-loader'
+      }]
+    }, {
+      test: /(\.scss|\.sass)$/,
+      use: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: [{
+          loader: 'css-loader'
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            config: {
+              path: path.resolve(__dirname, 'postcss.config.js')
+            }
+          }
+        }, {
+          loader: 'sass-loader'
+        }]
+      })
+    }, {
+      test: /\.(js|jsx)$/,
+
+      use: [{
+        loader: 'eslint-loader'
+      }],
+
+      include: path.resolve(__dirname, '..', 'client'),
+      enforce: 'pre'
+    }]
   }
 };

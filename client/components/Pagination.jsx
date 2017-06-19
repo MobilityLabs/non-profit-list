@@ -9,7 +9,7 @@ export default class Pagination extends Component {
   props: {
     filters: Filters,
     handlePageChange: Function,
-    loading: boolean,
+    loading?: boolean,
     summaryData: SummaryData,
   }
 

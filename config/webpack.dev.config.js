@@ -1,9 +1,9 @@
-var path = require('path');
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-console.log('Begining webpack.dev.config.js')
+// @flow
+const path = require('path');
+const webpack = require('webpack');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+
 module.exports = {
   cache: true,
   entry: [
@@ -18,70 +18,86 @@ module.exports = {
 
   output: {
     filename: 'app.bundle.js',
-    path: '/',
+    path: path.resolve(__dirname, '/'),
     publicPath: 'http://localhost:3000/'
   },
-  // We use PostCSS for autoprefixing only.
-  postcss: function() {
-    return [
-      autoprefixer({
-        browsers: [
-          '>1%',
-          'last 4 versions',
-          'Firefox ESR',
-          'not ie < 9', // React doesn't support IE8 anyway
-        ]
-      }),
-    ];
-  },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new CaseSensitivePathsPlugin(),
     new WatchMissingNodeModulesPlugin('/node_modules/')
   ],
 
   resolve: {
-    extensions: ['', '.js', '.map', '.jsx', ]
+    extensions: ['.js', '.map', '.jsx']
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'eslint',
-        include: './client',
-      }
-    ],
-    loaders: [
-      {
-        exclude: [
-          /\.html$/,
-          /\.(js|jsx)$/,
-          /\.css$/,
-          /\.json$/,
-          /\.svg$/,
-          /(\.scss$|\.sass)$/
-        ],
-        loader: 'url',
-        query: {
+    rules: [{
+      test: /\.(js|jsx)$/,
+      use: [{
+        loader: 'eslint-loader'
+      }],
+      include: path.resolve(__dirname, '..', 'client'),
+      enforce: 'pre'
+    }, {
+      exclude: [
+        /\.html$/,
+        /\.(js|jsx)$/,
+        /\.css$/,
+        /\.json$/,
+        /\.svg$/,
+        /(\.scss$|\.sass)$/
+      ],
+      use: [{
+        loader: 'url-loader',
+        options: {
           limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]'
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      }],
+    }, {
+      test: /\.(js|jsx)$/,
+      use: [{
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          presets: ["es2015", "react", "stage-0"]
         }
-      },
-      {
-        test: /\.jsx?$/,
-        loader: 'babel',
-        presets: ["es2015", "react", "stage-0"]
-      },
-      {
-        test: /\.css$/,
-        loader: "style!css!postcss!sass"
-      },
-      {
-        test: /(\.scss|\.sass)$/,
-        loader: "style!css!postcss!sass"
-      }
-    ]
+      }],
+    }, {
+      test: /\.css$/,
+      use: [{
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader'
+      }, {
+        loader: 'postcss-loader'
+      }, {
+        loader: 'sass-loader'
+      }, {
+        // We use PostCSS for autoprefixing only. See ./postcss.config.js
+        loader: 'postcss-loader',
+        options: {
+          config: {
+            path: path.resolve(__dirname, 'postcss.config.js')
+          }
+        }
+      }]
+    }, {
+      test: /(\.scss|\.sass)$/,
+      use: [{
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader'
+      }, {
+        loader: 'postcss-loader',
+        options: {
+          config: {
+            path: path.resolve(__dirname, 'postcss.config.js')
+          }
+        },
+      }, {
+        loader: 'sass-loader'
+      }]
+    }]
   }
 };
-console.log('End webpack.dev.config.js')

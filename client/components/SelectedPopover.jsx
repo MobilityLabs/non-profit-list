@@ -6,19 +6,19 @@ import './SelectedPopover.scss';
 export default class SelectedPopover extends Component {
 
   componentDidMount() {
-    if (google && google.maps) {
+    if (window.google && window.google.maps) {
       // Coordinates to center the map
-      const myLatlng = new google.maps.LatLng(52.525595, 13.393085);
+      const myLatlng = new window.google.maps.LatLng(52.525595, 13.393085);
       // Other options for the map, pretty much selfexplanatory
       const mapOptions = {
         zoom: 14,
         center: myLatlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true,
       };
       // Attach a map to the DOM Element, with the defined settings
       const map = this.refs.map;
-      new google.maps.Map(map, mapOptions);
+      new window.google.maps.Map(map, mapOptions);
     }
   }
   render() {
