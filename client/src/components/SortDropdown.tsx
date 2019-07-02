@@ -68,7 +68,7 @@ class SortDropdown extends Component<Props, State> {
             onClick={handleSortChange.bind(null, {[keyName]: 'asc'})}
           >
             <span>{label} ASC</span>
-            <i className={`fa fa-fw fa-sort-${name === 'name' ? 'alpha' : 'numeric'}-asc`}/>
+            <i className={`fa fa-fw fa-sort-${name === 'Name' ? 'alpha' : 'numeric'}-asc`}/>
           </span>
           <span
             // TODO: Add active states to these other ones
@@ -76,7 +76,7 @@ class SortDropdown extends Component<Props, State> {
             onClick={handleSortChange.bind(null, {[keyName]: 'desc'})}
           >
             <span>{label} DESC</span>
-            <i className={`fa fa-fw fa-sort-${name === 'name' ? 'alpha' : 'numeric'}-desc`}/>
+            <i className={`fa fa-fw fa-sort-${name === 'Name' ? 'alpha' : 'numeric'}-desc`}/>
           </span>
         </div>
       </div>
