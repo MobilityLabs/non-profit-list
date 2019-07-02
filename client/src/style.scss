@@ -1,0 +1,162 @@
+@import './variables';
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/root";
+@import "../../node_modules/bootstrap/scss/reboot";
+@import "../../node_modules/bootstrap/scss/type";
+@import "../../node_modules/bootstrap/scss/images";
+@import "../../node_modules/bootstrap/scss/code";
+@import "../../node_modules/bootstrap/scss/grid";
+@import "../../node_modules/bootstrap/scss/tables";
+@import "../../node_modules/bootstrap/scss/forms";
+@import "../../node_modules/bootstrap/scss/buttons";
+@import "../../node_modules/bootstrap/scss/transitions";
+@import "../../node_modules/bootstrap/scss/dropdown";
+@import "../../node_modules/bootstrap/scss/button-group";
+@import "../../node_modules/bootstrap/scss/input-group";
+@import "../../node_modules/bootstrap/scss/custom-forms";
+@import "../../node_modules/bootstrap/scss/nav";
+@import "../../node_modules/bootstrap/scss/navbar";
+@import "../../node_modules/bootstrap/scss/card";
+@import "../../node_modules/bootstrap/scss/breadcrumb";
+@import "../../node_modules/bootstrap/scss/pagination";
+@import "../../node_modules/bootstrap/scss/badge";
+@import "../../node_modules/bootstrap/scss/jumbotron";
+@import "../../node_modules/bootstrap/scss/alert";
+@import "../../node_modules/bootstrap/scss/progress";
+@import "../../node_modules/bootstrap/scss/media";
+@import "../../node_modules/bootstrap/scss/list-group";
+@import "../../node_modules/bootstrap/scss/close";
+@import "../../node_modules/bootstrap/scss/toasts";
+@import "../../node_modules/bootstrap/scss/modal";
+@import "../../node_modules/bootstrap/scss/tooltip";
+@import "../../node_modules/bootstrap/scss/popover";
+@import "../../node_modules/bootstrap/scss/carousel";
+@import "../../node_modules/bootstrap/scss/spinners";
+@import "../../node_modules/bootstrap/scss/utilities";
+@import "../../node_modules/bootstrap/scss/print";
+
+.disable-click-events{
+  pointer-events: none;
+}
+.loading{
+  opacity: .75;
+  *{
+    @extend .disable-click-events;
+    opacity: .75;
+    user-select: none;
+  }
+}
+
+.enable-click-events{
+  pointer-events: all;
+}
+
+html, .font_normal {font-size: 1em;}
+
+body {
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+p {margin-bottom: 1.3em;}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+  margin: 1.414em 0 0.5em;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+
+h1, .h1 {
+  margin-top: 0;
+  font-size: 2.074em;
+}
+
+h2, .h2 {font-size: 1.728em;}
+
+h3, .h3 {font-size: 1.44em;}
+
+h4, .h4 {font-size: 1.2em;}
+
+small, .font_small {
+  font-size: 0.833em;
+}
+
+micro, .font_micro{
+  font-size: 0.694em;
+}
+.font_mono{
+  font-family: $font-family-mono;
+}
+button:hover, .btn:hover{
+  cursor: pointer;
+}
+ul{
+  padding: 0 0 0 1rem;
+  list-style-position: outside;
+}
+.bg-light{
+  background-color: white;
+}
+.search-input > input{
+  line-height: 1.38;
+}
+// Changes checkbox to look like a star
+input{
+  &.star {
+    visibility:hidden;
+    font-size:initial;
+    cursor:pointer;
+  }
+  &.star:before {
+    content: "\2606";
+    color: $grey-3;
+    position: absolute;
+    visibility:visible;
+  }
+  &.star:checked:before {
+    content: "\2605";
+    color: $brand-primary;
+    position: absolute;
+  }
+  &.star.disabled:before {
+    content: "\2606";
+    color: $grey-5;
+    position: absolute;
+    visibility:visible;
+  }
+}
+.label-heading{
+  font-weight: bold;
+  color: $grey-2;
+  line-height: auto;
+}
+
+// Fixed ratio
+.fixed-ratio-container{
+  padding-bottom: 56.25%;
+  width: 100%;
+  position: relative;
+  .fixed-ratio{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+// Styles all out going links
+a[href*="//"]:not([href*="localhost:3000"]){
+  &:after{
+    content: '\f08e';
+   font-family: FontAwesome;
+   font-weight: normal;
+   font-style: normal;
+    margin: 0 0 0 0.25em;
+    text-decoration: none;
+    color: currentColor;
+  }
+}
