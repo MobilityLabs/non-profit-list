@@ -12,7 +12,7 @@
   "deploy" : {
     "production" : {
       "user" : "nonprofits",
-      "host" : ["104.236.211.178"],
+      "host" : ["datasaurus.org"],
       "ref"  : "origin/master",
       "repo" : "git@github.com:MobilityLabs/datasaurus.git",
       "path" : "/home/nonprofits",
