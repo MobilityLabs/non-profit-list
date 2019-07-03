@@ -1,12 +1,13 @@
 import numeral from 'numeral';
 import React, {Component} from 'react';
+import {isNil} from 'lodash'
 
 import './Summary.scss';
 
 import {SummaryData} from '../types';
 
 const commas = (number?: number) => {return number ? numeral(number).format('0,0') : "Not Available";};
-const amountValidator = (number?: number) => {return number ? numeral(number).format('$0,0.00') : "Not Available";};
+const amountValidator = (number?: number) => {return !isNil(number) ? numeral(number).format('$0,0.00') : "Not Available";};
 
 type Props = {
   classes: string,

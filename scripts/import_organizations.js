@@ -12,8 +12,9 @@ const combinedStream = new StreamConcat(FILES.map((f) => fs.createReadStream(tmp
 
 let recordCounter = 0
 let processedCounter = 0
+let errorCounter = 0
 let batch = []
-const BATCH_EVERY = 1000
+const BATCH_EVERY = 10
 let flush = false
 
 // We kept this close to original CSV, it will need updated if the CSVs update
@@ -50,7 +51,8 @@ combinedStream
     (processedData) => {
       if (flush) {
         db('organizations').count('*').then((result) => {
-          console.log('Finished with ' + result.count + ' records'); // eslint-disable-line
+          console.log('Finished with ' + result[0].count + ' records') // eslint-disable-line
+          console.log('and ' + errorCounter + ' errors')  // eslint-disable-line
           process.exit()
         })
       } else {
@@ -73,5 +75,10 @@ function processRows(dataArr) {
       return v.length > 0 && v !== '' ? v : null
     })
   })
-  return db('organizations').insert(dataArr).return() // returning nothing works, anything else breaks eventually
+  return db('organizations')
+    .insert(dataArr)
+    .return()
+    .catch(() => {
+      errorCounter++
+    })
 }

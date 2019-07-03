@@ -1,4 +1,3 @@
-// @flow
 import db from './config/database'
 import {filtersData, defaultFilters} from './client/src/filtersData'
 import {mapValues} from 'lodash'
@@ -6,8 +5,10 @@ import {mapValues} from 'lodash'
 // Shared by index and api routes
 export const getOrganizationsData = async (filters, next) => {
   try {
-    let mainQuery = db.select('*')
+    let mainQuery = db
+      .select('*')
       .from('organizations')
+    mainQuery = createOrganizationUniqueEin(mainQuery)
     mainQuery = createOrganizationWhere(mainQuery, filters)
     mainQuery = createOrganizationOrderBy(mainQuery, filters)
     mainQuery = createOrganizationLimit(mainQuery, filters)
@@ -47,6 +48,7 @@ export const getSummaryData = async (filters, next) => {
       .min('asset_amt as asset_min')
       .max('asset_amt as asset_max')
       .select(db.raw('median(asset_amt) as asset_med'))
+    aggQuery = createOrganizationUniqueEin(aggQuery)
     aggQuery = createOrganizationWhere(aggQuery, filters)
 
     const summaryData = await aggQuery
@@ -68,6 +70,17 @@ export const getSummary = async (req, res, next) => {
   const data = await getSummaryData(req.query, next)
   data.timestamp = req.query.timestamp || Date.now()
   return res.status(200).json(data)
+}
+
+function createOrganizationUniqueEin(select) {
+  return select.whereIn(
+    ['ein', 'tax_period'],
+    db.raw(`
+      SELECT ein, MAX(tax_period)
+      FROM organizations
+      GROUP BY ein
+    `)
+  )
 }
 
 function createOrganizationWhere(select, filters) {

@@ -160,3 +160,7 @@ a[href*="//"]:not([href*="localhost:3000"]){
     color: currentColor;
   }
 }
+
+.clickable {
+  cursor: pointer;
+}

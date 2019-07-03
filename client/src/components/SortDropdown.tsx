@@ -32,9 +32,15 @@ class SortDropdown extends Component<Props, State> {
       expanded: false,
     });
   }
+
+  handleSortChange = (order: {[key: string]: 'asc'|'desc'}) => {
+    this.setState({expanded: false})
+    this.props.handleSortChange(order)
+  }
+
   render() {
     const {expanded} = this.state;
-    const {filters, handleSortChange, name, label, keyName} = this.props;
+    const {filters, name, label, keyName} = this.props;
     const addOnClick = (expanded ? " expanded" : "");
     let compiledName;
     if (filters && filters.order && filters.order[keyName]) {
@@ -64,16 +70,16 @@ class SortDropdown extends Component<Props, State> {
         </button>
         <div className={"menu" + addOnClick} aria-labelledby="btnGroupName">
           <span
-            className={" " + (filters && filters.order && filters.order.name === 'asc' ? 'active' : '')}
-            onClick={handleSortChange.bind(null, {[keyName]: 'asc'})}
+            className={"clickable " + (filters && filters.order && filters.order[keyName] === 'asc' ? 'active' : '')}
+            onClick={this.handleSortChange.bind(null, {[keyName]: 'asc'})}
           >
             <span>{label} ASC</span>
             <i className={`fa fa-fw fa-sort-${name === 'Name' ? 'alpha' : 'numeric'}-asc`}/>
           </span>
           <span
             // TODO: Add active states to these other ones
-            className=""
-            onClick={handleSortChange.bind(null, {[keyName]: 'desc'})}
+            className={"clickable " + (filters && filters.order && filters.order[keyName] === 'desc' ? 'active' : '')}
+            onClick={this.handleSortChange.bind(null, {[keyName]: 'desc'})}
           >
             <span>{label} DESC</span>
             <i className={`fa fa-fw fa-sort-${name === 'Name' ? 'alpha' : 'numeric'}-desc`}/>

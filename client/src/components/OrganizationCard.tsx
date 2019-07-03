@@ -114,7 +114,7 @@ export default class OrganizationCard extends Component<Props> {
         className={"organization-card card" + addClassOnClick}
         onClick={handleCardClick.bind(null, organization.ein)}
       >
-        <div className="card-block list-card-container">
+        <div className="card-body list-card-container">
           <div className="card-container-interaction flex-column">
             <label className="form-check-label">
               <input

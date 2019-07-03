@@ -7,10 +7,10 @@ import {
   isNil,
   isArray,
   map,
+  cloneDeep,
 } from 'lodash'
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
-import update from 'immutability-helper'
 import {Helmet} from 'react-helmet'
 
 import CheckboxFilters from '../components/CheckboxFilters'
@@ -25,6 +25,8 @@ import {defaultFilters} from '../filtersData'
 
 import {RouteComponentProps} from 'react-router-dom'
 import {Organizations, SummaryData, FiltersData, Filters} from '../types'
+
+import SUMMARY_DATA from '../summaryData'
 
 let timestamp = Date.now()
 
@@ -44,13 +46,14 @@ type State = {
 export default class DashboardPage extends Component<RouteComponentProps<Props>, State> {
 
   state: State = {
-    filters: {},
-    filtersData: {},
     loadingOrgs: true,
     loadingSummary: true,
-    organizationsData: [],
-    summaryData: {},
+    filters: {},
     error: null,
+    // Comes from server
+    organizationsData: [],
+    filtersData: {},
+    summaryData: {},
   }
 
   componentDidMount() {
@@ -114,6 +117,17 @@ export default class DashboardPage extends Component<RouteComponentProps<Props>,
   // Only call once every 500 miliseconds
   debouncedSummary = debounce(async () => {
     const {filters} = this.state
+    console.log(filters)
+    if (
+      Object.keys(filters).length === 0 ||
+      (Object.keys(filters).length === 1 && filters.page)
+    ) {
+      this.setState({
+        loadingSummary: false,
+        summaryData: SUMMARY_DATA,
+      })
+      return
+    }
     // Build a query string with an array of key=value strings
     let queryString = buildQueryString(filters)
     this.props.history.push({
@@ -202,9 +216,10 @@ export default class DashboardPage extends Component<RouteComponentProps<Props>,
 
   // Sorts but doesn't change the order
   // TODO: Make order an array and place new filter at beginning of array
-  handleSortChange = (order: {}) => {
+  handleSortChange = (order: {[x: string]: 'asc'|'desc'}) => {
     let filters = {...this.state.filters} as Filters
-    filters = update(filters, {order: {$merge: order}}) // Using immutability helper to help detect state
+    filters = cloneDeep({...filters}) // Using immutability helper to help detect state
+    filters.order = {...filters.order, ...order}
     this.setState({filters})
   }
 
@@ -289,8 +304,20 @@ export default class DashboardPage extends Component<RouteComponentProps<Props>,
   }
 }
 
+const FILTER_KEYS = [
+  'order',
+  'state',
+  'name',
+  'income_cd',
+  'ntee_cd',
+  'page',
+  'limit',
+  'key',
+]
+
 function generateFiltersFromURL(stateFilters: Partial<Filters>, queryParams: any) {
   each(queryParams, (v, k) => {
+    if (!FILTER_KEYS.includes(k)) return
     if (k === 'income_cd' || k === 'ntee_cd') {
       const arr = v.split(',')
       const final = arr.map((v: string) => {

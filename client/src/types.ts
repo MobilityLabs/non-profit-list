@@ -61,8 +61,7 @@ export type FiltersData = {
 
 export type Filters = {
   order: {
-    name: 'asc'|'desc',
-    [name: string]: string
+    [x: string]: 'asc'|'desc',
   },
   state: string[],
   name: string,
