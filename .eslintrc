@@ -2,161 +2,14 @@
   "root": true,
   "parser": "babel-eslint",
   "plugins": [
-    "babel",
-    "react",
-    "lodash",
+    "react-app",
     "flowtype"
   ],
   "extends": "eslint:recommended",
   "rules": {
-    // Base ESLint rules
-    "array-callback-return": 2,
-    "curly": [1, "multi-line"],
-    "dot-notation": 0,
-    "eol-last": 1,
-    "eqeqeq": [2, "smart"],
-    "jsx-quotes": [1, "prefer-double"], // use double quotes in jsx
-    "max-len": [1, 120, 2],
-    "no-alert": 2,
-    "no-caller": 2,
-    "no-console": 1,
-    "no-debugger": 2,
-    "no-div-regex": 2,
-    "no-else-return": 1,
-    "no-extra-bind": 1,
-    "no-floating-decimal": 1,
-    "no-implicit-coercion": 2,
-    "no-implicit-globals": 2,
-    "no-implied-eval": 2,
-    // "no-invalid-this": 2, // broken in arrow function class property assignment
-    "no-labels": 2,
-    "no-lone-blocks": 2,
-    // "no-magic-numbers": 1, // pretty annoying, could be useful but really isn't
-    "no-multi-str": 2,
-    "no-new-func": 2,
-    "no-new-wrappers": 2,
-    "no-octal-escape": 2,
-    // "no-param-reassign": [2, {"props": false}], // disabled for now, I don't like it much
-    "no-return-assign": 2,
-    "no-script-url": 2,
-    "no-self-compare": 2,
-    "no-sequences": 1,
-    "no-throw-literal": 2,
-    "no-use-before-define": [1, "nofunc"],
-    "no-underscore-dangle": 0,
-    "no-unmodified-loop-condition": 2,
-    "no-unused-vars": [1, {
-      "argsIgnorePattern": "^((prev|next)(State|Props)|e|_.*)$",
-      "vars": "local",
-      "varsIgnorePattern": "(debug|^_)"
-    }],
-    "no-useless-call": 2,
-    "no-useless-concat": 2,
-    "no-with": 2,
-    "new-cap": 0,
-    "radix": 2,
-    "strict": 0,
-    "yoda": 1,
-
-    // React Rules
-    "react/jsx-boolean-value": [1, "always"], // forces `var={true}` instead of `var`
-    "react/jsx-curly-spacing": [1, "never"], // don't allow `var={ 1 }`
-    "react/jsx-indent": [1, 2], // require indenting children by 2 spaces
-    "react/jsx-key": 2, // arrays of children must have a `key` prop
-    "react/jsx-no-duplicate-props": 1, // prevent <foo name="bar" name="baz" />
-    "react/jsx-no-undef": 2, // warn when using undefined components (why is this not default?)
-    "react/jsx-pascal-case": 1, // components must be <ThisComponent>
-    "react/jsx-uses-react": 1, // marks `React` as consumed by any jsx el (squelched unused)
-    "react/jsx-uses-vars": 1, // marks any vars in jsx as used
-    "react/jsx-wrap-multilines": 1, // require parens around multiline jsx
-    "react/no-danger": 1, // warn on dangerouslySetInnerHTML
-    "react/no-deprecated": 1, // warn on deprecated methods
-    "react/no-did-update-set-state": 1,
-    "react/no-direct-mutation-state": 1,
-    "react/no-is-mounted": 1,
-    "react/prefer-es6-class": 1,
-    "react/prop-types": 2, // errors when using an undefined prop
-    "react/self-closing-comp": 1, // Require tags with no children to be self-closing (why isn't this `jsx-`?)
-
-    // Flow rules
-    "flowtype/define-flow-type": 1, // defines Flow globals
-    "flowtype/require-parameter-type": 0, // flow will get these
-    "flowtype/require-return-type": 0,
-    "flowtype/require-valid-file-annotation": [2, "always"],
-    "flowtype/space-after-type-colon": [1, "always"],
-    "flowtype/space-before-type-colon": [1, "never"],
-    "flowtype/type-id-match": [2, "^([A-Z][A-Za-z0-9]+)$"], // enforces capitalization
-    "flowtype/use-flow-type": 1,
-    "flowtype/valid-syntax": 1,
-    "flowtype/object-type-delimiter": [1, 'comma'],
-
-    // Node rules
-    "callback-return": 2,
-    "handle-callback-err": 2,
-    "no-path-concat": 1,
-    "no-await-in-loop": 1,
-
-    // Babel rules
-    "babel/object-curly-spacing": [1, "never"], // not broken on export like "object-curly-spacing"
-
-    // Style rules
-    "array-bracket-spacing": [1, "never"],
-    // "block-spacing": [1, "always"], // obnoxious
-    "camelcase": [0, {"properties": "always"}], // obnoxious
-    "comma-dangle": [1, "only-multiline"],
-    "comma-spacing": [1, {"before": false, "after": true}],
-    "comma-style": [1, "last"],
-    // "consistent-this": [1, "me"], // obnoxious
-    "computed-property-spacing": [1, "never"],
-    "generator-star-spacing": 1,
-    "func-call-spacing": [1, "never"],
-    "func-style": [1, "declaration", {"allowArrowFunctions": true}],
-    "indent": [1, 2],
-    "key-spacing": [1, {"beforeColon": false}],
-    "no-lonely-if": 2,
-    "no-mixed-operators": 1,
-    "no-mixed-spaces-and-tabs": 1,
-    "no-unneeded-ternary": 1,
-    "no-whitespace-before-property": 1,
-
-
-    // "object-curly-newline": [1, {"multiline": true}], // useless
-    // "object-curly-spacing": [1, "never"], // broken on 'export', see babel
-    "operator-linebreak": [1, "after", {"overrides": {"?": "ignore", ":": "ignore"}}],
-    "padded-blocks": [1, "never"],
-    "quotes": [0, "single"],
-    "quote-props": [1, "consistent-as-needed"],
-    "semi-spacing": [1, {"before": false, "after": true}],
-    "semi": [1, "always"],
-    "space-before-blocks": [1, "always"],
-    "space-before-function-paren": [1, "never"],
-    "space-in-parens": [1, "never"],
-    "spaced-comment": [1, "always"],
-
-
-    // ES6 rules
-    // "arrow-body-style": [1, "as-needed"], // obnoxious
-    "arrow-parens": [1, "always"],
-    "constructor-super": 2,
-    "no-confusing-arrow": 1,
-    "no-class-assign": 2,
-    "no-const-assign": 2,
-    "no-dupe-class-members": 2,
-    // "no-duplicate-imports": 2, // breaks on import type
-    "no-new-symbol": 2,
-    "no-this-before-super": 2,
-    "no-useless-computed-key": 1,
-    "no-useless-constructor": 1,
-    "no-useless-rename": 1,
-    "no-var": 1,
-    "object-shorthand": [1, "always"],
-    "prefer-const": 1,
-    "prefer-spread": 1,
-    "prefer-reflect": 0,
-    "require-yield": 2,
-    "rest-spread-spacing": [1, "never"],
-    "template-curly-spacing": [1, "never"],
-
+    'no-undef': 1,
+    semi: [2, 'never'],
+    'object-curly-spacing': [2, 'never'],
   },
   globals: {
   },
@@ -166,11 +19,6 @@
     "es6": true
   },
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true,
-      "experimentalObjectRestSpread": true,
-    },
+    "sourceType": "module"
   }
 }

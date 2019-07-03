@@ -1,12 +1,11 @@
-// @flow
-import express from 'express';
-import {getOrganizations, getSummary} from '../queries';
+import express from 'express'
+import {getOrganizations, getSummary} from '../queries'
 
-const router = express.Router();
+const router = express.Router()
 
 // View a single persona
-router.get('/organizations', getOrganizations);
+router.get('/organizations', getOrganizations)
 
-router.get('/summary', getSummary);
+router.get('/summary', getSummary)
 
-module.exports = router;
+module.exports = router
