@@ -53,9 +53,7 @@
     "recursive-readdir": "^2.2.2",
     "request": "^2.88.0",
     "stream-concat": "^0.3.0",
-    "typescript": "^3.5.2"
-  },
-  "devDependencies": {
+    "typescript": "^3.5.2",
     "babel-eslint": "10.0.1",
     "bootstrap": "4.3.1",
     "eslint": "5.16.0",
@@ -69,6 +67,8 @@
     "node-sass": "^4.12.0",
     "object-assign": "^4.1.0",
     "whatwg-fetch": "^3.0.0"
+  },
+  "devDependencies": {
   },
   "engines": {
     "node": "10.15.2"
