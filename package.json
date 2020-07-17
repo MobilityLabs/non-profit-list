@@ -33,7 +33,7 @@
     "fstream": "^1.0.12",
     "immutability-helper": "^3.0.1",
     "knex": "^0.18.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "morgan": "~1.9.1",
     "nodemon": "^1.19.1",
     "numeral": "^2.0.6",
